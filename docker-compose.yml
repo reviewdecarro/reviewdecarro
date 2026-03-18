@@ -1,0 +1,15 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: reviewdecarro_db
+    environment:
+      POSTGRES_USER: reviewdecarro_db
+      POSTGRES_PASSWORD: johnny123
+      POSTGRES_DB: reviewdecarro
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
