@@ -1,0 +1,184 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider     = "prisma-client"
+  output       = "../generated/prisma"
+  moduleFormat = "cjs"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+//
+// ENUMS
+//
+
+enum VoteType {
+  UP
+  DOWN
+}
+
+enum RatingCategory {
+  CONSUMPTION
+  MAINTENANCE
+  RELIABILITY
+  COMFORT
+  PERFORMANCE
+  TECHNOLOGY
+  FINISH
+  RESALE_VALUE
+}
+
+//
+// USERS
+//
+
+model User {
+  id           String   @id @default(uuid())
+  username     String   @unique
+  email        String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+
+  reviews  Review[]
+  comments Comment[]
+  votes    ReviewVote[]
+
+  @@map("users")
+}
+
+//
+// CAR DOMAIN
+//
+
+model Brand {
+  id        String   @id @default(uuid())
+  name      String
+  slug      String   @unique
+  createdAt DateTime @default(now())
+
+  models Model[]
+
+  @@map("brands")
+}
+
+model Model {
+  id        String   @id @default(uuid())
+  name      String
+  slug      String
+  brandId   String
+  createdAt DateTime @default(now())
+
+  brand       Brand        @relation(fields: [brandId], references: [id])
+  carVersions CarVersion[]
+
+  @@unique([brandId, slug])
+  @@map("models")
+}
+
+model CarVersion {
+  id           String   @id @default(uuid())
+  modelId      String
+  year         Int
+  versionName  String
+  engine       String?
+  transmission String?
+  slug         String   @unique
+  createdAt    DateTime @default(now())
+
+  model   Model    @relation(fields: [modelId], references: [id])
+  reviews Review[]
+
+  @@index([modelId])
+  @@map("car_versions")
+}
+
+//
+// REVIEWS
+//
+
+model Review {
+  id                  String   @id @default(uuid())
+  userId              String
+  carVersionId        String
+  title               String
+  content             String
+  pros                String?
+  cons                String?
+  ownershipTimeMonths Int?
+  kmDriven            Int?
+  score               Float    @default(0)
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  user       User           @relation(fields: [userId], references: [id])
+  carVersion CarVersion     @relation(fields: [carVersionId], references: [id])
+  ratings    ReviewRating[]
+  comments   Comment[]
+  votes      ReviewVote[]
+
+  @@index([carVersionId])
+  @@index([userId])
+  @@index([score])
+  @@index([createdAt])
+  @@map("reviews")
+}
+
+//
+// RATINGS (stars per category)
+//
+
+model ReviewRating {
+  id       String         @id @default(uuid())
+  reviewId String
+  category RatingCategory
+  value    Int
+
+  review Review @relation(fields: [reviewId], references: [id])
+
+  @@unique([reviewId, category])
+  @@index([reviewId])
+  @@map("review_ratings")
+}
+
+//
+// COMMENTS
+//
+
+model Comment {
+  id        String   @id @default(uuid())
+  reviewId  String
+  userId    String
+  content   String
+  createdAt DateTime @default(now())
+
+  review Review @relation(fields: [reviewId], references: [id])
+  user   User   @relation(fields: [userId], references: [id])
+
+  @@index([reviewId])
+  @@index([userId])
+  @@map("comments")
+}
+
+//
+// VOTES
+//
+
+model ReviewVote {
+  id        String   @id @default(uuid())
+  userId    String
+  reviewId  String
+  type      VoteType
+  createdAt DateTime @default(now())
+
+  user   User   @relation(fields: [userId], references: [id])
+  review Review @relation(fields: [reviewId], references: [id])
+
+  @@unique([userId, reviewId])
+  @@index([reviewId])
+  @@map("review_votes")
+}
