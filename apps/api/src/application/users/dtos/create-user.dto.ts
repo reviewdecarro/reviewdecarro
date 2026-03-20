@@ -1,4 +1,5 @@
-import { IsEmail, IsString, MinLength } from 'class-validator';
+import { Expose } from "class-transformer";
+import { IsEmail, IsString, MinLength } from "class-validator";
 
 export class CreateUserDto {
 	@IsString()
@@ -11,4 +12,18 @@ export class CreateUserDto {
 	@IsString()
 	@MinLength(8)
 	readonly password: string;
+}
+
+export class UserResponseDto {
+	@Expose()
+	id: string;
+
+	@Expose()
+	username: string;
+
+	@Expose()
+	email: string;
+
+	@Expose()
+	createdAt: Date;
 }

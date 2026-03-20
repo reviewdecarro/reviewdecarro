@@ -1,5 +1,5 @@
-import type { CreateUserDto } from '../dtos/create-user.dto';
-import type { UserEntity } from '../entities/user.entity';
+import type { CreateUserDto } from "../dtos/create-user.dto";
+import type { UserEntity } from "../entities/user.entity";
 
 export abstract class UsersRepositoryProps {
 	abstract create(user: CreateUserDto): Promise<UserEntity>;

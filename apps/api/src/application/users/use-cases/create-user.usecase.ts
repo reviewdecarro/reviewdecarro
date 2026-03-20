@@ -1,9 +1,10 @@
-import { Injectable } from '@nestjs/common';
-import { hash } from 'bcrypt';
-import { BadRequestError } from '../../../shared/errors/types/bad-request-error';
-import type { CreateUserDto } from '../dtos/create-user.dto';
-import { toUserDto } from '../mappers/user.mapper';
-import type { UsersRepositoryProps } from '../repositories/users.repository';
+import { Injectable } from "@nestjs/common";
+import { hash } from "bcrypt";
+import { BadRequestError } from "../../../shared/errors/types/bad-request-error";
+import { CreateUserDto } from "../dtos/create-user.dto";
+import { UserEntity } from "../entities/user.entity";
+import { toUserResponseDto } from "../mappers/user.mapper";
+import { UsersRepositoryProps } from "../repositories/users.repository";
 
 @Injectable()
 export class CreateUserUseCase {
@@ -13,13 +14,13 @@ export class CreateUserUseCase {
 		const emailExists = await this.usersRepository.findByEmail(email);
 
 		if (emailExists) {
-			throw new BadRequestError('Email already exists');
+			throw new BadRequestError("Email already exists");
 		}
 
 		const usernameExists = await this.usersRepository.findByUsername(username);
 
 		if (usernameExists) {
-			throw new BadRequestError('Username already exists');
+			throw new BadRequestError("Username already exists");
 		}
 
 		const passwordHash = await hash(password, 10);
@@ -30,6 +31,8 @@ export class CreateUserUseCase {
 			password: passwordHash,
 		});
 
-		return toUserDto(user);
+		const entity = new UserEntity(user);
+
+		return toUserResponseDto(entity);
 	}
 }

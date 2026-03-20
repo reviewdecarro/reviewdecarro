@@ -1,10 +1,9 @@
-import type { UserEntity } from '../entities/user.entity';
+import { plainToInstance } from "class-transformer";
+import { UserResponseDto } from "../dtos/create-user.dto";
+import { UserEntity } from "../entities/user.entity";
 
-export function toUserDto({ id, username, email, createdAt }: UserEntity) {
-	return {
-		id,
-		username,
-		email,
-		createdAt,
-	};
+export function toUserResponseDto(user: UserEntity): UserResponseDto {
+	return plainToInstance(UserResponseDto, user, {
+		excludeExtraneousValues: true,
+	});
 }

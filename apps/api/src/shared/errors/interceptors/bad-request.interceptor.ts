@@ -4,9 +4,9 @@ import {
 	ExecutionContext,
 	Injectable,
 	NestInterceptor,
-} from '@nestjs/common';
-import { catchError, Observable, throwError } from 'rxjs';
-import { BadRequestError } from '../types/bad-request-error';
+} from "@nestjs/common";
+import { catchError, Observable, throwError } from "rxjs";
+import { BadRequestError } from "../types/bad-request-error";
 
 @Injectable()
 export class BadRequestInterceptor implements NestInterceptor {
