@@ -1,13 +1,9 @@
-import { UserEntity } from '../entities/user.entity';
+import type { CreateUserDto } from '../dtos/create-user.dto';
+import type { UserEntity } from '../entities/user.entity';
 
-export interface CreateUserInput {
-  username: string;
-  email: string;
-  passwordHash: string;
-}
-
-export abstract class UsersRepository {
-  abstract create(data: CreateUserInput): Promise<UserEntity>;
-  abstract findByEmail(email: string): Promise<UserEntity | null>;
-  abstract findById(id: string): Promise<UserEntity | null>;
+export abstract class UsersRepositoryProps {
+	abstract create(user: CreateUserDto): Promise<UserEntity>;
+	abstract findById(id: string): Promise<UserEntity | null>;
+	abstract findByEmail(email: string): Promise<UserEntity | null>;
+	abstract findByUsername(username: string): Promise<UserEntity | null>;
 }

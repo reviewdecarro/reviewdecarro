@@ -74,7 +74,9 @@ Cross-cutting concerns:
 - **Entities** are classes that `implement` their Prisma model type. Constructor initializes each property explicitly.
 - **Repositories** are `abstract class` in the application layer. Prisma implementations live in `infra/database/` and are injected via NestJS DI.
 - **Errors** thrown from use cases use `BadRequestError` (or other shared error types). The global interceptor maps them to the correct HTTP response.
-- **Prisma client** is generated to `generated/prisma/` (not the default location). Import types from `../../../../generated/prisma/client`. The `schema=public` query param in `DATABASE_URL` allows switching schemas for tests.
+- **Prisma client** is generated to `prisma/generated/` (via `output = "./generated"` in schema.prisma). Import types from `../../../prisma/generated/client`. The `schema=public` query param in `DATABASE_URL` allows switching schemas for tests.
+- **DTOs** are classes with `class-validator` decorators (e.g. `@IsString()`, `@IsNotEmpty()`). `strictPropertyInitialization` is disabled in `tsconfig.json` so DTO properties don't need definite assignment (`!`).
+- **Validation** is handled globally via `ValidationPipe` in `main.ts` with `whitelist: true`, `forbidNonWhitelisted: true`, and `transform: true`. Unknown properties are stripped and invalid requests return 400.
 - **Git commits** use conventional commit format (`feat:`, `chore:`, `refactor:`, etc.) with plain `-m` strings — no heredoc, no Co-Authored-By.
 
 ## Database
