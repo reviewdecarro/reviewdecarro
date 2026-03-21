@@ -23,7 +23,7 @@ pnpm lint
 # Tests (from apps/api)
 pnpm test                        # unit tests
 pnpm test:e2e                    # e2e tests
-pnpm test -- --testPathPattern=users  # single test file
+pnpm test -- --testPathPatterns=users  # single test file
 
 # Database (from apps/api)
 pnpm dlx prisma migrate dev --name <name>
@@ -78,6 +78,16 @@ Cross-cutting concerns:
 - **DTOs** are classes with `class-validator` decorators (e.g. `@IsString()`, `@IsNotEmpty()`). `strictPropertyInitialization` is disabled in `tsconfig.json` so DTO properties don't need definite assignment (`!`).
 - **Validation** is handled globally via `ValidationPipe` in `main.ts` with `whitelist: true`, `forbidNonWhitelisted: true`, and `transform: true`. Unknown properties are stripped and invalid requests return 400.
 - **Git commits** use conventional commit format (`feat:`, `chore:`, `refactor:`, etc.) with plain `-m` strings — no heredoc, no Co-Authored-By.
+
+## Testing
+
+Jest 30 with `ts-jest`. Config shared via `packages/jest-config`.
+
+- Test files use `*.spec.ts` suffix and live next to the source file.
+- Import test functions from `@jest/globals`: `import { describe, it, expect, jest, beforeEach } from "@jest/globals";`
+- Use `--testPathPatterns` (not `--testPathPattern`) to filter tests.
+- Build `@repo/jest-config` before running tests for the first time: `pnpm build --filter=@repo/jest-config`.
+- Mock repositories using `jest.Mocked<RepositoryProps>` with `jest.fn()` for each method.
 
 ## Database
 
