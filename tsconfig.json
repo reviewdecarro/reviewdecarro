@@ -2,6 +2,7 @@
 	"extends": "@repo/typescript-config/base.json",
 	"compilerOptions": {
 		"strictNullChecks": true,
-		"experimentalDecorators": true
+		"experimentalDecorators": true,
+		"types": ["@jest/globals"]
 	}
 }

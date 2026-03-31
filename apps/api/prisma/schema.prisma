@@ -42,6 +42,7 @@ model User {
   username     String   @unique
   email        String   @unique
   passwordHash String
+  active       Boolean  @default(true)
   createdAt    DateTime @default(now())
 
   reviews  Review[]

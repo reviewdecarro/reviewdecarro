@@ -1,7 +1,7 @@
 import { Body, Controller, HttpStatus, Post, Res } from "@nestjs/common";
 import type { Response } from "express";
-import { CreateUserDto } from "../../../../application/users/dtos/create-user.dto";
-import { CreateUserUseCase } from "../../../../application/users/use-cases/create-user.usecase";
+import { CreateUserDto } from "src/application/users/dtos/create-user.dto";
+import { CreateUserUseCase } from "src/application/users/use-cases/create-user.usecase";
 
 @Controller("users")
 export class UsersController {

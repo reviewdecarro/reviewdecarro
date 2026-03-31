@@ -1,5 +1,5 @@
 import { Exclude, Expose } from "class-transformer";
-import type { UserModel } from "../../../../prisma/generated/models/User";
+import { UserModel } from "../../../../prisma/generated/models/User";
 
 export class UserEntity implements UserModel {
 	@Expose()
@@ -13,6 +13,9 @@ export class UserEntity implements UserModel {
 
 	@Exclude()
 	passwordHash: string;
+
+	@Expose()
+	active: boolean;
 
 	@Expose()
 	createdAt: Date;
