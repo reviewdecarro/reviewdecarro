@@ -57,7 +57,7 @@ jobs:
         working-directory: apps/api
 
       - name: Lint
-        run: pnpm turbo lint --affected
+        run: pnpm turbo lint --affected --since=${{ github.event.pull_request.base.sha }}
 
       - name: Build
         run: pnpm build
