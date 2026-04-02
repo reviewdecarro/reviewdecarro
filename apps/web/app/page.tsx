@@ -1,5 +1,6 @@
-import type { Link } from '@repo/api';
+
 import { Button } from '@repo/ui/button';
+import { Link } from '@repo/api'
 import Image, { type ImageProps } from 'next/image';
 
 import styles from './page.module.css';
@@ -50,7 +51,6 @@ export default async function Home() {
           alt="Turborepo logo"
           width={180}
           height={38}
-          priority
         />
         <ol>
           <li>
