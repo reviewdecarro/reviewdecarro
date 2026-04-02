@@ -57,7 +57,7 @@ jobs:
         working-directory: apps/api
 
       - name: Lint
-        run: pnpm turbo lint --affected
+        run: pnpm turbo lint
 
       - name: Build
         run: pnpm build
