@@ -12,7 +12,7 @@ export class AuthService {
 
 	async generateToken(payload: JwtPayload) {
 		return {
-			access_token: this.jwtService.signAsync(payload),
+			access_token: await this.jwtService.signAsync(payload),
 		};
 	}
 
