@@ -3,6 +3,5 @@
 	"compilerOptions": {
 		"strictNullChecks": true,
 		"experimentalDecorators": true,
-		"types": ["@jest/globals"]
 	}
 }
