@@ -22,6 +22,11 @@ enum VoteType {
   DOWN
 }
 
+enum RoleType {
+  ADMIN
+  USER
+}
+
 enum RatingCategory {
   CONSUMPTION
   MAINTENANCE
@@ -45,11 +50,24 @@ model User {
   active       Boolean  @default(true)
   createdAt    DateTime @default(now())
 
+  roles    Role[]
   reviews  Review[]
   comments Comment[]
   votes    ReviewVote[]
 
   @@map("users")
+}
+
+model Role {
+  id     String   @id @default(uuid())
+  type   RoleType @default(USER)
+  userId String
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@unique([userId, type])
+  @@index([userId])
+  @@map("roles")
 }
 
 //

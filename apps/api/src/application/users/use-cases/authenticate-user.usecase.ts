@@ -1,0 +1,33 @@
+import { Injectable } from "@nestjs/common";
+import { compare } from "bcrypt";
+import { AuthService } from "../../../infra/auth/auth.service";
+import { BadRequestError } from "../../../shared/errors/types/bad-request-error";
+import { LoginUserDto } from "../dtos/login-user.dto";
+import { UsersRepositoryProps } from "../repositories/users.repository";
+
+@Injectable()
+export class AuthenticateUserUseCase {
+	constructor(
+		private usersRepository: UsersRepositoryProps,
+		private authService: AuthService,
+	) {}
+
+	async execute({ email, password }: LoginUserDto) {
+		const user = await this.usersRepository.findByEmail(email);
+
+		if (!user) {
+			throw new BadRequestError("Invalid email or password");
+		}
+
+		const passwordMatch = await compare(password, user.passwordHash);
+
+		if (!passwordMatch) {
+			throw new BadRequestError("Invalid email or password");
+		}
+
+		return await this.authService.generateToken({
+			sub: user.id,
+			email: user.email,
+		});
+	}
+}
