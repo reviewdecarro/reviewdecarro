@@ -158,7 +158,7 @@ export type ReviewVoteGroupByOutputType = {
   _max: ReviewVoteMaxAggregateOutputType | null
 }
 
-type GetReviewVoteGroupByPayload<T extends ReviewVoteGroupByArgs> = Prisma.PrismaPromise<
+export type GetReviewVoteGroupByPayload<T extends ReviewVoteGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<ReviewVoteGroupByOutputType, T['by']> &
       {

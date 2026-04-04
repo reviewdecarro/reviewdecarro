@@ -17,6 +17,14 @@ export const VoteType = {
 export type VoteType = (typeof VoteType)[keyof typeof VoteType]
 
 
+export const RoleType = {
+  ADMIN: 'ADMIN',
+  USER: 'USER'
+} as const
+
+export type RoleType = (typeof RoleType)[keyof typeof RoleType]
+
+
 export const RatingCategory = {
   CONSUMPTION: 'CONSUMPTION',
   MAINTENANCE: 'MAINTENANCE',

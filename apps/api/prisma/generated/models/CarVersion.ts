@@ -213,7 +213,7 @@ export type CarVersionGroupByOutputType = {
   _max: CarVersionMaxAggregateOutputType | null
 }
 
-type GetCarVersionGroupByPayload<T extends CarVersionGroupByArgs> = Prisma.PrismaPromise<
+export type GetCarVersionGroupByPayload<T extends CarVersionGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<CarVersionGroupByOutputType, T['by']> &
       {
