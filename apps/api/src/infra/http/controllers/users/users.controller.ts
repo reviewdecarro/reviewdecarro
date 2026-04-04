@@ -1,9 +1,18 @@
-import { Body, Controller, HttpStatus, Post, Res } from "@nestjs/common";
+import {
+	Body,
+	Controller,
+	Get,
+	HttpStatus,
+	Param,
+	Post,
+	Res,
+} from "@nestjs/common";
 import {
 	ApiBadRequestResponse,
 	ApiCreatedResponse,
 	ApiOkResponse,
 	ApiOperation,
+	ApiParam,
 	ApiTags,
 } from "@nestjs/swagger";
 import type { Response } from "express";
@@ -11,7 +20,13 @@ import { CreateUserDto } from "src/application/users/dtos/create-user.dto";
 import { LoginUserDto } from "src/application/users/dtos/login-user.dto";
 import { AuthenticateUserUseCase } from "src/application/users/use-cases/authenticate-user.usecase";
 import { CreateUserUseCase } from "src/application/users/use-cases/create-user.usecase";
-import { LoginUserResponse, RegisterUserResponse } from "./response.props";
+import { FindUserByUsernameUseCase } from "src/application/users/use-cases/find-user-by-username.usecase";
+import { IsPublic } from "src/shared/decorators/is-public.decorator";
+import {
+	LoginUserResponse,
+	RegisterUserResponse,
+	ShowProfileResponse,
+} from "./response.props";
 
 @ApiTags("Users")
 @Controller("users")
@@ -19,10 +34,12 @@ export class UsersController {
 	constructor(
 		private createUserService: CreateUserUseCase,
 		private authenticateUserService: AuthenticateUserUseCase,
+		private findUserByUsernameService: FindUserByUsernameUseCase,
 	) {}
 
 	@Post("register")
-	@ApiOperation({ summary: "Registrar novo usuário" })
+	@IsPublic()
+	@ApiOperation({ description: "Registrar novo usuário" })
 	@ApiCreatedResponse({
 		description: "Usuário cadastrado com sucesso",
 		type: RegisterUserResponse,
@@ -39,7 +56,8 @@ export class UsersController {
 	}
 
 	@Post("login")
-	@ApiOperation({ summary: "Autenticar usuário" })
+	@IsPublic()
+	@ApiOperation({ description: "Autenticar usuário" })
 	@ApiOkResponse({
 		description: "Login realizado com sucesso",
 		type: LoginUserResponse,
@@ -51,6 +69,27 @@ export class UsersController {
 		return res.status(HttpStatus.OK).json({
 			message: "Login realizado com sucesso.",
 			...token,
+		});
+	}
+
+	@Get(":username")
+	@IsPublic()
+	@ApiOperation({ description: "Buscar usuário por username" })
+	@ApiParam({ name: "username", example: "johndoe" })
+	@ApiOkResponse({
+		description: "Perfil encontrado com sucesso",
+		type: ShowProfileResponse,
+	})
+	@ApiBadRequestResponse({ description: "Usuário não encontrado" })
+	async findByUsername(
+		@Param("username") username: string,
+		@Res() res: Response,
+	) {
+		const user = await this.findUserByUsernameService.execute(username);
+
+		return res.status(HttpStatus.OK).json({
+			message: "Perfil encontrado com sucesso.",
+			user,
 		});
 	}
 }

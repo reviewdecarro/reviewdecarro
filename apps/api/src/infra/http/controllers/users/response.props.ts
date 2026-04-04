@@ -19,3 +19,11 @@ export class LoginUserResponse {
 	@ApiProperty({ example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." })
 	access_token: string;
 }
+
+export class ShowProfileResponse {
+	@ApiProperty({ example: "Perfil encontrado com sucesso." })
+	message: string;
+
+	@ApiProperty({ type: UserResponseDto })
+	user: UserResponseDto;
+}
