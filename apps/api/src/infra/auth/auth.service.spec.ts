@@ -1,8 +1,8 @@
 import { beforeEach, describe, expect, it, jest } from "@jest/globals";
 import { ForbiddenException } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
-import { UserEntity } from "../../application/users/entities/user.entity";
-import { UsersRepositoryProps } from "../../application/users/repositories/users.repository";
+import { UserEntity } from "../../domain/users/entities/user.entity";
+import { UsersRepositoryProps } from "../../domain/users/repositories/users.repository";
 import { AuthService } from "./auth.service";
 
 const mockJwtService: jest.Mocked<Pick<JwtService, "signAsync">> = {
