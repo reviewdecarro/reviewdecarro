@@ -16,11 +16,11 @@ import {
 	ApiTags,
 } from "@nestjs/swagger";
 import type { Response } from "express";
-import { CreateUserDto } from "src/application/users/dtos/create-user.dto";
-import { LoginUserDto } from "src/application/users/dtos/login-user.dto";
-import { AuthenticateUserUseCase } from "src/application/users/use-cases/authenticate-user.usecase";
-import { CreateUserUseCase } from "src/application/users/use-cases/create-user.usecase";
-import { FindUserByUsernameUseCase } from "src/application/users/use-cases/find-user-by-username.usecase";
+import { CreateUserDto } from "src/domain/users/dtos/create-user.dto";
+import { LoginUserDto } from "src/domain/users/dtos/login-user.dto";
+import { AuthenticateUserUseCase } from "src/domain/users/use-cases/authenticate-user.usecase";
+import { CreateUserUseCase } from "src/domain/users/use-cases/create-user.usecase";
+import { FindUserByUsernameUseCase } from "src/domain/users/use-cases/find-user-by-username.usecase";
 import { IsPublic } from "src/shared/decorators/is-public.decorator";
 import {
 	LoginUserResponse,
