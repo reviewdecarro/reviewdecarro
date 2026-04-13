@@ -1,6 +1,6 @@
 import { ForbiddenException, Injectable } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
-import { UsersRepositoryProps } from "src/application/users/repositories/users.repository";
+import { UsersRepositoryProps } from "src/domain/users/repositories/users.repository";
 import { JwtPayload } from "./types/jwt-payload";
 
 @Injectable()

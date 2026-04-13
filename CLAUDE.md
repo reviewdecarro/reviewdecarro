@@ -50,7 +50,7 @@ This is a **Turborepo monorepo** with two apps and shared packages:
 
 The API follows **Clean Architecture** with three layers:
 
-### `application/`
+### `domain/`
 Domain logic, organized per domain: `users`, `cars`, `reviews`, `comments`, `votes`.
 
 Each domain contains:
@@ -58,6 +58,7 @@ Each domain contains:
 - `repositories/` — Abstract repository classes (interfaces for data access)
 - `use-cases/` — Business logic classes, one per operation
 - `dtos/` — Input/output shapes
+- `mappers/` — Functions that convert entities to response DTOs using `plainToInstance`
 
 ### `infra/`
 Adapters and infrastructure:
@@ -71,10 +72,11 @@ Cross-cutting concerns:
 
 ## Key Conventions
 
-- **Entities** are classes that `implement` their Prisma model type. Constructor initializes each property explicitly.
-- **Repositories** are `abstract class` in the application layer. Prisma implementations live in `infra/database/` and are injected via NestJS DI.
+- **Entities** are classes that `implement` their Prisma model type (from `prisma/generated/models/`). Constructor takes `Partial<Entity>` and uses `Object.assign(this, partial)`. Properties use `class-transformer` decorators (`@Expose()`, `@Exclude()`) to control serialization.
+- **Repositories** are `abstract class` in the domain layer. Prisma implementations live in `infra/database/` and are injected via NestJS DI.
+- **Mappers** are standalone functions (not classes) that use `plainToInstance` with `excludeExtraneousValues: true` to convert entities to response DTOs.
 - **Errors** thrown from use cases use `BadRequestError` (or other shared error types). The global interceptor maps them to the correct HTTP response.
-- **Prisma client** is generated to `prisma/generated/` (via `output = "./generated"` in schema.prisma). Import types from `../../../prisma/generated/client`. The `schema=public` query param in `DATABASE_URL` allows switching schemas for tests.
+- **Prisma client** is generated to `prisma/generated/` (via `output = "./generated"` in schema.prisma). Import model types from `prisma/generated/models/<ModelName>` (e.g. `UserModel` from `prisma/generated/models/User`). The `schema=public` query param in `DATABASE_URL` allows switching schemas for tests.
 - **DTOs** are classes with `class-validator` decorators (e.g. `@IsString()`, `@IsNotEmpty()`). `strictPropertyInitialization` is disabled in `tsconfig.json` so DTO properties don't need definite assignment (`!`).
 - **Validation** is handled globally via `ValidationPipe` in `main.ts` with `whitelist: true`, `forbidNonWhitelisted: true`, and `transform: true`. Unknown properties are stripped and invalid requests return 400.
 - **Git commits** use conventional commit format (`feat:`, `chore:`, `refactor:`, etc.) with plain `-m` strings — no heredoc, no Co-Authored-By.

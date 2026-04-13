@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, jest } from "@jest/globals";
 import { ForbiddenException } from "@nestjs/common";
-import { UserEntity } from "../../../application/users/entities/user.entity";
+import { UserEntity } from "../../../domain/users/entities/user.entity";
 import { AuthService } from "../auth.service";
 import { JwtStrategy } from "./jwt.strategy";
 
