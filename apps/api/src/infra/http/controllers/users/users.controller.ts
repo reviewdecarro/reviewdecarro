@@ -73,7 +73,7 @@ export class UsersController {
 	}
 
 	@Get(":username")
-	@IsPublic()
+	// @IsPublic()
 	@ApiOperation({ description: "Buscar usuário por username" })
 	@ApiParam({ name: "username", example: "johndoe" })
 	@ApiOkResponse({
