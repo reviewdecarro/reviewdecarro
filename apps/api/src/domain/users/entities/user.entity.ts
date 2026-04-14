@@ -1,5 +1,6 @@
 import { Exclude, Expose } from "class-transformer";
 import { UserModel } from "../../../../prisma/generated/models/User";
+import { RoleEntity } from "../../roles/entities/role.entity";
 
 export class UserEntity implements UserModel {
 	@Expose()
@@ -20,7 +21,14 @@ export class UserEntity implements UserModel {
 	@Expose()
 	createdAt: Date;
 
-	constructor(partial: Partial<UserEntity>) {
+	@Expose()
+	roles?: RoleEntity[];
+
+	constructor({ roles, ...partial }: Partial<UserEntity>) {
 		Object.assign(this, partial);
+
+		if (roles) {
+			this.roles = roles.map((role) => new RoleEntity(role));
+		}
 	}
 }

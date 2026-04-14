@@ -1,5 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { compare } from "bcrypt";
+import { Roles } from "src/infra/auth/constants/roles";
 import { AuthService } from "../../../infra/auth/auth.service";
 import { BadRequestError } from "../../../shared/errors/types/bad-request-error";
 import { LoginUserDto } from "../dtos/login-user.dto";
@@ -28,6 +29,7 @@ export class AuthenticateUserUseCase {
 		return await this.authService.generateToken({
 			sub: user.id,
 			email: user.email,
+			roles: user?.roles?.map((role) => role.type as Roles) || [],
 		});
 	}
 }
