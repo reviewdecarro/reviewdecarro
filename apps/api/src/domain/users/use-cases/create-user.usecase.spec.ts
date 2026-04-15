@@ -1,22 +1,16 @@
-import { beforeEach, describe, expect, it, jest } from "@jest/globals";
+import { beforeEach, describe, expect, it } from "@jest/globals";
 import { BadRequestError } from "../../../shared/errors/types/bad-request-error";
 import { UserEntity } from "../entities/user.entity";
-import { UsersRepositoryProps } from "../repositories/users.repository";
+import { InMemoryUsersRepository } from "../repositories/in-memory-users.repository";
 import { CreateUserUseCase } from "./create-user.usecase";
 
-const mockUsersRepository: jest.Mocked<UsersRepositoryProps> = {
-	create: jest.fn(),
-	findById: jest.fn(),
-	findByEmail: jest.fn(),
-	findByUsername: jest.fn(),
-};
-
 describe("CreateUserUseCase", () => {
+	let usersRepository: InMemoryUsersRepository;
 	let sut: CreateUserUseCase;
 
 	beforeEach(() => {
-		sut = new CreateUserUseCase(mockUsersRepository);
-		jest.clearAllMocks();
+		usersRepository = new InMemoryUsersRepository();
+		sut = new CreateUserUseCase(usersRepository);
 	});
 
 	const input = {
@@ -26,18 +20,6 @@ describe("CreateUserUseCase", () => {
 	};
 
 	it("should return user with id and without passwordHash", async () => {
-		mockUsersRepository.findByEmail.mockResolvedValue(null);
-		mockUsersRepository.findByUsername.mockResolvedValue(null);
-		mockUsersRepository.create.mockResolvedValue(
-			new UserEntity({
-				id: "uuid-123",
-				username: input.username,
-				email: input.email,
-				passwordHash: "hashed",
-				createdAt: new Date(),
-			}),
-		);
-
 		const result = await sut.execute(input);
 
 		expect(result).toHaveProperty("id");
@@ -46,11 +28,19 @@ describe("CreateUserUseCase", () => {
 		expect(result).toHaveProperty("createdAt");
 		expect(result).not.toHaveProperty("passwordHash");
 		expect(result).not.toHaveProperty("password");
+
+		expect(usersRepository.items).toHaveLength(1);
+		expect(usersRepository.items[0].passwordHash).not.toBe(input.password);
 	});
 
 	it("should throw BadRequestError if email already exists", async () => {
-		mockUsersRepository.findByEmail.mockResolvedValue(
-			new UserEntity({ id: "existing", email: input.email }),
+		usersRepository.items.push(
+			new UserEntity({
+				id: "existing",
+				username: "another",
+				email: input.email,
+				passwordHash: "hashed",
+			}),
 		);
 
 		await expect(sut.execute(input)).rejects.toThrow(BadRequestError);
@@ -58,9 +48,13 @@ describe("CreateUserUseCase", () => {
 	});
 
 	it("should throw BadRequestError if username already exists", async () => {
-		mockUsersRepository.findByEmail.mockResolvedValue(null);
-		mockUsersRepository.findByUsername.mockResolvedValue(
-			new UserEntity({ id: "existing", username: input.username }),
+		usersRepository.items.push(
+			new UserEntity({
+				id: "existing",
+				username: input.username,
+				email: "another@email.com",
+				passwordHash: "hashed",
+			}),
 		);
 
 		await expect(sut.execute(input)).rejects.toThrow(BadRequestError);
