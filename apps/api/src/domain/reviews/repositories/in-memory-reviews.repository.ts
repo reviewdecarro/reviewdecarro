@@ -75,8 +75,11 @@ export class InMemoryReviewsRepository extends ReviewsRepositoryProps {
 	}
 
 	async update(id: string, data: UpdateReviewDto): Promise<ReviewEntity> {
-		const index = this.items.findIndex((r) => r.id === id);
-		const current = this.items[index];
+		const current = this.items.find((r) => r.id === id);
+
+		if (!current) {
+			throw new Error(`Review with id ${id} not found`);
+		}
 
 		const updated = new ReviewEntity({
 			...current,
@@ -102,7 +105,7 @@ export class InMemoryReviewsRepository extends ReviewsRepositoryProps {
 				: current.ratings,
 		});
 
-		this.items[index] = updated;
+		this.items = this.items.map((r) => (r.id === id ? updated : r));
 
 		return updated;
 	}
