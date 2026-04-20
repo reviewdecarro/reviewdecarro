@@ -1,6 +1,6 @@
-import { HashProviderProps } from "@infra/providers/hash/types/hash-provider.props";
 import { Injectable } from "@nestjs/common";
 import { Roles } from "src/infra/auth/constants/roles";
+import { HashProviderProps } from "src/infra/providers/hash/types/hash-provider.props";
 import { AuthService } from "../../../infra/auth/auth.service";
 import { BadRequestError } from "../../../shared/errors/types/bad-request-error";
 import { LoginUserDto } from "../dtos/login-user.dto";

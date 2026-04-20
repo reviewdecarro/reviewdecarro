@@ -15,11 +15,7 @@ export class PrismaUsersRepository implements UsersRepositoryProps {
 				username: user.username,
 				email: user.email,
 				passwordHash: user.password,
-				roles: {
-					create: { type: "USER" },
-				},
 			},
-			include: { roles: true },
 		});
 
 		return new UserEntity(created);
@@ -65,5 +61,12 @@ export class PrismaUsersRepository implements UsersRepositoryProps {
 		if (!user) return null;
 
 		return new UserEntity(user);
+	}
+
+	async confirmEmail(id: string): Promise<void> {
+		await this.prisma.user.update({
+			where: { id },
+			data: { confirmedEmail: true },
+		});
 	}
 }
