@@ -3,7 +3,7 @@ import { BadRequestError } from "../../../shared/errors/types/bad-request-error"
 import { ReviewsRepositoryProps } from "../../reviews/repositories/reviews.repository";
 import { UpsertVoteDto } from "../dtos/upsert-vote.dto";
 import { ReviewVoteEntity } from "../entities/review-vote.entity";
-import { toVoteResponseDto } from "../mappers/vote.mapper";
+import { VotesMapper } from "../mappers/vote.mapper";
 import { VotesRepositoryProps } from "../repositories/votes.repository";
 
 @Injectable()
@@ -20,12 +20,8 @@ export class UpsertVoteUseCase {
 			throw new BadRequestError("Review not found");
 		}
 
-		const vote = await this.votesRepository.upsert(
-			userId,
-			reviewId,
-			data.type,
-		);
+		const vote = await this.votesRepository.upsert(userId, reviewId, data.type);
 
-		return toVoteResponseDto(new ReviewVoteEntity(vote));
+		return VotesMapper.toVoteResponseDto(new ReviewVoteEntity(vote));
 	}
 }

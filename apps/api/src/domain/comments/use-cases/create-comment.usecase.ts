@@ -3,7 +3,7 @@ import { BadRequestError } from "../../../shared/errors/types/bad-request-error"
 import { ReviewsRepositoryProps } from "../../reviews/repositories/reviews.repository";
 import { CreateCommentDto } from "../dtos/create-comment.dto";
 import { CommentEntity } from "../entities/comment.entity";
-import { toCommentResponseDto } from "../mappers/comment.mapper";
+import { CommentsMapper } from "../mappers/comment.mapper";
 import { CommentsRepositoryProps } from "../repositories/comments.repository";
 
 @Injectable()
@@ -26,6 +26,6 @@ export class CreateCommentUseCase {
 			data,
 		);
 
-		return toCommentResponseDto(new CommentEntity(comment));
+		return CommentsMapper.toCommentResponseDto(new CommentEntity(comment));
 	}
 }

@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { BadRequestError } from "../../../shared/errors/types/bad-request-error";
 import { CarModelEntity } from "../entities/car-model.entity";
-import { toModelResponseDto } from "../mappers/model.mapper";
+import { ModelsMapper } from "../mappers/model.mapper";
 import { BrandsRepositoryProps } from "../repositories/brands.repository";
 import { ModelsRepositoryProps } from "../repositories/models.repository";
 
@@ -21,6 +21,8 @@ export class ListModelsUseCase {
 
 		const models = await this.modelsRepository.findByBrandId(brand.id);
 
-		return models.map((model) => toModelResponseDto(new CarModelEntity(model)));
+		return models.map((model) =>
+			ModelsMapper.toModelResponseDto(new CarModelEntity(model)),
+		);
 	}
 }

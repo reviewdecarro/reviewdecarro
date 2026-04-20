@@ -3,7 +3,7 @@ import { BadRequestError } from "../../../shared/errors/types/bad-request-error"
 import { VersionsRepositoryProps } from "../../cars/repositories/versions.repository";
 import { CreateReviewDto } from "../dtos/create-review.dto";
 import { ReviewEntity } from "../entities/review.entity";
-import { toReviewResponseDto } from "../mappers/review.mapper";
+import { ReviewsMapper } from "../mappers/review.mapper";
 import { ReviewsRepositoryProps } from "../repositories/reviews.repository";
 
 @Injectable()
@@ -22,6 +22,6 @@ export class CreateReviewUseCase {
 
 		const review = await this.reviewsRepository.create(userId, data);
 
-		return toReviewResponseDto(new ReviewEntity(review));
+		return ReviewsMapper.toReviewResponseDto(new ReviewEntity(review));
 	}
 }

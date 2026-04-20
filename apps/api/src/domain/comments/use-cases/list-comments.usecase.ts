@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { CommentEntity } from "../entities/comment.entity";
-import { toCommentResponseDto } from "../mappers/comment.mapper";
+import { CommentsMapper } from "../mappers/comment.mapper";
 import { CommentsRepositoryProps } from "../repositories/comments.repository";
 
 @Injectable()
@@ -11,7 +11,7 @@ export class ListCommentsUseCase {
 		const comments = await this.commentsRepository.findByReviewId(reviewId);
 
 		return comments.map((comment) =>
-			toCommentResponseDto(new CommentEntity(comment)),
+			CommentsMapper.toCommentResponseDto(new CommentEntity(comment)),
 		);
 	}
 }

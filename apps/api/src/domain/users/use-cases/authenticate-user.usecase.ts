@@ -1,5 +1,5 @@
+import { HashProviderProps } from "@infra/providers/hash/types/hash-provider.props";
 import { Injectable } from "@nestjs/common";
-import { compare } from "bcrypt";
 import { Roles } from "src/infra/auth/constants/roles";
 import { AuthService } from "../../../infra/auth/auth.service";
 import { BadRequestError } from "../../../shared/errors/types/bad-request-error";
@@ -11,6 +11,7 @@ export class AuthenticateUserUseCase {
 	constructor(
 		private usersRepository: UsersRepositoryProps,
 		private authService: AuthService,
+		private hashProvider: HashProviderProps,
 	) {}
 
 	async execute({ email, password }: LoginUserDto) {
@@ -20,7 +21,10 @@ export class AuthenticateUserUseCase {
 			throw new BadRequestError("Invalid email or password");
 		}
 
-		const passwordMatch = await compare(password, user.passwordHash);
+		const passwordMatch = await this.hashProvider.compare(
+			password,
+			user.passwordHash,
+		);
 
 		if (!passwordMatch) {
 			throw new BadRequestError("Invalid email or password");

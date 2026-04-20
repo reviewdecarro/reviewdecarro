@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { BadRequestError } from "../../../shared/errors/types/bad-request-error";
 import { UserEntity } from "../entities/user.entity";
-import { toUserResponseDto } from "../mappers/user.mapper";
+import { UsersMapper } from "../mappers/user.mapper";
 import { UsersRepositoryProps } from "../repositories/users.repository";
 
 @Injectable()
@@ -17,6 +17,6 @@ export class FindUserByUsernameUseCase {
 
 		const entity = new UserEntity(user);
 
-		return toUserResponseDto(entity);
+		return UsersMapper.toUserResponseDto(entity);
 	}
 }

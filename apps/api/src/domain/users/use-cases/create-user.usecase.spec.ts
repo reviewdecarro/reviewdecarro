@@ -1,4 +1,5 @@
 import { beforeEach, describe, expect, it } from "@jest/globals";
+import { FakeHashProvider } from "src/infra/providers/hash/fake-hash-provider";
 import { BadRequestError } from "../../../shared/errors/types/bad-request-error";
 import { UserEntity } from "../entities/user.entity";
 import { InMemoryUsersRepository } from "../repositories/in-memory-users.repository";
@@ -7,10 +8,12 @@ import { CreateUserUseCase } from "./create-user.usecase";
 describe("CreateUserUseCase", () => {
 	let usersRepository: InMemoryUsersRepository;
 	let sut: CreateUserUseCase;
+	let fakeHashProvider: FakeHashProvider;
 
 	beforeEach(() => {
 		usersRepository = new InMemoryUsersRepository();
-		sut = new CreateUserUseCase(usersRepository);
+		fakeHashProvider = new FakeHashProvider();
+		sut = new CreateUserUseCase(usersRepository, fakeHashProvider);
 	});
 
 	const input = {
@@ -30,7 +33,7 @@ describe("CreateUserUseCase", () => {
 		expect(result).not.toHaveProperty("password");
 
 		expect(usersRepository.items).toHaveLength(1);
-		expect(usersRepository.items[0].passwordHash).not.toBe(input.password);
+		expect(usersRepository.items[0]?.passwordHash).not.toBe(input.password);
 	});
 
 	it("should throw BadRequestError if email already exists", async () => {

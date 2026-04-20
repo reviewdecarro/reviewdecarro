@@ -64,10 +64,7 @@ export class CommentsController {
 	@ApiOperation({ description: "Listar comentários de uma review" })
 	@ApiParam({ name: "reviewId" })
 	@ApiOkResponse({ description: "Lista de comentários" })
-	async list(
-		@Param("reviewId") reviewId: string,
-		@Res() res: Response,
-	) {
+	async list(@Param("reviewId") reviewId: string, @Res() res: Response) {
 		const comments = await this.listCommentsService.execute(reviewId);
 
 		return res.status(HttpStatus.OK).json({ comments });
@@ -79,7 +76,9 @@ export class CommentsController {
 	@ApiParam({ name: "reviewId" })
 	@ApiParam({ name: "commentId" })
 	@ApiOkResponse({ description: "Comentário removido com sucesso" })
-	@ApiBadRequestResponse({ description: "Comentário não encontrado ou sem permissão" })
+	@ApiBadRequestResponse({
+		description: "Comentário não encontrado ou sem permissão",
+	})
 	async delete(
 		@LoggedInUser() user: UserEntity,
 		@Param("reviewId") reviewId: string,
