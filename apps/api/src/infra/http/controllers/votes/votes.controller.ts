@@ -43,11 +43,7 @@ export class VotesController {
 		@Body() data: UpsertVoteDto,
 		@Res() res: Response,
 	) {
-		const vote = await this.upsertVoteService.execute(
-			user.id,
-			reviewId,
-			data,
-		);
+		const vote = await this.upsertVoteService.execute(user.id, reviewId, data);
 
 		return res.status(HttpStatus.CREATED).json({
 			message: "Voto registrado com sucesso.",

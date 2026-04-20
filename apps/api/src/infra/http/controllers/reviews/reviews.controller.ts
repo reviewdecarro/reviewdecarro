@@ -91,10 +91,7 @@ export class ReviewsController {
 	@ApiParam({ name: "reviewId" })
 	@ApiOkResponse({ description: "Review encontrada" })
 	@ApiBadRequestResponse({ description: "Review não encontrada" })
-	async findById(
-		@Param("reviewId") reviewId: string,
-		@Res() res: Response,
-	) {
+	async findById(@Param("reviewId") reviewId: string, @Res() res: Response) {
 		const review = await this.getReviewService.execute(reviewId);
 
 		return res.status(HttpStatus.OK).json({ review });
@@ -105,7 +102,9 @@ export class ReviewsController {
 	@ApiOperation({ description: "Editar review (autor)" })
 	@ApiParam({ name: "reviewId" })
 	@ApiOkResponse({ description: "Review atualizada com sucesso" })
-	@ApiBadRequestResponse({ description: "Review não encontrada ou sem permissão" })
+	@ApiBadRequestResponse({
+		description: "Review não encontrada ou sem permissão",
+	})
 	async update(
 		@LoggedInUser() user: UserEntity,
 		@Param("reviewId") reviewId: string,
@@ -129,7 +128,9 @@ export class ReviewsController {
 	@ApiOperation({ description: "Remover review (autor ou ADMIN)" })
 	@ApiParam({ name: "reviewId" })
 	@ApiOkResponse({ description: "Review removida com sucesso" })
-	@ApiBadRequestResponse({ description: "Review não encontrada ou sem permissão" })
+	@ApiBadRequestResponse({
+		description: "Review não encontrada ou sem permissão",
+	})
 	async delete(
 		@LoggedInUser() user: UserEntity,
 		@Param("reviewId") reviewId: string,

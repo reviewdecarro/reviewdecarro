@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { BadRequestError } from "../../../shared/errors/types/bad-request-error";
 import { CreateVersionDto } from "../dtos/create-version.dto";
 import { CarVersionEntity } from "../entities/car-version.entity";
-import { toVersionResponseDto } from "../mappers/version.mapper";
+import { VersionsMapper } from "../mappers/version.mapper";
 import { BrandsRepositoryProps } from "../repositories/brands.repository";
 import { ModelsRepositoryProps } from "../repositories/models.repository";
 import { VersionsRepositoryProps } from "../repositories/versions.repository";
@@ -39,6 +39,6 @@ export class CreateVersionUseCase {
 
 		const version = await this.versionsRepository.create(model.id, data);
 
-		return toVersionResponseDto(new CarVersionEntity(version));
+		return VersionsMapper.toVersionResponseDto(new CarVersionEntity(version));
 	}
 }

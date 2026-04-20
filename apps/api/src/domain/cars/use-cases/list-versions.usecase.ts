@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { BadRequestError } from "../../../shared/errors/types/bad-request-error";
 import { CarVersionEntity } from "../entities/car-version.entity";
-import { toVersionResponseDto } from "../mappers/version.mapper";
+import { VersionsMapper } from "../mappers/version.mapper";
 import { BrandsRepositoryProps } from "../repositories/brands.repository";
 import { ModelsRepositoryProps } from "../repositories/models.repository";
 import { VersionsRepositoryProps } from "../repositories/versions.repository";
@@ -32,6 +32,8 @@ export class ListVersionsUseCase {
 
 		const versions = await this.versionsRepository.findByModelId(model.id);
 
-		return versions.map((v) => toVersionResponseDto(new CarVersionEntity(v)));
+		return versions.map((v) =>
+			VersionsMapper.toVersionResponseDto(new CarVersionEntity(v)),
+		);
 	}
 }

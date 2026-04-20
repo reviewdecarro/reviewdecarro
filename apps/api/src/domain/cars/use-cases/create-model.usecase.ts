@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { BadRequestError } from "../../../shared/errors/types/bad-request-error";
 import { CreateModelDto } from "../dtos/create-model.dto";
 import { CarModelEntity } from "../entities/car-model.entity";
-import { toModelResponseDto } from "../mappers/model.mapper";
+import { ModelsMapper } from "../mappers/model.mapper";
 import { BrandsRepositoryProps } from "../repositories/brands.repository";
 import { ModelsRepositoryProps } from "../repositories/models.repository";
 
@@ -31,6 +31,6 @@ export class CreateModelUseCase {
 
 		const model = await this.modelsRepository.create(brand.id, data);
 
-		return toModelResponseDto(new CarModelEntity(model));
+		return ModelsMapper.toModelResponseDto(new CarModelEntity(model));
 	}
 }

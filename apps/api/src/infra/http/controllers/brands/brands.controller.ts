@@ -72,7 +72,9 @@ export class BrandsController {
 	@ApiOperation({ description: "Criar novo modelo (ADMIN)" })
 	@ApiParam({ name: "brandSlug", example: "volkswagen" })
 	@ApiCreatedResponse({ description: "Modelo criado com sucesso" })
-	@ApiBadRequestResponse({ description: "Marca não encontrada ou slug duplicado" })
+	@ApiBadRequestResponse({
+		description: "Marca não encontrada ou slug duplicado",
+	})
 	async createModel(
 		@Param("brandSlug") brandSlug: string,
 		@Body() data: CreateModelDto,
@@ -107,7 +109,9 @@ export class BrandsController {
 	@ApiParam({ name: "brandSlug", example: "volkswagen" })
 	@ApiParam({ name: "modelSlug", example: "polo" })
 	@ApiCreatedResponse({ description: "Versão criada com sucesso" })
-	@ApiBadRequestResponse({ description: "Modelo não encontrado ou slug duplicado" })
+	@ApiBadRequestResponse({
+		description: "Modelo não encontrado ou slug duplicado",
+	})
 	async createVersion(
 		@Param("brandSlug") brandSlug: string,
 		@Param("modelSlug") modelSlug: string,

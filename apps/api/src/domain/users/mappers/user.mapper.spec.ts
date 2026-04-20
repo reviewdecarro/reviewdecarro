@@ -1,8 +1,8 @@
 import { describe, expect, it } from "@jest/globals";
 import { UserEntity } from "../entities/user.entity";
-import { toUserResponseDto } from "./user.mapper";
+import { UsersMapper } from "./user.mapper";
 
-describe("toUserResponseDto", () => {
+describe("UsersMapper.toUserResponseDto", () => {
 	it("should never expose passwordHash", () => {
 		const user = new UserEntity({
 			id: "123",
@@ -12,7 +12,7 @@ describe("toUserResponseDto", () => {
 			createdAt: new Date("2026-01-01"),
 		});
 
-		const result = toUserResponseDto(user);
+		const result = UsersMapper.toUserResponseDto(user);
 
 		expect(result).not.toHaveProperty("passwordHash");
 	});
@@ -27,7 +27,7 @@ describe("toUserResponseDto", () => {
 			createdAt: date,
 		});
 
-		const result = toUserResponseDto(user);
+		const result = UsersMapper.toUserResponseDto(user);
 
 		expect(result).toEqual({
 			id: "123",
