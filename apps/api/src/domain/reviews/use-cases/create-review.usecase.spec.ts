@@ -43,8 +43,38 @@ describe("CreateReviewUseCase", () => {
 
 		expect(result).toHaveProperty("id");
 		expect(result).toHaveProperty("title", "Ótimo carro");
+		expect(result).toHaveProperty("slug", "otimo-carro");
 		expect(result).toHaveProperty("userId", "user-1");
 		expect(reviewsRepository.items).toHaveLength(1);
+	});
+
+	it("should append a numeric suffix when slug already exists", async () => {
+		const version = seedVersion();
+
+		const first = await sut.execute("user-1", {
+			carVersionId: version.id,
+			title: "Ótimo carro",
+			content: "Conteúdo do review",
+			score: 4.5,
+		});
+
+		const second = await sut.execute("user-2", {
+			carVersionId: version.id,
+			title: "Ótimo carro",
+			content: "Outro review",
+			score: 4.0,
+		});
+
+		const third = await sut.execute("user-3", {
+			carVersionId: version.id,
+			title: "Ótimo carro",
+			content: "Mais um review",
+			score: 3.5,
+		});
+
+		expect(first.slug).toBe("otimo-carro");
+		expect(second.slug).toBe("otimo-carro-2");
+		expect(third.slug).toBe("otimo-carro-3");
 	});
 
 	it("should throw BadRequestError when car version not found", async () => {

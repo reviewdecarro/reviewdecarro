@@ -2,8 +2,13 @@ import { CreateReviewDto, UpdateReviewDto } from "../dtos/create-review.dto";
 import { ReviewEntity } from "../entities/review.entity";
 
 export abstract class ReviewsRepositoryProps {
-	abstract create(userId: string, data: CreateReviewDto): Promise<ReviewEntity>;
+	abstract create(
+		userId: string,
+		slug: string,
+		data: CreateReviewDto,
+	): Promise<ReviewEntity>;
 	abstract findById(id: string): Promise<ReviewEntity | null>;
+	abstract findBySlug(slug: string): Promise<ReviewEntity | null>;
 	abstract findAll(filters?: {
 		carVersionId?: string;
 		userId?: string;

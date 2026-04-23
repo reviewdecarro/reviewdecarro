@@ -153,6 +153,7 @@ export const ReviewScalarFieldEnum = {
   userId: 'userId',
   carVersionId: 'carVersionId',
   title: 'title',
+  slug: 'slug',
   content: 'content',
   pros: 'pros',
   cons: 'cons',

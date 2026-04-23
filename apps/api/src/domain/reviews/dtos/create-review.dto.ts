@@ -147,6 +147,10 @@ export class ReviewResponseDto {
 
 	@ApiProperty()
 	@Expose()
+	slug: string;
+
+	@ApiProperty()
+	@Expose()
 	content: string;
 
 	@ApiPropertyOptional()

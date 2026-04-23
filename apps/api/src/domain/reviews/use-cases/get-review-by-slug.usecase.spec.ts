@@ -2,25 +2,25 @@ import { beforeEach, describe, expect, it } from "@jest/globals";
 import { BadRequestError } from "../../../shared/errors/types/bad-request-error";
 import { ReviewEntity } from "../entities/review.entity";
 import { InMemoryReviewsRepository } from "../repositories/in-memory-reviews.repository";
-import { GetReviewUseCase } from "./get-review.usecase";
+import { GetReviewBySlugUseCase } from "./get-review-by-slug.usecase";
 
-describe("GetReviewUseCase", () => {
+describe("GetReviewBySlugUseCase", () => {
 	let reviewsRepository: InMemoryReviewsRepository;
-	let sut: GetReviewUseCase;
+	let sut: GetReviewBySlugUseCase;
 
 	beforeEach(() => {
 		reviewsRepository = new InMemoryReviewsRepository();
-		sut = new GetReviewUseCase(reviewsRepository);
+		sut = new GetReviewBySlugUseCase(reviewsRepository);
 	});
 
-	it("should return a review by id", async () => {
+	it("should return a review by slug", async () => {
 		reviewsRepository.items.push(
 			new ReviewEntity({
 				id: "review-1",
 				userId: "user-1",
 				carVersionId: "v1",
-				title: "Ótimo",
-				slug: "otimo",
+				title: "Ótimo carro",
+				slug: "otimo-carro",
 				content: "Conteúdo",
 				pros: null,
 				cons: null,
@@ -32,14 +32,14 @@ describe("GetReviewUseCase", () => {
 			}),
 		);
 
-		const result = await sut.execute("review-1");
+		const result = await sut.execute("otimo-carro");
 
 		expect(result).toHaveProperty("id", "review-1");
-		expect(result).toHaveProperty("title", "Ótimo");
+		expect(result).toHaveProperty("slug", "otimo-carro");
 	});
 
-	it("should throw BadRequestError when review not found", async () => {
-		await expect(sut.execute("unknown")).rejects.toThrow(BadRequestError);
-		await expect(sut.execute("unknown")).rejects.toThrow("Review not found");
+	it("should throw BadRequestError when slug not found", async () => {
+		await expect(sut.execute("missing")).rejects.toThrow(BadRequestError);
+		await expect(sut.execute("missing")).rejects.toThrow("Review not found");
 	});
 });

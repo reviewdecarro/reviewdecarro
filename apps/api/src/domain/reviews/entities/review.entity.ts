@@ -16,6 +16,9 @@ export class ReviewEntity implements ReviewModel {
 	title: string;
 
 	@Expose()
+	slug: string;
+
+	@Expose()
 	content: string;
 
 	@Expose()

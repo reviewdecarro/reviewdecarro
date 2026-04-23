@@ -141,6 +141,7 @@ model Review {
   userId              String
   carVersionId        String
   title               String
+  slug                String   @unique
   content             String
   pros                String?
   cons                String?
