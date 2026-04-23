@@ -16,9 +16,11 @@ import {
 	ApiTags,
 } from "@nestjs/swagger";
 import type { Response } from "express";
+import { ConfirmEmailDto } from "src/domain/users/dtos/confirm-email.dto";
 import { CreateUserDto } from "src/domain/users/dtos/create-user.dto";
 import { LoginUserDto } from "src/domain/users/dtos/login-user.dto";
 import { AuthenticateUserUseCase } from "src/domain/users/use-cases/authenticate-user.usecase";
+import { ConfirmEmailUseCase } from "src/domain/users/use-cases/confirm-email.usecase";
 import { CreateUserUseCase } from "src/domain/users/use-cases/create-user.usecase";
 import { FindUserByUsernameUseCase } from "src/domain/users/use-cases/find-user-by-username.usecase";
 import { IsPublic } from "src/shared/decorators/is-public.decorator";
@@ -35,6 +37,7 @@ export class UsersController {
 		private createUserService: CreateUserUseCase,
 		private authenticateUserService: AuthenticateUserUseCase,
 		private findUserByUsernameService: FindUserByUsernameUseCase,
+		private confirmEmailService: ConfirmEmailUseCase,
 	) {}
 
 	@Post("register")
@@ -52,6 +55,19 @@ export class UsersController {
 			message:
 				"Usuário cadastrado com sucesso. Um e-mail de confirmação foi enviado.",
 			user,
+		});
+	}
+
+	@Post("confirm-email")
+	@IsPublic()
+	@ApiOperation({ description: "Confirmar e-mail do usuário" })
+	@ApiOkResponse({ description: "E-mail confirmado com sucesso" })
+	@ApiBadRequestResponse({ description: "Token inválido ou expirado" })
+	async confirmEmail(@Body() data: ConfirmEmailDto, @Res() res: Response) {
+		await this.confirmEmailService.execute(data);
+
+		return res.status(HttpStatus.OK).json({
+			message: "E-mail confirmado com sucesso.",
 		});
 	}
 

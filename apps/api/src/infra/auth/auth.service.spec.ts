@@ -14,6 +14,7 @@ const mockUsersRepository: jest.Mocked<UsersRepositoryProps> = {
 	findById: jest.fn(),
 	findByEmail: jest.fn(),
 	findByUsername: jest.fn(),
+	confirmEmail: jest.fn(),
 };
 
 describe("AuthService", () => {

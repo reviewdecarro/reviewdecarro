@@ -28,6 +28,7 @@ import {
 import { CreateReviewUseCase } from "src/domain/reviews/use-cases/create-review.usecase";
 import { DeleteReviewUseCase } from "src/domain/reviews/use-cases/delete-review.usecase";
 import { GetReviewUseCase } from "src/domain/reviews/use-cases/get-review.usecase";
+import { GetReviewBySlugUseCase } from "src/domain/reviews/use-cases/get-review-by-slug.usecase";
 import { ListReviewsUseCase } from "src/domain/reviews/use-cases/list-reviews.usecase";
 import { UpdateReviewUseCase } from "src/domain/reviews/use-cases/update-review.usecase";
 import { UserEntity } from "src/domain/users/entities/user.entity";
@@ -40,6 +41,7 @@ export class ReviewsController {
 	constructor(
 		private createReviewService: CreateReviewUseCase,
 		private getReviewService: GetReviewUseCase,
+		private getReviewBySlugService: GetReviewBySlugUseCase,
 		private listReviewsService: ListReviewsUseCase,
 		private updateReviewService: UpdateReviewUseCase,
 		private deleteReviewService: DeleteReviewUseCase,
@@ -83,6 +85,18 @@ export class ReviewsController {
 		});
 
 		return res.status(HttpStatus.OK).json({ reviews });
+	}
+
+	@Get("slug/:slug")
+	@IsPublic()
+	@ApiOperation({ description: "Detalhe de uma review pelo slug" })
+	@ApiParam({ name: "slug" })
+	@ApiOkResponse({ description: "Review encontrada" })
+	@ApiBadRequestResponse({ description: "Review não encontrada" })
+	async findBySlug(@Param("slug") slug: string, @Res() res: Response) {
+		const review = await this.getReviewBySlugService.execute(slug);
+
+		return res.status(HttpStatus.OK).json({ review });
 	}
 
 	@Get(":reviewId")

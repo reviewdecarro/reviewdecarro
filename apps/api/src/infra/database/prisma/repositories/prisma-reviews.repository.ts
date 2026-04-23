@@ -11,12 +11,17 @@ import { PrismaService } from "../prisma.service";
 export class PrismaReviewsRepository implements ReviewsRepositoryProps {
 	constructor(private prisma: PrismaService) {}
 
-	async create(userId: string, data: CreateReviewDto): Promise<ReviewEntity> {
+	async create(
+		userId: string,
+		slug: string,
+		data: CreateReviewDto,
+	): Promise<ReviewEntity> {
 		const review = await this.prisma.review.create({
 			data: {
 				userId,
 				carVersionId: data.carVersionId,
 				title: data.title,
+				slug,
 				content: data.content,
 				pros: data.pros ?? null,
 				cons: data.cons ?? null,
@@ -41,6 +46,17 @@ export class PrismaReviewsRepository implements ReviewsRepositoryProps {
 	async findById(id: string): Promise<ReviewEntity | null> {
 		const review = await this.prisma.review.findUnique({
 			where: { id },
+			include: { ratings: true },
+		});
+
+		if (!review) return null;
+
+		return new ReviewEntity(review);
+	}
+
+	async findBySlug(slug: string): Promise<ReviewEntity | null> {
+		const review = await this.prisma.review.findUnique({
+			where: { slug },
 			include: { ratings: true },
 		});
 

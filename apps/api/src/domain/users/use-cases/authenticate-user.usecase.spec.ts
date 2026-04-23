@@ -1,17 +1,10 @@
 import { beforeEach, describe, expect, it, jest } from "@jest/globals";
 import { AuthService } from "../../../infra/auth/auth.service";
+import { FakeHashProvider } from "../../../infra/providers/hash/fake-hash-provider";
 import { BadRequestError } from "../../../shared/errors/types/bad-request-error";
 import { UserEntity } from "../entities/user.entity";
 import { InMemoryUsersRepository } from "../repositories/in-memory-users.repository";
 import { AuthenticateUserUseCase } from "./authenticate-user.usecase";
-
-jest.mock("bcrypt", () => ({
-	compare: jest.fn(),
-}));
-
-import { compare } from "bcrypt";
-
-const mockCompare = compare as jest.Mock;
 
 const mockAuthService: jest.Mocked<Pick<AuthService, "generateToken">> = {
 	generateToken: jest.fn(),
@@ -19,13 +12,16 @@ const mockAuthService: jest.Mocked<Pick<AuthService, "generateToken">> = {
 
 describe("AuthenticateUserUseCase", () => {
 	let usersRepository: InMemoryUsersRepository;
+	let hashProvider: FakeHashProvider;
 	let sut: AuthenticateUserUseCase;
 
 	beforeEach(() => {
 		usersRepository = new InMemoryUsersRepository();
+		hashProvider = new FakeHashProvider();
 		sut = new AuthenticateUserUseCase(
 			usersRepository,
 			mockAuthService as unknown as AuthService,
+			hashProvider,
 		);
 		jest.clearAllMocks();
 	});
@@ -41,11 +37,10 @@ describe("AuthenticateUserUseCase", () => {
 				id: "uuid-123",
 				email: input.email,
 				username: "johndoe",
-				passwordHash: "hashed-password",
+				passwordHash: await hashProvider.hash(input.password),
 			}),
 		);
 
-		mockCompare.mockResolvedValue(true as never);
 		mockAuthService.generateToken.mockResolvedValue({
 			access_token: "jwt-token",
 		});
@@ -73,11 +68,9 @@ describe("AuthenticateUserUseCase", () => {
 				id: "uuid-123",
 				email: input.email,
 				username: "johndoe",
-				passwordHash: "hashed-password",
+				passwordHash: await hashProvider.hash("different-password"),
 			}),
 		);
-
-		mockCompare.mockResolvedValue(false as never);
 
 		await expect(sut.execute(input)).rejects.toThrow(BadRequestError);
 		await expect(sut.execute(input)).rejects.toThrow(

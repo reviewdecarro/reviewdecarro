@@ -19,6 +19,9 @@ export class UserEntity implements UserModel {
 	active: boolean;
 
 	@Expose()
+	confirmedEmail: boolean;
+
+	@Expose()
 	createdAt: Date;
 
 	@Expose()

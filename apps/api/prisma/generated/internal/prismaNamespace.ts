@@ -80,12 +80,12 @@ export type PrismaVersion = {
 }
 
 /**
- * Prisma Client JS version: 7.6.0
- * Query Engine version: 75cbdc1eb7150937890ad5465d861175c6624711
+ * Prisma Client JS version: 7.8.0
+ * Query Engine version: 3c6e192761c0362d496ed980de936e2f3cebcd3a
  */
 export const prismaVersion: PrismaVersion = {
-  client: "7.6.0",
-  engine: "75cbdc1eb7150937890ad5465d861175c6624711"
+  client: "7.8.0",
+  engine: "3c6e192761c0362d496ed980de936e2f3cebcd3a"
 }
 
 /**
@@ -385,6 +385,7 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 
 export const ModelName = {
   User: 'User',
+  UserToken: 'UserToken',
   Role: 'Role',
   Brand: 'Brand',
   Model: 'Model',
@@ -408,7 +409,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "role" | "brand" | "model" | "carVersion" | "review" | "reviewRating" | "comment" | "reviewVote"
+    modelProps: "user" | "userToken" | "role" | "brand" | "model" | "carVersion" | "review" | "reviewRating" | "comment" | "reviewVote"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -483,6 +484,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.UserCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.UserCountAggregateOutputType> | number
+        }
+      }
+    }
+    UserToken: {
+      payload: Prisma.$UserTokenPayload<ExtArgs>
+      fields: Prisma.UserTokenFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.UserTokenFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserTokenPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.UserTokenFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserTokenPayload>
+        }
+        findFirst: {
+          args: Prisma.UserTokenFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserTokenPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.UserTokenFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserTokenPayload>
+        }
+        findMany: {
+          args: Prisma.UserTokenFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserTokenPayload>[]
+        }
+        create: {
+          args: Prisma.UserTokenCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserTokenPayload>
+        }
+        createMany: {
+          args: Prisma.UserTokenCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.UserTokenCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserTokenPayload>[]
+        }
+        delete: {
+          args: Prisma.UserTokenDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserTokenPayload>
+        }
+        update: {
+          args: Prisma.UserTokenUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserTokenPayload>
+        }
+        deleteMany: {
+          args: Prisma.UserTokenDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.UserTokenUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.UserTokenUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserTokenPayload>[]
+        }
+        upsert: {
+          args: Prisma.UserTokenUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserTokenPayload>
+        }
+        aggregate: {
+          args: Prisma.UserTokenAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateUserToken>
+        }
+        groupBy: {
+          args: Prisma.UserTokenGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.UserTokenGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.UserTokenCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.UserTokenCountAggregateOutputType> | number
         }
       }
     }
@@ -1123,10 +1198,23 @@ export const UserScalarFieldEnum = {
   email: 'email',
   passwordHash: 'passwordHash',
   active: 'active',
+  confirmedEmail: 'confirmedEmail',
   createdAt: 'createdAt'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+export const UserTokenScalarFieldEnum = {
+  id: 'id',
+  refreshToken: 'refreshToken',
+  expiresDate: 'expiresDate',
+  userId: 'userId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type UserTokenScalarFieldEnum = (typeof UserTokenScalarFieldEnum)[keyof typeof UserTokenScalarFieldEnum]
 
 
 export const RoleScalarFieldEnum = {
@@ -1178,6 +1266,7 @@ export const ReviewScalarFieldEnum = {
   userId: 'userId',
   carVersionId: 'carVersionId',
   title: 'title',
+  slug: 'slug',
   content: 'content',
   pros: 'pros',
   cons: 'cons',
@@ -1450,9 +1539,25 @@ export type PrismaClientOptions = ({
    * ```
    */
   comments?: runtime.SqlCommenterPlugin[]
+  /**
+   * Optional maximum size for the query plan cache. If not provided, a default size will be used.
+   * A value of `0` can be used to disable the cache entirely. A higher cache size can improve
+   * performance for applications that execute a large number of unique queries, while a smaller
+   * cache size can reduce memory usage.
+   * 
+   * @example
+   * ```
+   * const prisma = new PrismaClient({
+   *   adapter,
+   *   queryPlanCacheMaxSize: 100,
+   * })
+   * ```
+   */
+  queryPlanCacheMaxSize?: number
 }
 export type GlobalOmitConfig = {
   user?: Prisma.UserOmit
+  userToken?: Prisma.UserTokenOmit
   role?: Prisma.RoleOmit
   brand?: Prisma.BrandOmit
   model?: Prisma.ModelOmit

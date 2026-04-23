@@ -10,7 +10,11 @@ import { ReviewsRepositoryProps } from "./reviews.repository";
 export class InMemoryReviewsRepository extends ReviewsRepositoryProps {
 	public items: ReviewEntity[] = [];
 
-	async create(userId: string, data: CreateReviewDto): Promise<ReviewEntity> {
+	async create(
+		userId: string,
+		slug: string,
+		data: CreateReviewDto,
+	): Promise<ReviewEntity> {
 		const now = new Date();
 		const reviewId = randomUUID();
 
@@ -19,6 +23,7 @@ export class InMemoryReviewsRepository extends ReviewsRepositoryProps {
 			userId,
 			carVersionId: data.carVersionId,
 			title: data.title,
+			slug,
 			content: data.content,
 			pros: data.pros ?? null,
 			cons: data.cons ?? null,
@@ -45,6 +50,10 @@ export class InMemoryReviewsRepository extends ReviewsRepositoryProps {
 
 	async findById(id: string): Promise<ReviewEntity | null> {
 		return this.items.find((review) => review.id === id) ?? null;
+	}
+
+	async findBySlug(slug: string): Promise<ReviewEntity | null> {
+		return this.items.find((review) => review.slug === slug) ?? null;
 	}
 
 	async findAll(filters?: {

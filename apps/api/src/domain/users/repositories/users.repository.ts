@@ -6,4 +6,5 @@ export abstract class UsersRepositoryProps {
 	abstract findById(id: string): Promise<UserEntity | null>;
 	abstract findByEmail(email: string): Promise<UserEntity | null>;
 	abstract findByUsername(username: string): Promise<UserEntity | null>;
+	abstract confirmEmail(id: string): Promise<void>;
 }

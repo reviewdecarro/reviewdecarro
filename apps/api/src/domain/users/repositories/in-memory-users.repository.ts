@@ -13,6 +13,7 @@ export class InMemoryUsersRepository extends UsersRepositoryProps {
 			email: user.email,
 			passwordHash: user.password,
 			active: true,
+			confirmedEmail: false,
 			createdAt: new Date(),
 		});
 
@@ -31,5 +32,15 @@ export class InMemoryUsersRepository extends UsersRepositoryProps {
 
 	async findByUsername(username: string): Promise<UserEntity | null> {
 		return this.items.find((user) => user.username === username) ?? null;
+	}
+
+	async confirmEmail(id: string): Promise<void> {
+		const user = this.items.find((item) => item.id === id);
+
+		if (!user) {
+			throw new Error("User not found.");
+		}
+
+		user.confirmedEmail = true;
 	}
 }
