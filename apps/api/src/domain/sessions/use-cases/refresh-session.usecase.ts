@@ -35,7 +35,10 @@ export class RefreshSessionUseCase {
 
 		const newRefreshToken = randomUUID();
 		const newRefreshTokenHash = await this.hashProvider.hash(newRefreshToken);
-		await this.sessionsRepository.updateRefreshToken(session.id, newRefreshTokenHash);
+		await this.sessionsRepository.updateRefreshToken(
+			session.id,
+			newRefreshTokenHash,
+		);
 
 		const { accessToken } = await this.authService.generateToken({
 			sub: session.userId,

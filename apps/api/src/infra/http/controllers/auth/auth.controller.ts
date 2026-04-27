@@ -28,7 +28,11 @@ export class AuthController {
 	@ApiOperation({ description: "Autenticar usuário e iniciar sessão" })
 	@ApiOkResponse({ description: "Login realizado com sucesso" })
 	@ApiBadRequestResponse({ description: "E-mail ou senha inválidos" })
-	async login(@Body() data: LoginDto, @Req() req: Request, @Res() res: Response) {
+	async login(
+		@Body() data: LoginDto,
+		@Req() req: Request,
+		@Res() res: Response,
+	) {
 		const result = await this.loginService.execute(data, {
 			userAgent: req.headers["user-agent"],
 			ipAddress: req.ip,
@@ -44,7 +48,9 @@ export class AuthController {
 	@IsPublic()
 	@ApiOperation({ description: "Renovar access token via refresh token" })
 	@ApiOkResponse({ description: "Token renovado com sucesso" })
-	@ApiUnauthorizedResponse({ description: "Sessão inválida, revogada ou expirada" })
+	@ApiUnauthorizedResponse({
+		description: "Sessão inválida, revogada ou expirada",
+	})
 	async refresh(@Body() data: RefreshDto, @Res() res: Response) {
 		const result = await this.refreshSessionService.execute(data);
 

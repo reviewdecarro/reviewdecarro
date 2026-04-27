@@ -15,8 +15,7 @@ export class ResetUserPasswordUseCase {
 	) {}
 
 	async execute({ token, password }: ResetPasswordDto): Promise<void> {
-		const userToken =
-			await this.userTokensRepository.findByRefreshToken(token);
+		const userToken = await this.userTokensRepository.findByRefreshToken(token);
 
 		if (!userToken) {
 			throw new NotFoundError("Token não encontrado.");
