@@ -5,6 +5,7 @@ import { VersionsRepositoryProps } from "../../domain/cars/repositories/versions
 import { CommentsRepositoryProps } from "../../domain/comments/repositories/comments.repository";
 import { ReviewsRepositoryProps } from "../../domain/reviews/repositories/reviews.repository";
 import { RolesRepositoryProps } from "../../domain/roles/repositories/roles.repository";
+import { SessionsRepositoryProps } from "../../domain/sessions/repositories/sessions.repository";
 import { UserTokensRepositoryProps } from "../../domain/users/repositories/user-tokens.repository";
 import { UsersRepositoryProps } from "../../domain/users/repositories/users.repository";
 import { VotesRepositoryProps } from "../../domain/votes/repositories/votes.repository";
@@ -14,6 +15,7 @@ import { PrismaCommentsRepository } from "./prisma/repositories/prisma-comments.
 import { PrismaModelsRepository } from "./prisma/repositories/prisma-models.repository";
 import { PrismaReviewsRepository } from "./prisma/repositories/prisma-reviews.repository";
 import { PrismaRolesRepository } from "./prisma/repositories/prisma-roles.repository";
+import { PrismaSessionsRepository } from "./prisma/repositories/prisma-sessions.repository";
 import { PrismaUserTokensRepository } from "./prisma/repositories/prisma-user-tokens.repository";
 import { PrismaUsersRepository } from "./prisma/repositories/prisma-users.repository";
 import { PrismaVersionsRepository } from "./prisma/repositories/prisma-versions.repository";
@@ -58,6 +60,10 @@ import { PrismaVotesRepository } from "./prisma/repositories/prisma-votes.reposi
 			provide: RolesRepositoryProps,
 			useClass: PrismaRolesRepository,
 		},
+		{
+			provide: SessionsRepositoryProps,
+			useClass: PrismaSessionsRepository,
+		},
 	],
 	exports: [
 		PrismaService,
@@ -70,6 +76,7 @@ import { PrismaVotesRepository } from "./prisma/repositories/prisma-votes.reposi
 		VotesRepositoryProps,
 		UserTokensRepositoryProps,
 		RolesRepositoryProps,
+		SessionsRepositoryProps,
 	],
 })
 export class DatabaseModule {}

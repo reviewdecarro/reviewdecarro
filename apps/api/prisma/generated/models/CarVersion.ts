@@ -489,10 +489,6 @@ export type IntFieldUpdateOperationsInput = {
   divide?: number
 }
 
-export type NullableStringFieldUpdateOperationsInput = {
-  set?: string | null
-}
-
 export type CarVersionCreateNestedOneWithoutReviewsInput = {
   create?: Prisma.XOR<Prisma.CarVersionCreateWithoutReviewsInput, Prisma.CarVersionUncheckedCreateWithoutReviewsInput>
   connectOrCreate?: Prisma.CarVersionCreateOrConnectWithoutReviewsInput

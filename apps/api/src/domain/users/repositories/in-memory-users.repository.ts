@@ -43,4 +43,14 @@ export class InMemoryUsersRepository extends UsersRepositoryProps {
 
 		user.confirmedEmail = true;
 	}
+
+	async updatePassword(id: string, passwordHash: string): Promise<void> {
+		const user = this.items.find((item) => item.id === id);
+
+		if (!user) {
+			throw new Error("User not found.");
+		}
+
+		user.passwordHash = passwordHash;
+	}
 }
