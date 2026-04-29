@@ -1,33 +1,27 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
+import type { Metadata } from 'next';
+import { DM_Sans, Syne } from 'next/font/google';
+import './globals.css';
 
-const geistSans = Geist({
-	variable: "--font-geist-sans",
-	subsets: ["latin"],
+const dmSans = DM_Sans({
+  subsets: ['latin'],
+  variable: '--font-dm-sans',
 });
 
-const geistMono = Geist_Mono({
-	variable: "--font-geist-mono",
-	subsets: ["latin"],
+const syne = Syne({
+  subsets: ['latin'],
+  variable: '--font-syne',
+  weight: ['400', '600', '700', '800'],
 });
 
 export const metadata: Metadata = {
-	title: "PapoAutomotivo - Sua comunidade automotiva",
-	description: "Comunidade automotiva para todos.",
+  title: 'PapoAuto — Car Reviews & Community',
+  description: 'Comunidade automotiva para todos.',
 };
 
-export default function RootLayout({
-	children,
-}: Readonly<{
-	children: React.ReactNode;
-}>) {
-	return (
-		<html
-			lang="en"
-			className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-		>
-			<body className="min-h-full flex flex-col">{children}</body>
-		</html>
-	);
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en" className={`${dmSans.variable} ${syne.variable}`}>
+      <body className="min-h-screen flex flex-col">{children}</body>
+    </html>
+  );
 }
