@@ -1,5 +1,5 @@
 import { plainToInstance } from "class-transformer";
-import { ModelResponseDto } from "../dtos/create-model.dto";
+import { ModelResponseDto, ModelWithVersionsResponseDto } from "../dtos/create-model.dto";
 import { CarModelEntity } from "../entities/car-model.entity";
 
 export class ModelsMapper {
@@ -8,4 +8,10 @@ export class ModelsMapper {
 			excludeExtraneousValues: true,
 		});
 	}
+}
+
+export function toModelWithVersionsResponseDto(model: CarModelEntity): ModelWithVersionsResponseDto {
+	return plainToInstance(ModelWithVersionsResponseDto, model, {
+		excludeExtraneousValues: true,
+	});
 }

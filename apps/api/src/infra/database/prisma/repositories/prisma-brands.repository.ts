@@ -36,4 +36,15 @@ export class PrismaBrandsRepository implements BrandsRepositoryProps {
 
 		return new BrandEntity(brand);
 	}
+
+	async findBySlugWithModels(slug: string): Promise<BrandEntity | null> {
+		const brand = await this.prisma.brand.findUnique({
+			where: { slug },
+			include: { models: { orderBy: { name: "asc" } } },
+		});
+
+		if (!brand) return null;
+
+		return new BrandEntity(brand);
+	}
 }

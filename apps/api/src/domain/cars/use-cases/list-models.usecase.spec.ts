@@ -1,56 +1,53 @@
-import { beforeEach, describe, expect, it } from "@jest/globals";
-import { BadRequestError } from "../../../shared/errors/types/bad-request-error";
+import { beforeEach, describe, expect, it, jest } from "@jest/globals";
+import { NotFoundError } from "../../../shared/errors/types/not-found-error";
 import { BrandEntity } from "../entities/brand.entity";
 import { CarModelEntity } from "../entities/car-model.entity";
-import { InMemoryBrandsRepository } from "../repositories/in-memory-brands.repository";
-import { InMemoryModelsRepository } from "../repositories/in-memory-models.repository";
+import { BrandsRepositoryProps } from "../repositories/brands.repository";
+import { ModelsRepositoryProps } from "../repositories/models.repository";
 import { ListModelsUseCase } from "./list-models.usecase";
 
+const mockBrandsRepository = {
+  create: jest.fn(),
+  findAll: jest.fn(),
+  findBySlug: jest.fn(),
+  findBySlugWithModels: jest.fn(),
+} as unknown as jest.Mocked<BrandsRepositoryProps>;
+
+const mockModelsRepository = {
+  create: jest.fn(),
+  findByBrandId: jest.fn(),
+  findByBrandIdAndSlug: jest.fn(),
+  findByBrandIdAndSlugWithVersions: jest.fn(),
+} as unknown as jest.Mocked<ModelsRepositoryProps>;
+
 describe("ListModelsUseCase", () => {
-	let brandsRepository: InMemoryBrandsRepository;
-	let modelsRepository: InMemoryModelsRepository;
-	let sut: ListModelsUseCase;
+  let sut: ListModelsUseCase;
 
-	beforeEach(() => {
-		brandsRepository = new InMemoryBrandsRepository();
-		modelsRepository = new InMemoryModelsRepository();
-		sut = new ListModelsUseCase(brandsRepository, modelsRepository);
-	});
+  beforeEach(() => {
+    sut = new ListModelsUseCase(mockBrandsRepository, mockModelsRepository);
+    jest.clearAllMocks();
+  });
 
-	it("should return models belonging to the brand", async () => {
-		const brand = new BrandEntity({
-			id: "brand-1",
-			name: "VW",
-			slug: "vw",
-			createdAt: new Date(),
-		});
-		brandsRepository.items.push(brand);
+  it("should return list of models for a valid brand slug", async () => {
+    mockBrandsRepository.findBySlug.mockResolvedValue(
+      new BrandEntity({ id: "brand-1", name: "Volkswagen", slug: "volkswagen", createdAt: new Date() }),
+    );
+    mockModelsRepository.findByBrandId.mockResolvedValue([
+      new CarModelEntity({ id: "model-1", name: "Polo", slug: "polo", brandId: "brand-1", createdAt: new Date() }),
+    ]);
 
-		modelsRepository.items.push(
-			new CarModelEntity({
-				id: "m1",
-				name: "Polo",
-				slug: "polo",
-				brandId: brand.id,
-				createdAt: new Date(),
-			}),
-			new CarModelEntity({
-				id: "m2",
-				name: "Uno",
-				slug: "uno",
-				brandId: "other",
-				createdAt: new Date(),
-			}),
-		);
+    const result = await sut.execute("volkswagen");
 
-		const result = await sut.execute(brand.slug);
+    expect(result).toHaveLength(1);
+    expect(result[0]).toHaveProperty("name", "Polo");
+    expect(result[0]).toHaveProperty("slug", "polo");
+    expect(result[0]).toHaveProperty("brandId", "brand-1");
+  });
 
-		expect(result).toHaveLength(1);
-		expect(result[0]).toHaveProperty("slug", "polo");
-	});
+  it("should throw NotFoundError when brand does not exist", async () => {
+    mockBrandsRepository.findBySlug.mockResolvedValue(null);
 
-	it("should throw BadRequestError if brand not found", async () => {
-		await expect(sut.execute("unknown")).rejects.toThrow(BadRequestError);
-		await expect(sut.execute("unknown")).rejects.toThrow("Brand not found");
-	});
+    await expect(sut.execute("nonexistent")).rejects.toThrow(NotFoundError);
+    await expect(sut.execute("nonexistent")).rejects.toThrow("Brand not found");
+  });
 });

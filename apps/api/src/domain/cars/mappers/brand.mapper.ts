@@ -1,5 +1,5 @@
 import { plainToInstance } from "class-transformer";
-import { BrandResponseDto } from "../dtos/create-brand.dto";
+import { BrandResponseDto, BrandWithModelsResponseDto } from "../dtos/create-brand.dto";
 import { BrandEntity } from "../entities/brand.entity";
 
 export class BrandsMapper {
@@ -8,4 +8,10 @@ export class BrandsMapper {
 			excludeExtraneousValues: true,
 		});
 	}
+}
+
+export function toBrandWithModelsResponseDto(brand: BrandEntity): BrandWithModelsResponseDto {
+	return plainToInstance(BrandWithModelsResponseDto, brand, {
+		excludeExtraneousValues: true,
+	});
 }

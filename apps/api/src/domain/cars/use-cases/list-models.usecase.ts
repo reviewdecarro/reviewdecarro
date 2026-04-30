@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { BadRequestError } from "../../../shared/errors/types/bad-request-error";
+import { NotFoundError } from "../../../shared/errors/types/not-found-error";
 import { CarModelEntity } from "../entities/car-model.entity";
 import { ModelsMapper } from "../mappers/model.mapper";
 import { BrandsRepositoryProps } from "../repositories/brands.repository";
@@ -16,7 +16,7 @@ export class ListModelsUseCase {
 		const brand = await this.brandsRepository.findBySlug(brandSlug);
 
 		if (!brand) {
-			throw new BadRequestError("Brand not found");
+			throw new NotFoundError("Brand not found");
 		}
 
 		const models = await this.modelsRepository.findByBrandId(brand.id);

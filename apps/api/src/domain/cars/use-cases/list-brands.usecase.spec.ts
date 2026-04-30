@@ -1,43 +1,41 @@
-import { beforeEach, describe, expect, it } from "@jest/globals";
+import { beforeEach, describe, expect, it, jest } from "@jest/globals";
 import { BrandEntity } from "../entities/brand.entity";
-import { InMemoryBrandsRepository } from "../repositories/in-memory-brands.repository";
+import { BrandsRepositoryProps } from "../repositories/brands.repository";
 import { ListBrandsUseCase } from "./list-brands.usecase";
 
+const mockBrandsRepository = {
+  create: jest.fn(),
+  findAll: jest.fn(),
+  findBySlug: jest.fn(),
+  findBySlugWithModels: jest.fn(),
+} as unknown as jest.Mocked<BrandsRepositoryProps>;
+
 describe("ListBrandsUseCase", () => {
-	let brandsRepository: InMemoryBrandsRepository;
-	let sut: ListBrandsUseCase;
+  let sut: ListBrandsUseCase;
 
-	beforeEach(() => {
-		brandsRepository = new InMemoryBrandsRepository();
-		sut = new ListBrandsUseCase(brandsRepository);
-	});
+  beforeEach(() => {
+    sut = new ListBrandsUseCase(mockBrandsRepository);
+    jest.clearAllMocks();
+  });
 
-	it("should return an empty list when no brands exist", async () => {
-		const result = await sut.execute();
+  it("should return list of brands", async () => {
+    mockBrandsRepository.findAll.mockResolvedValue([
+      new BrandEntity({ id: "b-1", name: "Volkswagen", slug: "volkswagen", createdAt: new Date() }),
+      new BrandEntity({ id: "b-2", name: "Ford", slug: "ford", createdAt: new Date() }),
+    ]);
 
-		expect(result).toEqual([]);
-	});
+    const result = await sut.execute();
 
-	it("should return all brands", async () => {
-		brandsRepository.items.push(
-			new BrandEntity({
-				id: "1",
-				name: "VW",
-				slug: "vw",
-				createdAt: new Date(),
-			}),
-			new BrandEntity({
-				id: "2",
-				name: "Fiat",
-				slug: "fiat",
-				createdAt: new Date(),
-			}),
-		);
+    expect(result).toHaveLength(2);
+    expect(result[0]).toHaveProperty("name", "Volkswagen");
+    expect(result[1]).toHaveProperty("name", "Ford");
+  });
 
-		const result = await sut.execute();
+  it("should return empty array when no brands exist", async () => {
+    mockBrandsRepository.findAll.mockResolvedValue([]);
 
-		expect(result).toHaveLength(2);
-		expect(result[0]).toHaveProperty("slug", "vw");
-		expect(result[1]).toHaveProperty("slug", "fiat");
-	});
+    const result = await sut.execute();
+
+    expect(result).toEqual([]);
+  });
 });

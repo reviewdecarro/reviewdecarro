@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { BadRequestError } from "../../../shared/errors/types/bad-request-error";
+import { NotFoundError } from "../../../shared/errors/types/not-found-error";
 import { CarVersionEntity } from "../entities/car-version.entity";
 import { VersionsMapper } from "../mappers/version.mapper";
 import { BrandsRepositoryProps } from "../repositories/brands.repository";
@@ -18,7 +18,7 @@ export class ListVersionsUseCase {
 		const brand = await this.brandsRepository.findBySlug(brandSlug);
 
 		if (!brand) {
-			throw new BadRequestError("Brand not found");
+			throw new NotFoundError("Brand not found");
 		}
 
 		const model = await this.modelsRepository.findByBrandIdAndSlug(
@@ -27,7 +27,7 @@ export class ListVersionsUseCase {
 		);
 
 		if (!model) {
-			throw new BadRequestError("Model not found");
+			throw new NotFoundError("Model not found");
 		}
 
 		const versions = await this.versionsRepository.findByModelId(model.id);

@@ -5,58 +5,67 @@ import { CarModelEntity } from "../entities/car-model.entity";
 import { CarVersionEntity } from "../entities/car-version.entity";
 import { BrandsRepositoryProps } from "../repositories/brands.repository";
 import { ModelsRepositoryProps } from "../repositories/models.repository";
-import { VersionsRepositoryProps } from "../repositories/versions.repository";
-import { ListVersionsUseCase } from "./list-versions.usecase";
+import { GetModelUseCase } from "./get-model.usecase";
 
-const mockBrandsRepository = {
+const mockBrandsRepository: jest.Mocked<BrandsRepositoryProps> = {
   create: jest.fn(),
   findAll: jest.fn(),
   findBySlug: jest.fn(),
   findBySlugWithModels: jest.fn(),
-} as unknown as jest.Mocked<BrandsRepositoryProps>;
+};
 
-const mockModelsRepository = {
+const mockModelsRepository: jest.Mocked<ModelsRepositoryProps> = {
   create: jest.fn(),
   findByBrandId: jest.fn(),
   findByBrandIdAndSlug: jest.fn(),
   findByBrandIdAndSlugWithVersions: jest.fn(),
-} as unknown as jest.Mocked<ModelsRepositoryProps>;
-
-const mockVersionsRepository: jest.Mocked<VersionsRepositoryProps> = {
-  create: jest.fn(),
-  findById: jest.fn(),
-  findByModelId: jest.fn(),
-  findBySlug: jest.fn(),
 };
 
-describe("ListVersionsUseCase", () => {
-  let sut: ListVersionsUseCase;
+describe("GetModelUseCase", () => {
+  let sut: GetModelUseCase;
 
   beforeEach(() => {
-    sut = new ListVersionsUseCase(
-      mockBrandsRepository,
-      mockModelsRepository,
-      mockVersionsRepository,
-    );
+    sut = new GetModelUseCase(mockBrandsRepository, mockModelsRepository);
     jest.clearAllMocks();
   });
 
-  it("should return list of versions for a valid brand+model slug", async () => {
+  it("should return model with its car versions", async () => {
     mockBrandsRepository.findBySlug.mockResolvedValue(
       new BrandEntity({ id: "brand-1", name: "Volkswagen", slug: "volkswagen", createdAt: new Date() }),
     );
-    mockModelsRepository.findByBrandIdAndSlug.mockResolvedValue(
-      new CarModelEntity({ id: "model-1", name: "Polo", slug: "polo", brandId: "brand-1", createdAt: new Date() }),
+    mockModelsRepository.findByBrandIdAndSlugWithVersions.mockResolvedValue(
+      new CarModelEntity({
+        id: "model-1",
+        name: "Polo",
+        slug: "polo",
+        brandId: "brand-1",
+        createdAt: new Date(),
+        carVersions: [
+          new CarVersionEntity({ id: "v-1", modelId: "model-1", year: 2024, versionName: "Track", engine: "1.0 MPI", transmission: null, slug: "2024-track", createdAt: new Date() }),
+        ],
+      }),
     );
-    mockVersionsRepository.findByModelId.mockResolvedValue([
-      new CarVersionEntity({ id: "v-1", modelId: "model-1", year: 2024, versionName: "Track", engine: "1.0 MPI", transmission: null, slug: "2024-track", createdAt: new Date() }),
-    ]);
 
     const result = await sut.execute("volkswagen", "polo");
 
-    expect(result).toHaveLength(1);
-    expect(result[0]).toHaveProperty("year", 2024);
-    expect(result[0]).toHaveProperty("versionName", "Track");
+    expect(result).toHaveProperty("name", "Polo");
+    expect(result).toHaveProperty("brandId", "brand-1");
+    expect(result.carVersions).toHaveLength(1);
+    expect(result.carVersions[0]).toHaveProperty("year", 2024);
+  });
+
+  it("should return model with empty carVersions array when model has no versions", async () => {
+    mockBrandsRepository.findBySlug.mockResolvedValue(
+      new BrandEntity({ id: "brand-1", name: "Volkswagen", slug: "volkswagen", createdAt: new Date() }),
+    );
+    mockModelsRepository.findByBrandIdAndSlugWithVersions.mockResolvedValue(
+      new CarModelEntity({ id: "model-1", name: "Polo", slug: "polo", brandId: "brand-1", createdAt: new Date() }),
+    );
+
+    const result = await sut.execute("volkswagen", "polo");
+
+    expect(result).toHaveProperty("name", "Polo");
+    expect(result.carVersions).toEqual([]);
   });
 
   it("should throw NotFoundError when brand does not exist", async () => {
@@ -66,11 +75,11 @@ describe("ListVersionsUseCase", () => {
     await expect(sut.execute("nonexistent", "polo")).rejects.toThrow("Brand not found");
   });
 
-  it("should throw NotFoundError when model does not exist", async () => {
+  it("should throw NotFoundError when model does not exist in that brand", async () => {
     mockBrandsRepository.findBySlug.mockResolvedValue(
       new BrandEntity({ id: "brand-1", name: "Volkswagen", slug: "volkswagen", createdAt: new Date() }),
     );
-    mockModelsRepository.findByBrandIdAndSlug.mockResolvedValue(null);
+    mockModelsRepository.findByBrandIdAndSlugWithVersions.mockResolvedValue(null);
 
     await expect(sut.execute("volkswagen", "nonexistent")).rejects.toThrow(NotFoundError);
     await expect(sut.execute("volkswagen", "nonexistent")).rejects.toThrow("Model not found");

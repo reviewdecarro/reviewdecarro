@@ -23,9 +23,6 @@ export class CarModelEntity implements ModelModel {
 
 	constructor({ carVersions, ...partial }: Partial<CarModelEntity>) {
 		Object.assign(this, partial);
-
-		if (carVersions) {
-			this.carVersions = carVersions.map((v) => new CarVersionEntity(v));
-		}
+		this.carVersions = carVersions ? carVersions.map((v) => new CarVersionEntity(v)) : [];
 	}
 }

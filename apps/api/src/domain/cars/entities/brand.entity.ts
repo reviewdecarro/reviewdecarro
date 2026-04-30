@@ -21,8 +21,6 @@ export class BrandEntity implements BrandModel {
 	constructor({ models, ...partial }: Partial<BrandEntity>) {
 		Object.assign(this, partial);
 
-		if (models) {
-			this.models = models.map((model) => new CarModelEntity(model));
-		}
+		this.models = models ? models.map((model) => new CarModelEntity(model)) : [];
 	}
 }

@@ -11,4 +11,8 @@ export abstract class ModelsRepositoryProps {
 		brandId: string,
 		slug: string,
 	): Promise<CarModelEntity | null>;
+	abstract findByBrandIdAndSlugWithVersions(
+		brandId: string,
+		slug: string,
+	): Promise<CarModelEntity | null>;
 }

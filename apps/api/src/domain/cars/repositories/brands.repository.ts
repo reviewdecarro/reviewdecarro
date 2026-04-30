@@ -5,4 +5,5 @@ export abstract class BrandsRepositoryProps {
 	abstract create(data: CreateBrandDto): Promise<BrandEntity>;
 	abstract findAll(): Promise<BrandEntity[]>;
 	abstract findBySlug(slug: string): Promise<BrandEntity | null>;
+	abstract findBySlugWithModels(slug: string): Promise<BrandEntity | null>;
 }
