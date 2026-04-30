@@ -41,4 +41,18 @@ export class PrismaModelsRepository implements ModelsRepositoryProps {
 
 		return new CarModelEntity(model);
 	}
+
+	async findByBrandIdAndSlugWithVersions(
+		brandId: string,
+		slug: string,
+	): Promise<CarModelEntity | null> {
+		const model = await this.prisma.model.findUnique({
+			where: { brandId_slug: { brandId, slug } },
+			include: { carVersions: { orderBy: { year: "desc" } } },
+		});
+
+		if (!model) return null;
+
+		return new CarModelEntity(model);
+	}
 }
