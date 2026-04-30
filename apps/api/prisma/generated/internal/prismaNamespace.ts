@@ -1308,8 +1308,9 @@ export type UserTokenScalarFieldEnum = (typeof UserTokenScalarFieldEnum)[keyof t
 
 export const RoleScalarFieldEnum = {
   id: 'id',
-  type: 'type',
-  userId: 'userId'
+  name: 'name',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 } as const
 
 export type RoleScalarFieldEnum = (typeof RoleScalarFieldEnum)[keyof typeof RoleScalarFieldEnum]
@@ -1463,20 +1464,6 @@ export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel
  * Reference to a field of type 'DateTime[]'
  */
 export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
-    
-
-
-/**
- * Reference to a field of type 'RoleType'
- */
-export type EnumRoleTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RoleType'>
-    
-
-
-/**
- * Reference to a field of type 'RoleType[]'
- */
-export type ListEnumRoleTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RoleType[]'>
     
 
 

@@ -22,10 +22,6 @@ enum VoteType {
   DOWN
 }
 
-enum RoleType {
-  ADMIN
-  USER
-}
 
 enum RatingCategory {
   CONSUMPTION
@@ -93,14 +89,12 @@ model UserToken {
 }
 
 model Role {
-  id     String   @id @default(uuid())
-  type   RoleType @default(USER)
-  userId String
+  id        String   @id @default(uuid())
+  name      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  users     User[]
 
-  user User @relation(fields: [userId], references: [id])
-
-  @@unique([userId, type])
-  @@index([userId])
   @@map("roles")
 }
 
