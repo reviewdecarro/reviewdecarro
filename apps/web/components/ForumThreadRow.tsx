@@ -36,7 +36,7 @@ export function ForumThreadRow({ thread }: ForumThreadRowProps) {
       onMouseEnter={e => (e.currentTarget.style.background = 'var(--surface-2)')}
       onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
     >
-      <div className="flex-shrink-0" onClick={handleVote}>
+      <div className="flex-shrink-0">
         <VoteButton count={votes} voted={voted} onVote={handleVote} />
       </div>
 
