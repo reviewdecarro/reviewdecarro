@@ -42,7 +42,7 @@ describe("DeleteCommentUseCase", () => {
 	it("should delete when user is ADMIN even if not author", async () => {
 		seedComment("someone-else");
 		const admin = makeUser("admin", [
-			new RoleEntity({ id: "r1", type: "ADMIN" }),
+			new RoleEntity({ id: "r1", name: "admin", createdAt: new Date(), updatedAt: new Date() }),
 		]);
 
 		await sut.execute(admin, "review-1", "comment-1");

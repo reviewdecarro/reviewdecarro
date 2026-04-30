@@ -14,7 +14,7 @@ export class DeleteCommentUseCase {
 			throw new BadRequestError("Comment not found");
 		}
 
-		const isAdmin = user.roles?.some((role) => role.type === "ADMIN");
+		const isAdmin = user.roles?.some((role) => role.name === "admin");
 
 		if (comment.userId !== user.id && !isAdmin) {
 			throw new BadRequestError("You can only delete your own comments");

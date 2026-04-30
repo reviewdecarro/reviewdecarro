@@ -49,7 +49,7 @@ export class BrandsController {
 	) {}
 
 	@Post()
-	@Roles("ADMIN")
+	@Roles("admin")
 	@ApiBearerAuth()
 	@ApiOperation({ description: "Criar nova marca (ADMIN)" })
 	@ApiCreatedResponse({ description: "Marca criada com sucesso" })
@@ -85,7 +85,7 @@ export class BrandsController {
 	}
 
 	@Post(":brandSlug/models")
-	@Roles("ADMIN")
+	@Roles("admin")
 	@ApiBearerAuth()
 	@ApiOperation({ description: "Criar novo modelo (ADMIN)" })
 	@ApiParam({ name: "brandSlug", example: "volkswagen" })
@@ -137,7 +137,7 @@ export class BrandsController {
 	}
 
 	@Post(":brandSlug/models/:modelSlug/versions")
-	@Roles("ADMIN")
+	@Roles("admin")
 	@ApiBearerAuth()
 	@ApiOperation({ description: "Criar nova versão (ADMIN)" })
 	@ApiParam({ name: "brandSlug", example: "volkswagen" })

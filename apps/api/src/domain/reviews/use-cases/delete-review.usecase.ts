@@ -14,7 +14,7 @@ export class DeleteReviewUseCase {
 			throw new BadRequestError("Review not found");
 		}
 
-		const isAdmin = user.roles?.some((role) => role.type === "ADMIN");
+		const isAdmin = user.roles?.some((role) => role.name === "admin");
 
 		if (review.userId !== user.id && !isAdmin) {
 			throw new BadRequestError("You can only delete your own reviews");
