@@ -2,6 +2,9 @@
   "name": "api",
   "version": "0.0.0",
   "private": true,
+  "prisma": {
+    "seed": "pnpm ts-node prisma/seed.ts"
+  },
   "scripts": {
     "dev": "nest start --watch",
     "build": "nest build",
