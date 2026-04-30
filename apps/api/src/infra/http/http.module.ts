@@ -3,6 +3,9 @@ import { APP_GUARD } from "@nestjs/core";
 import { CreateBrandUseCase } from "../../domain/cars/use-cases/create-brand.usecase";
 import { CreateModelUseCase } from "../../domain/cars/use-cases/create-model.usecase";
 import { CreateVersionUseCase } from "../../domain/cars/use-cases/create-version.usecase";
+import { GetBrandUseCase } from "../../domain/cars/use-cases/get-brand.usecase";
+import { GetModelUseCase } from "../../domain/cars/use-cases/get-model.usecase";
+import { GetVersionUseCase } from "../../domain/cars/use-cases/get-version.usecase";
 import { ListBrandsUseCase } from "../../domain/cars/use-cases/list-brands.usecase";
 import { ListModelsUseCase } from "../../domain/cars/use-cases/list-models.usecase";
 import { ListVersionsUseCase } from "../../domain/cars/use-cases/list-versions.usecase";
@@ -46,10 +49,13 @@ import { VotesController } from "./controllers/votes/votes.controller";
 		FindUserByUsernameUseCase,
 		CreateBrandUseCase,
 		ListBrandsUseCase,
+		GetBrandUseCase,
 		CreateModelUseCase,
 		ListModelsUseCase,
+		GetModelUseCase,
 		CreateVersionUseCase,
 		ListVersionsUseCase,
+		GetVersionUseCase,
 		CreateReviewUseCase,
 		GetReviewUseCase,
 		ListReviewsUseCase,

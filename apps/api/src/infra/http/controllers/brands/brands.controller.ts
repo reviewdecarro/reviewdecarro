@@ -11,6 +11,7 @@ import {
 	ApiBadRequestResponse,
 	ApiBearerAuth,
 	ApiCreatedResponse,
+	ApiNotFoundResponse,
 	ApiOkResponse,
 	ApiOperation,
 	ApiParam,
@@ -23,6 +24,9 @@ import { CreateVersionDto } from "src/domain/cars/dtos/create-version.dto";
 import { CreateBrandUseCase } from "src/domain/cars/use-cases/create-brand.usecase";
 import { CreateModelUseCase } from "src/domain/cars/use-cases/create-model.usecase";
 import { CreateVersionUseCase } from "src/domain/cars/use-cases/create-version.usecase";
+import { GetBrandUseCase } from "src/domain/cars/use-cases/get-brand.usecase";
+import { GetModelUseCase } from "src/domain/cars/use-cases/get-model.usecase";
+import { GetVersionUseCase } from "src/domain/cars/use-cases/get-version.usecase";
 import { ListBrandsUseCase } from "src/domain/cars/use-cases/list-brands.usecase";
 import { ListModelsUseCase } from "src/domain/cars/use-cases/list-models.usecase";
 import { ListVersionsUseCase } from "src/domain/cars/use-cases/list-versions.usecase";
@@ -35,10 +39,13 @@ export class BrandsController {
 	constructor(
 		private createBrandService: CreateBrandUseCase,
 		private listBrandsService: ListBrandsUseCase,
+		private getBrandService: GetBrandUseCase,
 		private createModelService: CreateModelUseCase,
 		private listModelsService: ListModelsUseCase,
+		private getModelService: GetModelUseCase,
 		private createVersionService: CreateVersionUseCase,
 		private listVersionsService: ListVersionsUseCase,
+		private getVersionService: GetVersionUseCase,
 	) {}
 
 	@Post()
@@ -64,6 +71,17 @@ export class BrandsController {
 		const brands = await this.listBrandsService.execute();
 
 		return res.status(HttpStatus.OK).json({ brands });
+	}
+
+	@Get(":brandSlug")
+	@IsPublic()
+	@ApiOperation({ description: "Buscar marca por slug com modelos" })
+	@ApiParam({ name: "brandSlug", example: "volkswagen" })
+	@ApiOkResponse({ description: "Marca com modelos" })
+	@ApiNotFoundResponse({ description: "Marca não encontrada" })
+	async getBrand(@Param("brandSlug") brandSlug: string, @Res() res: Response) {
+		const brand = await this.getBrandService.execute(brandSlug);
+		return res.status(HttpStatus.OK).json({ brand });
 	}
 
 	@Post(":brandSlug/models")
@@ -98,6 +116,22 @@ export class BrandsController {
 		const models = await this.listModelsService.execute(brandSlug);
 
 		return res.status(HttpStatus.OK).json({ models });
+	}
+
+	@Get(":brandSlug/models/:modelSlug")
+	@IsPublic()
+	@ApiOperation({ description: "Buscar modelo por slug com versões" })
+	@ApiParam({ name: "brandSlug", example: "volkswagen" })
+	@ApiParam({ name: "modelSlug", example: "polo" })
+	@ApiOkResponse({ description: "Modelo com versões" })
+	@ApiNotFoundResponse({ description: "Marca ou modelo não encontrado" })
+	async getModel(
+		@Param("brandSlug") brandSlug: string,
+		@Param("modelSlug") modelSlug: string,
+		@Res() res: Response,
+	) {
+		const model = await this.getModelService.execute(brandSlug, modelSlug);
+		return res.status(HttpStatus.OK).json({ model });
 	}
 
 	@Post(":brandSlug/models/:modelSlug/versions")
@@ -143,5 +177,21 @@ export class BrandsController {
 		);
 
 		return res.status(HttpStatus.OK).json({ versions });
+	}
+
+	@Get(":brandSlug/models/:modelSlug/versions/:versionSlug")
+	@IsPublic()
+	@ApiOperation({ description: "Buscar versão por slug" })
+	@ApiParam({ name: "brandSlug", example: "volkswagen" })
+	@ApiParam({ name: "modelSlug", example: "polo" })
+	@ApiParam({ name: "versionSlug", example: "2024-polo-track" })
+	@ApiOkResponse({ description: "Detalhes da versão" })
+	@ApiNotFoundResponse({ description: "Versão não encontrada" })
+	async getVersion(
+		@Param("versionSlug") versionSlug: string,
+		@Res() res: Response,
+	) {
+		const version = await this.getVersionService.execute(versionSlug);
+		return res.status(HttpStatus.OK).json({ version });
 	}
 }
