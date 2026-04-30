@@ -34,4 +34,15 @@ export class InMemoryModelsRepository extends ModelsRepositoryProps {
 			) ?? null
 		);
 	}
+
+	async findByBrandIdAndSlugWithVersions(
+		brandId: string,
+		slug: string,
+	): Promise<CarModelEntity | null> {
+		return (
+			this.items.find(
+				(model) => model.brandId === brandId && model.slug === slug,
+			) ?? null
+		);
+	}
 }

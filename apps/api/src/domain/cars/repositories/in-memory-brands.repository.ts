@@ -26,4 +26,8 @@ export class InMemoryBrandsRepository extends BrandsRepositoryProps {
 	async findBySlug(slug: string): Promise<BrandEntity | null> {
 		return this.items.find((brand) => brand.slug === slug) ?? null;
 	}
+
+	async findBySlugWithModels(slug: string): Promise<BrandEntity | null> {
+		return this.items.find((brand) => brand.slug === slug) ?? null;
+	}
 }
