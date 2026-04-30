@@ -1,4 +1,5 @@
 import { Module } from "@nestjs/common";
+import { AssignRoleUseCase } from "src/domain/roles/use-cases/assign-role.usecase";
 import { ConfirmEmailUseCase } from "src/domain/users/use-cases/confirm-email.usecase";
 import { CreateUserUseCase } from "src/domain/users/use-cases/create-user.usecase";
 import { FindUserByUsernameUseCase } from "src/domain/users/use-cases/find-user-by-username.usecase";
@@ -15,6 +16,7 @@ import { UsersController } from "./users.controller";
 	providers: [
 		CreateUserUseCase,
 		FindUserByUsernameUseCase,
+		AssignRoleUseCase,
 		ConfirmEmailUseCase,
 		SendForgotPasswordEmailUseCase,
 		ResetUserPasswordUseCase,

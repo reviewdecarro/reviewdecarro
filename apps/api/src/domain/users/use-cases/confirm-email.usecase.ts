@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { RolesRepositoryProps } from "../../../domain/roles/repositories/roles.repository";
+import { AssignRoleUseCase } from "../../../domain/roles/use-cases/assign-role.usecase";
 import { BadRequestError } from "../../../shared/errors/types/bad-request-error";
 import { UserTokensRepositoryProps } from "../repositories/user-tokens.repository";
 import { UsersRepositoryProps } from "../repositories/users.repository";
@@ -13,7 +13,7 @@ export class ConfirmEmailUseCase {
 	constructor(
 		private usersRepository: UsersRepositoryProps,
 		private userTokensRepository: UserTokensRepositoryProps,
-		private rolesRepository: RolesRepositoryProps,
+		private assignRoleUseCase: AssignRoleUseCase,
 	) {}
 
 	async execute({ token }: ConfirmEmailInput): Promise<void> {
@@ -28,10 +28,7 @@ export class ConfirmEmailUseCase {
 		}
 
 		await this.usersRepository.confirmEmail(userToken.userId);
-		await this.rolesRepository.assign({
-			userId: userToken.userId,
-			type: "USER",
-		});
+		await this.assignRoleUseCase.execute({ userId: userToken.userId, type: "USER" });
 		await this.userTokensRepository.deleteById(userToken.id);
 	}
 }

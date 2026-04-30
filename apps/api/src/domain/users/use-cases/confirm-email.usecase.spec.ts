@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it } from "@jest/globals";
 import { InMemoryRolesRepository } from "../../../domain/roles/repositories/in-memory-roles.repository";
+import { AssignRoleUseCase } from "../../../domain/roles/use-cases/assign-role.usecase";
 import { BadRequestError } from "../../../shared/errors/types/bad-request-error";
 import { UserEntity } from "../entities/user.entity";
 import { InMemoryUserTokensRepository } from "../repositories/in-memory-user-tokens.repository";
@@ -16,10 +17,11 @@ describe("ConfirmEmailUseCase", () => {
 		usersRepository = new InMemoryUsersRepository();
 		userTokensRepository = new InMemoryUserTokensRepository();
 		rolesRepository = new InMemoryRolesRepository();
+		const assignRoleUseCase = new AssignRoleUseCase(rolesRepository);
 		sut = new ConfirmEmailUseCase(
 			usersRepository,
 			userTokensRepository,
-			rolesRepository,
+			assignRoleUseCase,
 		);
 	});
 
