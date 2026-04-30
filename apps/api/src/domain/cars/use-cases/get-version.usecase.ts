@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { NotFoundError } from "../../../shared/errors/types/not-found-error";
 import { CarVersionEntity } from "../entities/car-version.entity";
-import { toVersionResponseDto } from "../mappers/version.mapper";
+import { VersionsMapper } from "../mappers/version.mapper";
 import { VersionsRepositoryProps } from "../repositories/versions.repository";
 
 @Injectable()
@@ -15,6 +15,6 @@ export class GetVersionUseCase {
       throw new NotFoundError("Car version not found");
     }
 
-    return toVersionResponseDto(new CarVersionEntity(version));
+    return VersionsMapper.toVersionResponseDto(new CarVersionEntity(version));
   }
 }
