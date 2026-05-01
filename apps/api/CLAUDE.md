@@ -171,10 +171,10 @@ Página da Review
 
 ## Estrutura de Código Planejada
 
-### API (`apps/api/src/domain/`)
+### API (`apps/api/src/application/`)
 
 ```
-domain/
+application/
 ├── users/          ✅ implementado
 ├── cars/
 │   ├── entities/   Brand, Model, CarVersion

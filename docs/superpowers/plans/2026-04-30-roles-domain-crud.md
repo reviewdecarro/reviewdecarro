@@ -1,10 +1,10 @@
-# Roles Domain CRUD Implementation Plan
+# Roles application CRUD Implementation Plan
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Refactor `Role` from a per-user assignment record to a standalone entity, and add `CreateRoleUseCase`, `FindRoleByIdUseCase`, and `FindRolesUseCase`.
 
-**Architecture:** The `Role` model becomes a standalone definition (name, timestamps) with an implicit many-to-many to `User` via Prisma. The three new use cases follow the same pattern as the `cars` domain (DTOs + mapper + repository methods + injectable use cases). The existing `AssignRoleUseCase` and `ConfirmEmailUseCase` are updated to match the new contract. `RoleType` enum is deleted and the `RolesGuard` is updated to compare by role name.
+**Architecture:** The `Role` model becomes a standalone definition (name, timestamps) with an implicit many-to-many to `User` via Prisma. The three new use cases follow the same pattern as the `cars` application (DTOs + mapper + repository methods + injectable use cases). The existing `AssignRoleUseCase` and `ConfirmEmailUseCase` are updated to match the new contract. `RoleType` enum is deleted and the `RolesGuard` is updated to compare by role name.
 
 **Tech Stack:** NestJS, Prisma 7, class-transformer, class-validator, Jest 30 with ts-jest.
 
@@ -15,21 +15,21 @@
 | Action | Path |
 |---|---|
 | Modify | `apps/api/prisma/schema.prisma` |
-| Modify | `apps/api/src/domain/roles/entities/role.entity.ts` |
-| Modify | `apps/api/src/domain/roles/repositories/roles.repository.ts` |
-| Modify | `apps/api/src/domain/roles/repositories/in-memory-roles.repository.ts` |
+| Modify | `apps/api/src/application/roles/entities/role.entity.ts` |
+| Modify | `apps/api/src/application/roles/repositories/roles.repository.ts` |
+| Modify | `apps/api/src/application/roles/repositories/in-memory-roles.repository.ts` |
 | Modify | `apps/api/src/infra/database/prisma/repositories/prisma-roles.repository.ts` |
-| Create | `apps/api/src/domain/roles/dtos/role.dto.ts` |
-| Create | `apps/api/src/domain/roles/mappers/role.mapper.ts` |
-| Create | `apps/api/src/domain/roles/use-cases/create-role.usecase.ts` |
-| Create | `apps/api/src/domain/roles/use-cases/create-role.usecase.spec.ts` |
-| Create | `apps/api/src/domain/roles/use-cases/find-role-by-id.usecase.ts` |
-| Create | `apps/api/src/domain/roles/use-cases/find-role-by-id.usecase.spec.ts` |
-| Create | `apps/api/src/domain/roles/use-cases/find-roles.usecase.ts` |
-| Create | `apps/api/src/domain/roles/use-cases/find-roles.usecase.spec.ts` |
-| Modify | `apps/api/src/domain/roles/use-cases/assign-role.usecase.ts` |
-| Modify | `apps/api/src/domain/roles/use-cases/assign-role.usecase.spec.ts` |
-| Modify | `apps/api/src/domain/users/use-cases/confirm-email.usecase.ts` |
+| Create | `apps/api/src/application/roles/dtos/role.dto.ts` |
+| Create | `apps/api/src/application/roles/mappers/role.mapper.ts` |
+| Create | `apps/api/src/application/roles/use-cases/create-role.usecase.ts` |
+| Create | `apps/api/src/application/roles/use-cases/create-role.usecase.spec.ts` |
+| Create | `apps/api/src/application/roles/use-cases/find-role-by-id.usecase.ts` |
+| Create | `apps/api/src/application/roles/use-cases/find-role-by-id.usecase.spec.ts` |
+| Create | `apps/api/src/application/roles/use-cases/find-roles.usecase.ts` |
+| Create | `apps/api/src/application/roles/use-cases/find-roles.usecase.spec.ts` |
+| Modify | `apps/api/src/application/roles/use-cases/assign-role.usecase.ts` |
+| Modify | `apps/api/src/application/roles/use-cases/assign-role.usecase.spec.ts` |
+| Modify | `apps/api/src/application/users/use-cases/confirm-email.usecase.ts` |
 | Modify | `apps/api/src/infra/auth/guards/roles.guard.ts` |
 | Modify | `apps/api/src/infra/auth/decorators/roles.decorator.ts` |
 | Delete | `apps/api/src/infra/auth/constants/roles.ts` |
@@ -109,7 +109,7 @@ git commit -m "feat(db): refactor Role to standalone entity with M2M user relati
 ## Task 2: Update RoleEntity
 
 **Files:**
-- Modify: `apps/api/src/domain/roles/entities/role.entity.ts`
+- Modify: `apps/api/src/application/roles/entities/role.entity.ts`
 
 - [ ] **Step 1: Rewrite the entity to match the new schema**
 
@@ -140,7 +140,7 @@ export class RoleEntity implements RoleModel {
 - [ ] **Step 2: Commit**
 
 ```bash
-git add apps/api/src/domain/roles/entities/role.entity.ts
+git add apps/api/src/application/roles/entities/role.entity.ts
 git commit -m "refactor(roles): update RoleEntity to match new schema"
 ```
 
@@ -149,8 +149,8 @@ git commit -m "refactor(roles): update RoleEntity to match new schema"
 ## Task 3: Update RolesRepositoryProps and InMemoryRolesRepository
 
 **Files:**
-- Modify: `apps/api/src/domain/roles/repositories/roles.repository.ts`
-- Modify: `apps/api/src/domain/roles/repositories/in-memory-roles.repository.ts`
+- Modify: `apps/api/src/application/roles/repositories/roles.repository.ts`
+- Modify: `apps/api/src/application/roles/repositories/in-memory-roles.repository.ts`
 
 - [ ] **Step 1: Rewrite the repository contract**
 
@@ -220,7 +220,7 @@ export class InMemoryRolesRepository extends RolesRepositoryProps {
 - [ ] **Step 3: Commit**
 
 ```bash
-git add apps/api/src/domain/roles/repositories/
+git add apps/api/src/application/roles/repositories/
 git commit -m "refactor(roles): update repository contract and in-memory implementation"
 ```
 
@@ -229,8 +229,8 @@ git commit -m "refactor(roles): update repository contract and in-memory impleme
 ## Task 4: Add DTOs and Mapper
 
 **Files:**
-- Create: `apps/api/src/domain/roles/dtos/role.dto.ts`
-- Create: `apps/api/src/domain/roles/mappers/role.mapper.ts`
+- Create: `apps/api/src/application/roles/dtos/role.dto.ts`
+- Create: `apps/api/src/application/roles/mappers/role.mapper.ts`
 
 - [ ] **Step 1: Create `role.dto.ts`**
 
@@ -284,7 +284,7 @@ export class RolesMapper {
 - [ ] **Step 3: Commit**
 
 ```bash
-git add apps/api/src/domain/roles/dtos/ apps/api/src/domain/roles/mappers/
+git add apps/api/src/application/roles/dtos/ apps/api/src/application/roles/mappers/
 git commit -m "feat(roles): add RoleResponseDto, CreateRoleDto and RolesMapper"
 ```
 
@@ -293,8 +293,8 @@ git commit -m "feat(roles): add RoleResponseDto, CreateRoleDto and RolesMapper"
 ## Task 5: CreateRoleUseCase (TDD)
 
 **Files:**
-- Create: `apps/api/src/domain/roles/use-cases/create-role.usecase.spec.ts`
-- Create: `apps/api/src/domain/roles/use-cases/create-role.usecase.ts`
+- Create: `apps/api/src/application/roles/use-cases/create-role.usecase.spec.ts`
+- Create: `apps/api/src/application/roles/use-cases/create-role.usecase.ts`
 
 - [ ] **Step 1: Write the failing spec**
 
@@ -394,7 +394,7 @@ Expected: PASS — 2 tests
 - [ ] **Step 5: Commit**
 
 ```bash
-git add apps/api/src/domain/roles/use-cases/create-role.usecase.ts apps/api/src/domain/roles/use-cases/create-role.usecase.spec.ts
+git add apps/api/src/application/roles/use-cases/create-role.usecase.ts apps/api/src/application/roles/use-cases/create-role.usecase.spec.ts
 git commit -m "feat(roles): add CreateRoleUseCase"
 ```
 
@@ -403,8 +403,8 @@ git commit -m "feat(roles): add CreateRoleUseCase"
 ## Task 6: FindRoleByIdUseCase (TDD)
 
 **Files:**
-- Create: `apps/api/src/domain/roles/use-cases/find-role-by-id.usecase.spec.ts`
-- Create: `apps/api/src/domain/roles/use-cases/find-role-by-id.usecase.ts`
+- Create: `apps/api/src/application/roles/use-cases/find-role-by-id.usecase.spec.ts`
+- Create: `apps/api/src/application/roles/use-cases/find-role-by-id.usecase.ts`
 
 - [ ] **Step 1: Write the failing spec**
 
@@ -498,7 +498,7 @@ Expected: PASS — 2 tests
 - [ ] **Step 5: Commit**
 
 ```bash
-git add apps/api/src/domain/roles/use-cases/find-role-by-id.usecase.ts apps/api/src/domain/roles/use-cases/find-role-by-id.usecase.spec.ts
+git add apps/api/src/application/roles/use-cases/find-role-by-id.usecase.ts apps/api/src/application/roles/use-cases/find-role-by-id.usecase.spec.ts
 git commit -m "feat(roles): add FindRoleByIdUseCase"
 ```
 
@@ -507,8 +507,8 @@ git commit -m "feat(roles): add FindRoleByIdUseCase"
 ## Task 7: FindRolesUseCase (TDD)
 
 **Files:**
-- Create: `apps/api/src/domain/roles/use-cases/find-roles.usecase.spec.ts`
-- Create: `apps/api/src/domain/roles/use-cases/find-roles.usecase.ts`
+- Create: `apps/api/src/application/roles/use-cases/find-roles.usecase.spec.ts`
+- Create: `apps/api/src/application/roles/use-cases/find-roles.usecase.ts`
 
 - [ ] **Step 1: Write the failing spec**
 
@@ -597,7 +597,7 @@ Expected: PASS — 2 tests
 - [ ] **Step 5: Commit**
 
 ```bash
-git add apps/api/src/domain/roles/use-cases/find-roles.usecase.ts apps/api/src/domain/roles/use-cases/find-roles.usecase.spec.ts
+git add apps/api/src/application/roles/use-cases/find-roles.usecase.ts apps/api/src/application/roles/use-cases/find-roles.usecase.spec.ts
 git commit -m "feat(roles): add FindRolesUseCase"
 ```
 
@@ -606,8 +606,8 @@ git commit -m "feat(roles): add FindRolesUseCase"
 ## Task 8: Update AssignRoleUseCase and its spec
 
 **Files:**
-- Modify: `apps/api/src/domain/roles/use-cases/assign-role.usecase.ts`
-- Modify: `apps/api/src/domain/roles/use-cases/assign-role.usecase.spec.ts`
+- Modify: `apps/api/src/application/roles/use-cases/assign-role.usecase.ts`
+- Modify: `apps/api/src/application/roles/use-cases/assign-role.usecase.spec.ts`
 
 - [ ] **Step 1: Rewrite `assign-role.usecase.ts`**
 
@@ -661,7 +661,7 @@ Expected: PASS — 1 test
 - [ ] **Step 4: Commit**
 
 ```bash
-git add apps/api/src/domain/roles/use-cases/assign-role.usecase.ts apps/api/src/domain/roles/use-cases/assign-role.usecase.spec.ts
+git add apps/api/src/application/roles/use-cases/assign-role.usecase.ts apps/api/src/application/roles/use-cases/assign-role.usecase.spec.ts
 git commit -m "refactor(roles): update AssignRoleUseCase to use roleId instead of RoleType"
 ```
 
@@ -676,8 +676,8 @@ git commit -m "refactor(roles): update AssignRoleUseCase to use roleId instead o
 
 ```typescript
 import { Injectable } from "@nestjs/common";
-import { RoleEntity } from "../../../../domain/roles/entities/role.entity";
-import { AssignRoleData, CreateRoleData, RolesRepositoryProps } from "../../../../domain/roles/repositories/roles.repository";
+import { RoleEntity } from "../../../../application/roles/entities/role.entity";
+import { AssignRoleData, CreateRoleData, RolesRepositoryProps } from "../../../../application/roles/repositories/roles.repository";
 import { PrismaService } from "../prisma.service";
 
 @Injectable()
@@ -727,17 +727,17 @@ git commit -m "refactor(roles): update PrismaRolesRepository to implement new co
 `ConfirmEmailUseCase` previously assigned `type: "USER"` (a RoleType) to the user on email confirmation. It now needs to look up the role by name and assign it by ID.
 
 **Files:**
-- Modify: `apps/api/src/domain/users/use-cases/confirm-email.usecase.ts`
+- Modify: `apps/api/src/application/users/use-cases/confirm-email.usecase.ts`
 
 - [ ] **Step 1: Rewrite `confirm-email.usecase.ts`**
 
 ```typescript
 import { Injectable } from "@nestjs/common";
-import { AssignRoleUseCase } from "../../../domain/roles/use-cases/assign-role.usecase";
+import { AssignRoleUseCase } from "../../../application/roles/use-cases/assign-role.usecase";
 import { BadRequestError } from "../../../shared/errors/types/bad-request-error";
 import { UserTokensRepositoryProps } from "../repositories/user-tokens.repository";
 import { UsersRepositoryProps } from "../repositories/users.repository";
-import { RolesRepositoryProps } from "../../../domain/roles/repositories/roles.repository";
+import { RolesRepositoryProps } from "../../../application/roles/repositories/roles.repository";
 
 interface ConfirmEmailInput {
   token: string;
@@ -779,7 +779,7 @@ export class ConfirmEmailUseCase {
 - [ ] **Step 2: Commit**
 
 ```bash
-git add apps/api/src/domain/users/use-cases/confirm-email.usecase.ts
+git add apps/api/src/application/users/use-cases/confirm-email.usecase.ts
 git commit -m "refactor(users): update ConfirmEmailUseCase to assign role by name lookup"
 ```
 
@@ -799,7 +799,7 @@ git commit -m "refactor(users): update ConfirmEmailUseCase to assign role by nam
 ```typescript
 import { CanActivate, ExecutionContext, Injectable } from "@nestjs/common";
 import { Reflector } from "@nestjs/core";
-import { UserEntity } from "../../../domain/users/entities/user.entity";
+import { UserEntity } from "../../../application/users/entities/user.entity";
 import { ROLES_KEY } from "../decorators/roles.decorator";
 
 @Injectable()

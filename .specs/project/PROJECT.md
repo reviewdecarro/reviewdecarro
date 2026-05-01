@@ -16,10 +16,10 @@ A platform for Brazilian car owners to share honest reviews, ratings, and discus
 The project is in **early development**. The foundation is solid:
 - Monorepo structure with Turborepo
 - NestJS API with Clean Architecture
-- Full Prisma schema covering all 5 domains (9 models)
+- Full Prisma schema covering all 5 applications (9 models)
 - JWT authentication working
-- Users domain fully implemented (register, login, find by username)
-- 4 remaining domains (cars, reviews, comments, votes) have schema but no application code
+- Users application fully implemented (register, login, find by username)
+- 4 remaining applications (cars, reviews, comments, votes) have schema but no application code
 
 The web frontend (Next.js) is scaffolding only — no pages or components built yet.
 

@@ -7,11 +7,11 @@ import {
 	ApiUnauthorizedResponse,
 } from "@nestjs/swagger";
 import type { Request, Response } from "express";
-import { LoginDto } from "src/domain/sessions/dtos/login.dto";
-import { RefreshDto } from "src/domain/sessions/dtos/refresh.dto";
-import { LoginUseCase } from "src/domain/sessions/use-cases/login.usecase";
-import { RefreshSessionUseCase } from "src/domain/sessions/use-cases/refresh-session.usecase";
-import { RevokeSessionUseCase } from "src/domain/sessions/use-cases/revoke-session.usecase";
+import { LoginDto } from "src/application/sessions/dtos/login.dto";
+import { RefreshDto } from "src/application/sessions/dtos/refresh.dto";
+import { LoginUseCase } from "src/application/sessions/use-cases/login.usecase";
+import { RefreshSessionUseCase } from "src/application/sessions/use-cases/refresh-session.usecase";
+import { RevokeSessionUseCase } from "src/application/sessions/use-cases/revoke-session.usecase";
 import { IsPublic } from "src/shared/decorators/is-public.decorator";
 
 @ApiTags("Auth")

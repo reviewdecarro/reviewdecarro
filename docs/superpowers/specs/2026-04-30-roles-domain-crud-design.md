@@ -1,4 +1,4 @@
-# Roles Domain CRUD — Design Spec
+# Roles application CRUD — Design Spec
 
 **Date:** 2026-04-30
 **Scope:** Refactor `Role` entity to standalone definition, add `createRole`, `findById`, `findRoles` use cases.
@@ -34,21 +34,21 @@ model Role {
 
 ## Files Changed / Created
 
-### `domain/roles/entities/role.entity.ts`
+### `application/roles/entities/role.entity.ts`
 Replace `type: RoleType` and `userId: string` with:
 - `name: string` (`@Expose()`)
 - `createdAt: Date` (`@Expose()`)
 - `updatedAt: Date` (`@Expose()`)
 
-### `domain/roles/dtos/role.dto.ts` (new)
+### `application/roles/dtos/role.dto.ts` (new)
 - `RoleResponseDto` — exposes `id`, `name`, `createdAt`, `updatedAt`
 - `CreateRoleDto` — `@IsString() @IsNotEmpty() name: string`
 
-### `domain/roles/mappers/role.mapper.ts` (new)
+### `application/roles/mappers/role.mapper.ts` (new)
 - `RolesMapper.toRoleResponseDto(entity: RoleEntity): RoleResponseDto`
 - Uses `plainToInstance` with `excludeExtraneousValues: true`
 
-### `domain/roles/repositories/roles.repository.ts`
+### `application/roles/repositories/roles.repository.ts`
 Replace `assign(data: AssignRoleData)` with:
 - `create(name: string): Promise<RoleEntity>`
 - `findById(id: string): Promise<RoleEntity | null>`
@@ -56,30 +56,30 @@ Replace `assign(data: AssignRoleData)` with:
 - `findByName(name: string): Promise<RoleEntity | null>`
 - `assign(userId: string, roleId: string): Promise<void>` — connects an existing role to a user via the many-to-many
 
-### `domain/roles/repositories/in-memory-roles.repository.ts`
+### `application/roles/repositories/in-memory-roles.repository.ts`
 Implement all new methods using an in-memory array.
 
 ### `infra/database/prisma/repositories/prisma-roles.repository.ts`
 Implement all new methods using Prisma client.
 
-### `domain/roles/use-cases/create-role.usecase.ts` (new)
+### `application/roles/use-cases/create-role.usecase.ts` (new)
 - Input: `CreateRoleDto`
 - Check `findByName(name)` → throw `BadRequestError("Role already exists")` if found
 - Call `repository.create(name)` → return `RolesMapper.toRoleResponseDto(entity)`
 - Spec: test success case + duplicate name case
 
-### `domain/roles/use-cases/find-role-by-id.usecase.ts` (new)
+### `application/roles/use-cases/find-role-by-id.usecase.ts` (new)
 - Input: `id: string`
 - Call `repository.findById(id)` → throw `NotFoundError("Role not found")` if null
 - Return `RolesMapper.toRoleResponseDto(entity)`
 - Spec: test found case + not-found case
 
-### `domain/roles/use-cases/find-roles.usecase.ts` (new)
+### `application/roles/use-cases/find-roles.usecase.ts` (new)
 - No input
 - Call `repository.findAll()` → map each through `RolesMapper.toRoleResponseDto`
 - Spec: test non-empty list + empty list
 
-### `domain/roles/use-cases/assign-role.usecase.ts`
+### `application/roles/use-cases/assign-role.usecase.ts`
 Update to accept `{ userId: string, roleId: string }` instead of `{ userId, type: RoleType }`. Calls `repository.assign(userId, roleId)`.
 
 ---

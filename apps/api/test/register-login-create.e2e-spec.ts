@@ -1,26 +1,19 @@
+import { afterAll, beforeAll, describe, expect, it, jest } from "@jest/globals";
 import { INestApplication, ValidationPipe } from "@nestjs/common";
 import { Test } from "@nestjs/testing";
-import {
-	afterAll,
-	beforeAll,
-	describe,
-	expect,
-	it,
-	jest,
-} from "@jest/globals";
 import request from "supertest";
 import { App } from "supertest/types";
 import { AppModule } from "../src/app.module";
-import { InMemoryReviewsRepository } from "../src/domain/reviews/repositories/in-memory-reviews.repository";
-import { ReviewsRepositoryProps } from "../src/domain/reviews/repositories/reviews.repository";
-import { InMemoryVersionsRepository } from "../src/domain/cars/repositories/in-memory-versions.repository";
-import { VersionsRepositoryProps } from "../src/domain/cars/repositories/versions.repository";
-import { InMemoryRolesRepository } from "../src/domain/roles/repositories/in-memory-roles.repository";
-import { RolesRepositoryProps } from "../src/domain/roles/repositories/roles.repository";
-import { InMemoryUserTokensRepository } from "../src/domain/users/repositories/in-memory-user-tokens.repository";
-import { UserTokensRepositoryProps } from "../src/domain/users/repositories/user-tokens.repository";
-import { InMemoryUsersRepository } from "../src/domain/users/repositories/in-memory-users.repository";
-import { UsersRepositoryProps } from "../src/domain/users/repositories/users.repository";
+import { InMemoryVersionsRepository } from "../src/application/cars/repositories/in-memory-versions.repository";
+import { VersionsRepositoryProps } from "../src/application/cars/repositories/versions.repository";
+import { InMemoryReviewsRepository } from "../src/application/reviews/repositories/in-memory-reviews.repository";
+import { ReviewsRepositoryProps } from "../src/application/reviews/repositories/reviews.repository";
+import { InMemoryRolesRepository } from "../src/application/roles/repositories/in-memory-roles.repository";
+import { RolesRepositoryProps } from "../src/application/roles/repositories/roles.repository";
+import { InMemoryUserTokensRepository } from "../src/application/users/repositories/in-memory-user-tokens.repository";
+import { InMemoryUsersRepository } from "../src/application/users/repositories/in-memory-users.repository";
+import { UserTokensRepositoryProps } from "../src/application/users/repositories/user-tokens.repository";
+import { UsersRepositoryProps } from "../src/application/users/repositories/users.repository";
 import { PrismaService } from "../src/infra/database/prisma/prisma.service";
 import { BadRequestInterceptor } from "../src/shared/errors/interceptors/bad-request.interceptor";
 

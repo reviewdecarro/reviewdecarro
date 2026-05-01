@@ -3,10 +3,10 @@
 ## Technical Debt
 
 ### 1. `@repo/api` package contains unrelated scaffolding
-The shared `packages/api` package exports Link entity/DTOs (from Turborepo template), which have no relation to the ReviewDeCarro domain. Should be cleaned up or repurposed for shared API types.
+The shared `packages/api` package exports Link entity/DTOs (from Turborepo template), which have no relation to the ReviewDeCarro application. Should be cleaned up or repurposed for shared API types.
 
-### 2. Single HttpModule for all domains
-`http.module.ts` registers all controllers and use-case providers in one module. As domains grow (cars, reviews, comments, votes), this will become unwieldy. Consider per-domain NestJS modules.
+### 2. Single HttpModule for all applications
+`http.module.ts` registers all controllers and use-case providers in one module. As applications grow (cars, reviews, comments, votes), this will become unwieldy. Consider per-application NestJS modules.
 
 ### 3. No controller tests
 Controllers have zero test coverage. Business logic is tested via use-case specs, but HTTP-layer behavior (status codes, response shapes, guard interactions) is untested.
@@ -18,7 +18,7 @@ The E2E test directory and config exist but no actual tests. Critical flows (reg
 `jwt.constants.ts` has a fallback `"default-secret-change-me"` — safe for dev but risky if `.env` is misconfigured in production.
 
 ### 6. Only BadRequestError exists
-The error system only has `BadRequestError`. As domains grow, `NotFoundError`, `UnauthorizedError`, `ConflictError` etc. will be needed, each with a corresponding interceptor or a unified error interceptor.
+The error system only has `BadRequestError`. As applications grow, `NotFoundError`, `UnauthorizedError`, `ConflictError` etc. will be needed, each with a corresponding interceptor or a unified error interceptor.
 
 ## Architectural Risks
 
@@ -29,7 +29,7 @@ The `Role` model exists in Prisma with ADMIN/USER types, but no role-checking gu
 The controller response says "Um e-mail de confirmação foi enviado" but no email service exists.
 
 ### 9. DatabaseModule binds only UsersRepository
-As new domains are built, each abstract repository needs to be added to `DatabaseModule`. Easy to forget.
+As new applications are built, each abstract repository needs to be added to `DatabaseModule`. Easy to forget.
 
 ## Low Priority
 
@@ -37,4 +37,4 @@ As new domains are built, each abstract repository needs to be added to `Databas
 Both ESLint and Biome are installed. Unclear which is primary — could cause conflicting rules.
 
 ### 11. `@repo/api` not used by the API app
-The shared types package exists but the API doesn't import from it — types live directly in the domain layer.
+The shared types package exists but the API doesn't import from it — types live directly in the application layer.

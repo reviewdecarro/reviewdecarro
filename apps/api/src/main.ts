@@ -27,8 +27,11 @@ async function bootstrap() {
 	SwaggerModule.setup("api/docs", app, document);
 
 	app.enableCors();
-	app.useGlobalInterceptors(new BadRequestInterceptor(), new NotFoundInterceptor());
-	await app.listen(3000);
+	app.useGlobalInterceptors(
+		new BadRequestInterceptor(),
+		new NotFoundInterceptor(),
+	);
+	await app.listen(3333);
 }
 
 void bootstrap();

@@ -1,9 +1,9 @@
 import { Injectable } from "@nestjs/common";
-import { SessionEntity } from "../../../../domain/sessions/entities/session.entity";
+import { SessionEntity } from "../../../../application/sessions/entities/session.entity";
 import type {
 	CreateSessionData,
 	SessionsRepositoryProps,
-} from "../../../../domain/sessions/repositories/sessions.repository";
+} from "../../../../application/sessions/repositories/sessions.repository";
 import { PrismaService } from "../prisma.service";
 
 @Injectable()

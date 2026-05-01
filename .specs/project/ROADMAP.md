@@ -1,12 +1,12 @@
 # Roadmap
 
-## Milestone 1: Core API — Domain CRUD ✦ Current Focus
+## Milestone 1: Core API — application CRUD ✦ Current Focus
 
-Build out the 4 remaining API domains following the established users pattern.
+Build out the 4 remaining API applications following the established users pattern.
 
 ### Features
 
-| ID | Feature | Domain | Depends On | Size | Status |
+| ID | Feature | application | Depends On | Size | Status |
 |----|---------|--------|------------|------|--------|
 | F1 | Car catalog management (Brand, Model, CarVersion CRUD) | cars | — | Large | Not started |
 | F2 | Review creation and retrieval | reviews | F1 | Large | Not started |

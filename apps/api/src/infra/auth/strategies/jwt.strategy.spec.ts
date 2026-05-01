@@ -1,9 +1,9 @@
 import { beforeEach, describe, expect, it, jest } from "@jest/globals";
 import { UnauthorizedException } from "@nestjs/common";
-import { SessionEntity } from "../../../domain/sessions/entities/session.entity";
-import { SessionsRepositoryProps } from "../../../domain/sessions/repositories/sessions.repository";
-import { UserEntity } from "../../../domain/users/entities/user.entity";
-import { UsersRepositoryProps } from "../../../domain/users/repositories/users.repository";
+import { SessionEntity } from "../../../application/sessions/entities/session.entity";
+import { SessionsRepositoryProps } from "../../../application/sessions/repositories/sessions.repository";
+import { UserEntity } from "../../../application/users/entities/user.entity";
+import { UsersRepositoryProps } from "../../../application/users/repositories/users.repository";
 import { JwtStrategy } from "./jwt.strategy";
 
 const mockSessionsRepository: jest.Mocked<

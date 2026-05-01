@@ -9,7 +9,7 @@
 - Sensitive fields (e.g. `passwordHash`) use `@Exclude()`
 
 ### Repositories
-- Abstract class in `domain/<module>/repositories/` defining the contract
+- Abstract class in `application/<module>/repositories/` defining the contract
 - Prisma implementation in `infra/database/prisma/repositories/`
 - Bound via NestJS DI in `DatabaseModule` using `{ provide: AbstractClass, useClass: PrismaImpl }`
 - No `readonly` on constructor-injected dependencies
@@ -31,7 +31,7 @@
 - No definite assignment (`!`) needed — `strictPropertyInitialization` disabled
 
 ### Controllers
-- Live in `infra/http/controllers/<domain>/`
+- Live in `infra/http/controllers/<application>/`
 - Inject use cases (not repositories)
 - Use `@IsPublic()` for unauthenticated routes
 - Use `@LoggedInUser()` to get authenticated user
@@ -40,8 +40,8 @@
 ## Naming
 - Files: `kebab-case` with suffix: `.usecase.ts`, `.entity.ts`, `.dto.ts`, `.mapper.ts`, `.spec.ts`
 - Classes: `PascalCase` — `CreateUserUseCase`, `UserEntity`, `UsersRepositoryProps`
-- Repository abstract classes: `<Domain>RepositoryProps`
-- Prisma implementations: `Prisma<Domain>Repository`
+- Repository abstract classes: `<application>RepositoryProps`
+- Prisma implementations: `Prisma<application>Repository`
 
 ## Git
 - Conventional commits: `feat:`, `fix:`, `chore:`, `refactor:`, etc.

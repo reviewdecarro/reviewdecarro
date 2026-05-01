@@ -18,18 +18,18 @@ import {
 	ApiTags,
 } from "@nestjs/swagger";
 import type { Response } from "express";
-import { CreateBrandDto } from "src/domain/cars/dtos/create-brand.dto";
-import { CreateModelDto } from "src/domain/cars/dtos/create-model.dto";
-import { CreateVersionDto } from "src/domain/cars/dtos/create-version.dto";
-import { CreateBrandUseCase } from "src/domain/cars/use-cases/create-brand.usecase";
-import { CreateModelUseCase } from "src/domain/cars/use-cases/create-model.usecase";
-import { CreateVersionUseCase } from "src/domain/cars/use-cases/create-version.usecase";
-import { GetBrandUseCase } from "src/domain/cars/use-cases/get-brand.usecase";
-import { GetModelUseCase } from "src/domain/cars/use-cases/get-model.usecase";
-import { GetVersionUseCase } from "src/domain/cars/use-cases/get-version.usecase";
-import { ListBrandsUseCase } from "src/domain/cars/use-cases/list-brands.usecase";
-import { ListModelsUseCase } from "src/domain/cars/use-cases/list-models.usecase";
-import { ListVersionsUseCase } from "src/domain/cars/use-cases/list-versions.usecase";
+import { CreateBrandDto } from "src/application/cars/dtos/create-brand.dto";
+import { CreateModelDto } from "src/application/cars/dtos/create-model.dto";
+import { CreateVersionDto } from "src/application/cars/dtos/create-version.dto";
+import { CreateBrandUseCase } from "src/application/cars/use-cases/create-brand.usecase";
+import { CreateModelUseCase } from "src/application/cars/use-cases/create-model.usecase";
+import { CreateVersionUseCase } from "src/application/cars/use-cases/create-version.usecase";
+import { GetBrandUseCase } from "src/application/cars/use-cases/get-brand.usecase";
+import { GetModelUseCase } from "src/application/cars/use-cases/get-model.usecase";
+import { GetVersionUseCase } from "src/application/cars/use-cases/get-version.usecase";
+import { ListBrandsUseCase } from "src/application/cars/use-cases/list-brands.usecase";
+import { ListModelsUseCase } from "src/application/cars/use-cases/list-models.usecase";
+import { ListVersionsUseCase } from "src/application/cars/use-cases/list-versions.usecase";
 import { Roles } from "src/infra/auth/decorators/roles.decorator";
 import { IsPublic } from "src/shared/decorators/is-public.decorator";
 

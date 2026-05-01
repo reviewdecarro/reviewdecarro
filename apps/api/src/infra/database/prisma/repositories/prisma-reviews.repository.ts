@@ -2,9 +2,9 @@ import { Injectable } from "@nestjs/common";
 import {
 	CreateReviewDto,
 	UpdateReviewDto,
-} from "../../../../domain/reviews/dtos/create-review.dto";
-import { ReviewEntity } from "../../../../domain/reviews/entities/review.entity";
-import { ReviewsRepositoryProps } from "../../../../domain/reviews/repositories/reviews.repository";
+} from "../../../../application/reviews/dtos/create-review.dto";
+import { ReviewEntity } from "../../../../application/reviews/entities/review.entity";
+import { ReviewsRepositoryProps } from "../../../../application/reviews/repositories/reviews.repository";
 import { PrismaService } from "../prisma.service";
 
 @Injectable()

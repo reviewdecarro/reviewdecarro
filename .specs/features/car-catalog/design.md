@@ -7,7 +7,7 @@
 
 ## Architecture Overview
 
-The car catalog follows the same Clean Architecture pattern as the users domain. New additions: a `Slug` value object in the shared layer and an `AdminOnly` guard in the auth layer.
+The car catalog follows the same Clean Architecture pattern as the users application. New additions: a `Slug` value object in the shared layer and an `AdminOnly` guard in the auth layer.
 
 ```
                     ┌──────────────────────────────┐
@@ -65,11 +65,11 @@ The `JwtStrategy.validate()` currently returns a `UserEntity` without roles. For
 
 | Component | Location | How to Use |
 |-----------|----------|------------|
-| UserEntity pattern | `domain/users/entities/user.entity.ts` | Same `Partial<T>` + `Object.assign` + class-transformer pattern |
-| UsersRepositoryProps pattern | `domain/users/repositories/users.repository.ts` | Same abstract class pattern for 3 new repos |
+| UserEntity pattern | `application/users/entities/user.entity.ts` | Same `Partial<T>` + `Object.assign` + class-transformer pattern |
+| UsersRepositoryProps pattern | `application/users/repositories/users.repository.ts` | Same abstract class pattern for 3 new repos |
 | PrismaUsersRepository pattern | `infra/database/prisma/repositories/prisma-users.repository.ts` | Same Prisma implementation pattern |
-| toUserResponseDto pattern | `domain/users/mappers/user.mapper.ts` | Same `plainToInstance` mapper pattern |
-| CreateUserDto pattern | `domain/users/dtos/create-user.dto.ts` | Same class-validator DTO pattern |
+| toUserResponseDto pattern | `application/users/mappers/user.mapper.ts` | Same `plainToInstance` mapper pattern |
+| CreateUserDto pattern | `application/users/dtos/create-user.dto.ts` | Same class-validator DTO pattern |
 | UsersController pattern | `infra/http/controllers/users/users.controller.ts` | Same controller + Swagger + @IsPublic pattern |
 | @IsPublic decorator | `shared/decorators/is-public.decorator.ts` | Reuse as-is for GET endpoints |
 | JwtAuthGuard | `infra/auth/guards/jwt-auth.guard.ts` | Reference pattern for RolesGuard |
@@ -101,7 +101,7 @@ The `JwtStrategy.validate()` currently returns a `UserEntity` without roles. For
 
 ### NotFoundError + Interceptor
 
-- **Purpose**: Map "not found" domain errors to 404 HTTP responses
+- **Purpose**: Map "not found" application errors to 404 HTTP responses
 - **Location**: `src/shared/errors/types/not-found-error.ts`, `src/shared/errors/interceptors/not-found.interceptor.ts`
 - **Interfaces**: Same pattern as `BadRequestError` / `BadRequestInterceptor`
 - **Dependencies**: `@nestjs/common`
@@ -119,8 +119,8 @@ The `JwtStrategy.validate()` currently returns a `UserEntity` without roles. For
 
 ### RoleEntity
 
-- **Purpose**: Domain entity for user roles
-- **Location**: `src/domain/users/entities/role.entity.ts`
+- **Purpose**: application entity for user roles
+- **Location**: `src/application/users/entities/role.entity.ts`
 - **Interfaces**: `implements RoleModel` — id, type, userId
 - **Dependencies**: `RoleModel` from `prisma/generated/models/Role`
 - **Reuses**: `UserEntity` pattern
@@ -128,31 +128,31 @@ The `JwtStrategy.validate()` currently returns a `UserEntity` without roles. For
 ### UserEntity Update
 
 - **Purpose**: Add `roles` relation to existing UserEntity
-- **Location**: `src/domain/users/entities/user.entity.ts`
+- **Location**: `src/application/users/entities/user.entity.ts`
 - **Change**: Add `@Expose() roles?: RoleEntity[]` property
 
 ---
 
 ### BrandEntity
 
-- **Purpose**: Domain entity for car brands
-- **Location**: `src/domain/cars/entities/brand.entity.ts`
+- **Purpose**: application entity for car brands
+- **Location**: `src/application/cars/entities/brand.entity.ts`
 - **Interfaces**: `implements BrandModel` — id, name, slug, createdAt
 - **Dependencies**: `BrandModel` from `prisma/generated/models/Brand`
 - **Reuses**: `UserEntity` pattern
 
 ### ModelEntity
 
-- **Purpose**: Domain entity for car models
-- **Location**: `src/domain/cars/entities/model.entity.ts`
+- **Purpose**: application entity for car models
+- **Location**: `src/application/cars/entities/model.entity.ts`
 - **Interfaces**: `implements ModelModel` — id, name, slug, brandId, createdAt
 - **Dependencies**: `ModelModel` from `prisma/generated/models/Model`
 - **Reuses**: `UserEntity` pattern
 
 ### CarVersionEntity
 
-- **Purpose**: Domain entity for car versions
-- **Location**: `src/domain/cars/entities/car-version.entity.ts`
+- **Purpose**: application entity for car versions
+- **Location**: `src/application/cars/entities/car-version.entity.ts`
 - **Interfaces**: `implements CarVersionModel` — id, modelId, year, versionName, engine, transmission, slug, createdAt
 - **Dependencies**: `CarVersionModel` from `prisma/generated/models/CarVersion`
 - **Reuses**: `UserEntity` pattern
@@ -162,7 +162,7 @@ The `JwtStrategy.validate()` currently returns a `UserEntity` without roles. For
 ### BrandsRepositoryProps
 
 - **Purpose**: Abstract repository for brand data access
-- **Location**: `src/domain/cars/repositories/brands.repository.ts`
+- **Location**: `src/application/cars/repositories/brands.repository.ts`
 - **Interfaces**:
   - `create(data: CreateBrandDto): Promise<BrandEntity>`
   - `findAll(): Promise<BrandEntity[]>`
@@ -176,7 +176,7 @@ The `JwtStrategy.validate()` currently returns a `UserEntity` without roles. For
 ### ModelsRepositoryProps
 
 - **Purpose**: Abstract repository for model data access
-- **Location**: `src/domain/cars/repositories/models.repository.ts`
+- **Location**: `src/application/cars/repositories/models.repository.ts`
 - **Interfaces**:
   - `create(data: CreateModelDto): Promise<ModelEntity>`
   - `findAllByBrand(brandId: string): Promise<ModelEntity[]>`
@@ -191,7 +191,7 @@ The `JwtStrategy.validate()` currently returns a `UserEntity` without roles. For
 ### CarVersionsRepositoryProps
 
 - **Purpose**: Abstract repository for car version data access
-- **Location**: `src/domain/cars/repositories/car-versions.repository.ts`
+- **Location**: `src/application/cars/repositories/car-versions.repository.ts`
 - **Interfaces**:
   - `create(data: CreateCarVersionDto): Promise<CarVersionEntity>`
   - `findAllByModel(modelId: string): Promise<CarVersionEntity[]>`
@@ -225,7 +225,7 @@ The `JwtStrategy.validate()` currently returns a `UserEntity` without roles. For
 
 ### Use Cases (15 total: 5 per entity)
 
-Each follows the `CreateUserUseCase` pattern: `@Injectable()`, single `execute()` method, throws domain errors.
+Each follows the `CreateUserUseCase` pattern: `@Injectable()`, single `execute()` method, throws application errors.
 
 **Brands (5):**
 - `CreateBrandUseCase` — validates no duplicate slug, calls `Slug.create()`, creates brand

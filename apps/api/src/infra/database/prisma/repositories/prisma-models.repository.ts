@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
-import type { CreateModelDto } from "../../../../domain/cars/dtos/create-model.dto";
-import { CarModelEntity } from "../../../../domain/cars/entities/car-model.entity";
-import type { ModelsRepositoryProps } from "../../../../domain/cars/repositories/models.repository";
+import type { CreateModelDto } from "../../../../application/cars/dtos/create-model.dto";
+import { CarModelEntity } from "../../../../application/cars/entities/car-model.entity";
+import type { ModelsRepositoryProps } from "../../../../application/cars/repositories/models.repository";
 import { PrismaService } from "../prisma.service";
 
 @Injectable()

@@ -1,9 +1,9 @@
 import { Injectable } from "@nestjs/common";
-import { UserTokenEntity } from "../../../../domain/users/entities/user-token.entity";
+import { UserTokenEntity } from "../../../../application/users/entities/user-token.entity";
 import {
 	CreateUserTokenData,
 	UserTokensRepositoryProps,
-} from "../../../../domain/users/repositories/user-tokens.repository";
+} from "../../../../application/users/repositories/user-tokens.repository";
 import { PrismaService } from "../prisma.service";
 
 @Injectable()

@@ -10,7 +10,10 @@ import { NotFoundError } from "../types/not-found-error";
 
 @Injectable()
 export class NotFoundInterceptor implements NestInterceptor {
-	intercept(_context: ExecutionContext, next: CallHandler): Observable<unknown> {
+	intercept(
+		_context: ExecutionContext,
+		next: CallHandler,
+	): Observable<unknown> {
 		return next.handle().pipe(
 			catchError((error) => {
 				if (error instanceof NotFoundError) {

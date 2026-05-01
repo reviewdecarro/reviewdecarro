@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
-import type { CreateBrandDto } from "../../../../domain/cars/dtos/create-brand.dto";
-import { BrandEntity } from "../../../../domain/cars/entities/brand.entity";
-import type { BrandsRepositoryProps } from "../../../../domain/cars/repositories/brands.repository";
+import type { CreateBrandDto } from "../../../../application/cars/dtos/create-brand.dto";
+import { BrandEntity } from "../../../../application/cars/entities/brand.entity";
+import type { BrandsRepositoryProps } from "../../../../application/cars/repositories/brands.repository";
 import { PrismaService } from "../prisma.service";
 
 @Injectable()

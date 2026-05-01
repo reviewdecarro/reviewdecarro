@@ -21,16 +21,16 @@ Turborepo monorepo with Clean Architecture in the API layer. The web frontend is
 ├──────────────────────────────────────────────┤
 │              infra/auth (Guards/JWT)          │  ← Auth adapter
 ├──────────────────────────────────────────────┤
-│              domain/* (Use Cases/Entities)    │  ← Business logic
+│              application/* (Use Cases/Entities)    │  ← Business logic
 ├──────────────────────────────────────────────┤
 │              infra/database (Prisma repos)    │  ← Data adapter
 └──────────────────────────────────────────────┘
 ```
 
 ### Dependency Flow
-- Controllers → Use Cases → Repository abstractions (domain layer)
+- Controllers → Use Cases → Repository abstractions (application layer)
 - Prisma implementations (infra) → injected into abstract repositories via NestJS DI
-- Use cases throw domain errors (`BadRequestError`) → global interceptor maps to HTTP exceptions
+- Use cases throw application errors (`BadRequestError`) → global interceptor maps to HTTP exceptions
 
 ### Module Wiring
 - `AppModule` imports `ConfigModule` (global) + `HttpModule`
@@ -51,11 +51,11 @@ Request → ValidationPipe (global) → JwtAuthGuard (global) → Controller →
 Response ← BadRequestInterceptor (global) ← Controller ← UseCase (throws BadRequestError)
 ```
 
-## Domain Boundaries
+## application Boundaries
 
-Five domains defined in Prisma schema, one implemented:
+Five applications defined in Prisma schema, one implemented:
 
-| Domain   | Models                      | Status        |
+| application   | Models                      | Status        |
 |----------|-----------------------------|---------------|
 | Users    | User, Role                  | Implemented   |
 | Cars     | Brand, Model, CarVersion    | Schema only   |
@@ -63,4 +63,4 @@ Five domains defined in Prisma schema, one implemented:
 | Comments | Comment                     | Schema only   |
 | Votes    | ReviewVote                  | Schema only   |
 
-Empty domain directories exist for cars, reviews, comments, votes — ready for implementation.
+Empty application directories exist for cars, reviews, comments, votes — ready for implementation.
