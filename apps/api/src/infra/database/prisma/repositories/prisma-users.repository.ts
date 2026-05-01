@@ -1,8 +1,8 @@
 import { Injectable } from "@nestjs/common";
-import { RoleEntity } from "../../../../domain/roles/entities/role.entity";
-import type { CreateUserDto } from "../../../../domain/users/dtos/create-user.dto";
-import { UserEntity } from "../../../../domain/users/entities/user.entity";
-import type { UsersRepositoryProps } from "../../../../domain/users/repositories/users.repository";
+import { RoleEntity } from "../../../../application/roles/entities/role.entity";
+import type { CreateUserDto } from "../../../../application/users/dtos/create-user.dto";
+import { UserEntity } from "../../../../application/users/entities/user.entity";
+import type { UsersRepositoryProps } from "../../../../application/users/repositories/users.repository";
 import { PrismaService } from "../prisma.service";
 
 @Injectable()

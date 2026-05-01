@@ -17,15 +17,15 @@ import {
 	ApiTags,
 } from "@nestjs/swagger";
 import type { Response } from "express";
-import { ConfirmEmailDto } from "src/domain/users/dtos/confirm-email.dto";
-import { CreateUserDto } from "src/domain/users/dtos/create-user.dto";
-import { ForgotPasswordDto } from "src/domain/users/dtos/forgot-password.dto";
-import { ResetPasswordDto } from "src/domain/users/dtos/reset-password.dto";
-import { ConfirmEmailUseCase } from "src/domain/users/use-cases/confirm-email.usecase";
-import { CreateUserUseCase } from "src/domain/users/use-cases/create-user.usecase";
-import { FindUserByUsernameUseCase } from "src/domain/users/use-cases/find-user-by-username.usecase";
-import { ResetUserPasswordUseCase } from "src/domain/users/use-cases/reset-user-password.usecase";
-import { SendForgotPasswordEmailUseCase } from "src/domain/users/use-cases/send-forgot-password-email.usecase";
+import { ConfirmEmailDto } from "src/application/users/dtos/confirm-email.dto";
+import { CreateUserDto } from "src/application/users/dtos/create-user.dto";
+import { ForgotPasswordDto } from "src/application/users/dtos/forgot-password.dto";
+import { ResetPasswordDto } from "src/application/users/dtos/reset-password.dto";
+import { ConfirmEmailUseCase } from "src/application/users/use-cases/confirm-email.usecase";
+import { CreateUserUseCase } from "src/application/users/use-cases/create-user.usecase";
+import { FindUserByUsernameUseCase } from "src/application/users/use-cases/find-user-by-username.usecase";
+import { ResetUserPasswordUseCase } from "src/application/users/use-cases/reset-user-password.usecase";
+import { SendForgotPasswordEmailUseCase } from "src/application/users/use-cases/send-forgot-password-email.usecase";
 import { IsPublic } from "src/shared/decorators/is-public.decorator";
 import { RegisterUserResponse, ShowProfileResponse } from "./response.props";
 

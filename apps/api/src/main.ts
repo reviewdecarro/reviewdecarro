@@ -3,6 +3,7 @@ import { NestFactory } from "@nestjs/core";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import { AppModule } from "./app.module";
 import { BadRequestInterceptor } from "./shared/errors/interceptors/bad-request.interceptor";
+import { NotFoundInterceptor } from "./shared/errors/interceptors/not-found.interceptor";
 
 async function bootstrap() {
 	const app = await NestFactory.create(AppModule);
@@ -26,8 +27,11 @@ async function bootstrap() {
 	SwaggerModule.setup("api/docs", app, document);
 
 	app.enableCors();
-	app.useGlobalInterceptors(new BadRequestInterceptor());
-	await app.listen(3000);
+	app.useGlobalInterceptors(
+		new BadRequestInterceptor(),
+		new NotFoundInterceptor(),
+	);
+	await app.listen(3333);
 }
 
 void bootstrap();

@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { VoteType } from "../../../../../prisma/generated/enums";
-import { ReviewVoteEntity } from "../../../../domain/votes/entities/review-vote.entity";
-import { VotesRepositoryProps } from "../../../../domain/votes/repositories/votes.repository";
+import { ReviewVoteEntity } from "../../../../application/votes/entities/review-vote.entity";
+import { VotesRepositoryProps } from "../../../../application/votes/repositories/votes.repository";
 import { PrismaService } from "../prisma.service";
 
 @Injectable()

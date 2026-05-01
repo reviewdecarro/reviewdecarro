@@ -13,7 +13,7 @@ reviewdecarro/
 │   │   ├── src/
 │   │   │   ├── main.ts          # Bootstrap, global pipes/interceptors/swagger
 │   │   │   ├── app.module.ts    # Root module (ConfigModule + HttpModule)
-│   │   │   ├── domain/          # Business logic per domain
+│   │   │   ├── application/          # Business logic per application
 │   │   │   ├── infra/           # Adapters (http, auth, database)
 │   │   │   └── shared/          # Cross-cutting (decorators, errors)
 │   │   └── test/                # E2E tests
@@ -32,7 +32,7 @@ reviewdecarro/
 
 ```
 src/
-├── domain/
+├── application/
 │   ├── users/                   # ✅ Implemented
 │   │   ├── dtos/                # CreateUserDto, LoginUserDto, UserResponseDto
 │   │   ├── entities/            # UserEntity

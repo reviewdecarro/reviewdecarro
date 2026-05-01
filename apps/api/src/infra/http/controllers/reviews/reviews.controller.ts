@@ -24,14 +24,14 @@ import { Response } from "express";
 import {
 	CreateReviewDto,
 	UpdateReviewDto,
-} from "src/domain/reviews/dtos/create-review.dto";
-import { CreateReviewUseCase } from "src/domain/reviews/use-cases/create-review.usecase";
-import { DeleteReviewUseCase } from "src/domain/reviews/use-cases/delete-review.usecase";
-import { GetReviewUseCase } from "src/domain/reviews/use-cases/get-review.usecase";
-import { GetReviewBySlugUseCase } from "src/domain/reviews/use-cases/get-review-by-slug.usecase";
-import { ListReviewsUseCase } from "src/domain/reviews/use-cases/list-reviews.usecase";
-import { UpdateReviewUseCase } from "src/domain/reviews/use-cases/update-review.usecase";
-import { UserEntity } from "src/domain/users/entities/user.entity";
+} from "src/application/reviews/dtos/create-review.dto";
+import { CreateReviewUseCase } from "src/application/reviews/use-cases/create-review.usecase";
+import { DeleteReviewUseCase } from "src/application/reviews/use-cases/delete-review.usecase";
+import { GetReviewUseCase } from "src/application/reviews/use-cases/get-review.usecase";
+import { GetReviewBySlugUseCase } from "src/application/reviews/use-cases/get-review-by-slug.usecase";
+import { ListReviewsUseCase } from "src/application/reviews/use-cases/list-reviews.usecase";
+import { UpdateReviewUseCase } from "src/application/reviews/use-cases/update-review.usecase";
+import { UserEntity } from "src/application/users/entities/user.entity";
 import { IsPublic } from "src/shared/decorators/is-public.decorator";
 import { LoggedInUser } from "src/shared/decorators/logged-in.decorator";
 

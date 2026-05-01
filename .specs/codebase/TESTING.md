@@ -25,10 +25,10 @@ pnpm test:e2e                                # E2E tests
 
 | File | Has Tests |
 |------|-----------|
-| domain/users/use-cases/create-user.usecase.ts | ✅ |
-| domain/users/use-cases/authenticate-user.usecase.ts | ✅ |
-| domain/users/use-cases/find-user-by-username.usecase.ts | ✅ |
-| domain/users/mappers/user.mapper.ts | ✅ |
+| application/users/use-cases/create-user.usecase.ts | ✅ |
+| application/users/use-cases/authenticate-user.usecase.ts | ✅ |
+| application/users/use-cases/find-user-by-username.usecase.ts | ✅ |
+| application/users/mappers/user.mapper.ts | ✅ |
 | infra/auth/auth.service.ts | ✅ |
 | infra/auth/strategies/jwt.strategy.ts | ✅ |
 

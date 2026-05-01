@@ -17,10 +17,10 @@ import {
 	ApiTags,
 } from "@nestjs/swagger";
 import { Response } from "express";
-import { UserEntity } from "src/domain/users/entities/user.entity";
-import { UpsertVoteDto } from "src/domain/votes/dtos/upsert-vote.dto";
-import { DeleteVoteUseCase } from "src/domain/votes/use-cases/delete-vote.usecase";
-import { UpsertVoteUseCase } from "src/domain/votes/use-cases/upsert-vote.usecase";
+import { UserEntity } from "src/application/users/entities/user.entity";
+import { UpsertVoteDto } from "src/application/votes/dtos/upsert-vote.dto";
+import { DeleteVoteUseCase } from "src/application/votes/use-cases/delete-vote.usecase";
+import { UpsertVoteUseCase } from "src/application/votes/use-cases/upsert-vote.usecase";
 import { LoggedInUser } from "src/shared/decorators/logged-in.decorator";
 
 @ApiTags("Votes")

@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
-import type { CreateModelDto } from "../../../../domain/cars/dtos/create-model.dto";
-import { CarModelEntity } from "../../../../domain/cars/entities/car-model.entity";
-import type { ModelsRepositoryProps } from "../../../../domain/cars/repositories/models.repository";
+import type { CreateModelDto } from "../../../../application/cars/dtos/create-model.dto";
+import { CarModelEntity } from "../../../../application/cars/entities/car-model.entity";
+import type { ModelsRepositoryProps } from "../../../../application/cars/repositories/models.repository";
 import { PrismaService } from "../prisma.service";
 
 @Injectable()
@@ -35,6 +35,20 @@ export class PrismaModelsRepository implements ModelsRepositoryProps {
 	): Promise<CarModelEntity | null> {
 		const model = await this.prisma.model.findUnique({
 			where: { brandId_slug: { brandId, slug } },
+		});
+
+		if (!model) return null;
+
+		return new CarModelEntity(model);
+	}
+
+	async findByBrandIdAndSlugWithVersions(
+		brandId: string,
+		slug: string,
+	): Promise<CarModelEntity | null> {
+		const model = await this.prisma.model.findUnique({
+			where: { brandId_slug: { brandId, slug } },
+			include: { carVersions: { orderBy: { year: "desc" } } },
 		});
 
 		if (!model) return null;
