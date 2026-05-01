@@ -1,9 +1,12 @@
 {
-	"extends": "@repo/typescript-config/nestjs.json",
-	"compilerOptions": {
-		"baseUrl": "./",
-		"outDir": "./dist",
-		"strictNullChecks": true,
-		"strictPropertyInitialization": false,
-	}
+  "extends": "@repo/typescript-config/nestjs.json",
+  "compilerOptions": {
+    "baseUrl": "./",
+    "outDir": "./dist",
+    "strictNullChecks": true,
+    "strictPropertyInitialization": false,
+    "paths": {
+      "@infra/*": ["src/infra/*"]
+    }
+  }
 }

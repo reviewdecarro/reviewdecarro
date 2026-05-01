@@ -43,6 +43,7 @@ export type ReviewMinAggregateOutputType = {
   userId: string | null
   carVersionId: string | null
   title: string | null
+  slug: string | null
   content: string | null
   pros: string | null
   cons: string | null
@@ -58,6 +59,7 @@ export type ReviewMaxAggregateOutputType = {
   userId: string | null
   carVersionId: string | null
   title: string | null
+  slug: string | null
   content: string | null
   pros: string | null
   cons: string | null
@@ -73,6 +75,7 @@ export type ReviewCountAggregateOutputType = {
   userId: number
   carVersionId: number
   title: number
+  slug: number
   content: number
   pros: number
   cons: number
@@ -102,6 +105,7 @@ export type ReviewMinAggregateInputType = {
   userId?: true
   carVersionId?: true
   title?: true
+  slug?: true
   content?: true
   pros?: true
   cons?: true
@@ -117,6 +121,7 @@ export type ReviewMaxAggregateInputType = {
   userId?: true
   carVersionId?: true
   title?: true
+  slug?: true
   content?: true
   pros?: true
   cons?: true
@@ -132,6 +137,7 @@ export type ReviewCountAggregateInputType = {
   userId?: true
   carVersionId?: true
   title?: true
+  slug?: true
   content?: true
   pros?: true
   cons?: true
@@ -234,6 +240,7 @@ export type ReviewGroupByOutputType = {
   userId: string
   carVersionId: string
   title: string
+  slug: string
   content: string
   pros: string | null
   cons: string | null
@@ -272,6 +279,7 @@ export type ReviewWhereInput = {
   userId?: Prisma.StringFilter<"Review"> | string
   carVersionId?: Prisma.StringFilter<"Review"> | string
   title?: Prisma.StringFilter<"Review"> | string
+  slug?: Prisma.StringFilter<"Review"> | string
   content?: Prisma.StringFilter<"Review"> | string
   pros?: Prisma.StringNullableFilter<"Review"> | string | null
   cons?: Prisma.StringNullableFilter<"Review"> | string | null
@@ -292,6 +300,7 @@ export type ReviewOrderByWithRelationInput = {
   userId?: Prisma.SortOrder
   carVersionId?: Prisma.SortOrder
   title?: Prisma.SortOrder
+  slug?: Prisma.SortOrder
   content?: Prisma.SortOrder
   pros?: Prisma.SortOrderInput | Prisma.SortOrder
   cons?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -309,6 +318,7 @@ export type ReviewOrderByWithRelationInput = {
 
 export type ReviewWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  slug?: string
   AND?: Prisma.ReviewWhereInput | Prisma.ReviewWhereInput[]
   OR?: Prisma.ReviewWhereInput[]
   NOT?: Prisma.ReviewWhereInput | Prisma.ReviewWhereInput[]
@@ -328,13 +338,14 @@ export type ReviewWhereUniqueInput = Prisma.AtLeast<{
   ratings?: Prisma.ReviewRatingListRelationFilter
   comments?: Prisma.CommentListRelationFilter
   votes?: Prisma.ReviewVoteListRelationFilter
-}, "id">
+}, "id" | "slug">
 
 export type ReviewOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   carVersionId?: Prisma.SortOrder
   title?: Prisma.SortOrder
+  slug?: Prisma.SortOrder
   content?: Prisma.SortOrder
   pros?: Prisma.SortOrderInput | Prisma.SortOrder
   cons?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -358,6 +369,7 @@ export type ReviewScalarWhereWithAggregatesInput = {
   userId?: Prisma.StringWithAggregatesFilter<"Review"> | string
   carVersionId?: Prisma.StringWithAggregatesFilter<"Review"> | string
   title?: Prisma.StringWithAggregatesFilter<"Review"> | string
+  slug?: Prisma.StringWithAggregatesFilter<"Review"> | string
   content?: Prisma.StringWithAggregatesFilter<"Review"> | string
   pros?: Prisma.StringNullableWithAggregatesFilter<"Review"> | string | null
   cons?: Prisma.StringNullableWithAggregatesFilter<"Review"> | string | null
@@ -371,6 +383,7 @@ export type ReviewScalarWhereWithAggregatesInput = {
 export type ReviewCreateInput = {
   id?: string
   title: string
+  slug: string
   content: string
   pros?: string | null
   cons?: string | null
@@ -391,6 +404,7 @@ export type ReviewUncheckedCreateInput = {
   userId: string
   carVersionId: string
   title: string
+  slug: string
   content: string
   pros?: string | null
   cons?: string | null
@@ -407,6 +421,7 @@ export type ReviewUncheckedCreateInput = {
 export type ReviewUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
   pros?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cons?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -427,6 +442,7 @@ export type ReviewUncheckedUpdateInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   carVersionId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
   pros?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cons?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -445,6 +461,7 @@ export type ReviewCreateManyInput = {
   userId: string
   carVersionId: string
   title: string
+  slug: string
   content: string
   pros?: string | null
   cons?: string | null
@@ -458,6 +475,7 @@ export type ReviewCreateManyInput = {
 export type ReviewUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
   pros?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cons?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -473,6 +491,7 @@ export type ReviewUncheckedUpdateManyInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   carVersionId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
   pros?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cons?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -498,6 +517,7 @@ export type ReviewCountOrderByAggregateInput = {
   userId?: Prisma.SortOrder
   carVersionId?: Prisma.SortOrder
   title?: Prisma.SortOrder
+  slug?: Prisma.SortOrder
   content?: Prisma.SortOrder
   pros?: Prisma.SortOrder
   cons?: Prisma.SortOrder
@@ -519,6 +539,7 @@ export type ReviewMaxOrderByAggregateInput = {
   userId?: Prisma.SortOrder
   carVersionId?: Prisma.SortOrder
   title?: Prisma.SortOrder
+  slug?: Prisma.SortOrder
   content?: Prisma.SortOrder
   pros?: Prisma.SortOrder
   cons?: Prisma.SortOrder
@@ -534,6 +555,7 @@ export type ReviewMinOrderByAggregateInput = {
   userId?: Prisma.SortOrder
   carVersionId?: Prisma.SortOrder
   title?: Prisma.SortOrder
+  slug?: Prisma.SortOrder
   content?: Prisma.SortOrder
   pros?: Prisma.SortOrder
   cons?: Prisma.SortOrder
@@ -700,6 +722,7 @@ export type ReviewUpdateOneRequiredWithoutVotesNestedInput = {
 export type ReviewCreateWithoutUserInput = {
   id?: string
   title: string
+  slug: string
   content: string
   pros?: string | null
   cons?: string | null
@@ -718,6 +741,7 @@ export type ReviewUncheckedCreateWithoutUserInput = {
   id?: string
   carVersionId: string
   title: string
+  slug: string
   content: string
   pros?: string | null
   cons?: string | null
@@ -765,6 +789,7 @@ export type ReviewScalarWhereInput = {
   userId?: Prisma.StringFilter<"Review"> | string
   carVersionId?: Prisma.StringFilter<"Review"> | string
   title?: Prisma.StringFilter<"Review"> | string
+  slug?: Prisma.StringFilter<"Review"> | string
   content?: Prisma.StringFilter<"Review"> | string
   pros?: Prisma.StringNullableFilter<"Review"> | string | null
   cons?: Prisma.StringNullableFilter<"Review"> | string | null
@@ -778,6 +803,7 @@ export type ReviewScalarWhereInput = {
 export type ReviewCreateWithoutCarVersionInput = {
   id?: string
   title: string
+  slug: string
   content: string
   pros?: string | null
   cons?: string | null
@@ -796,6 +822,7 @@ export type ReviewUncheckedCreateWithoutCarVersionInput = {
   id?: string
   userId: string
   title: string
+  slug: string
   content: string
   pros?: string | null
   cons?: string | null
@@ -838,6 +865,7 @@ export type ReviewUpdateManyWithWhereWithoutCarVersionInput = {
 export type ReviewCreateWithoutRatingsInput = {
   id?: string
   title: string
+  slug: string
   content: string
   pros?: string | null
   cons?: string | null
@@ -857,6 +885,7 @@ export type ReviewUncheckedCreateWithoutRatingsInput = {
   userId: string
   carVersionId: string
   title: string
+  slug: string
   content: string
   pros?: string | null
   cons?: string | null
@@ -888,6 +917,7 @@ export type ReviewUpdateToOneWithWhereWithoutRatingsInput = {
 export type ReviewUpdateWithoutRatingsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
   pros?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cons?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -907,6 +937,7 @@ export type ReviewUncheckedUpdateWithoutRatingsInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   carVersionId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
   pros?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cons?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -922,6 +953,7 @@ export type ReviewUncheckedUpdateWithoutRatingsInput = {
 export type ReviewCreateWithoutCommentsInput = {
   id?: string
   title: string
+  slug: string
   content: string
   pros?: string | null
   cons?: string | null
@@ -941,6 +973,7 @@ export type ReviewUncheckedCreateWithoutCommentsInput = {
   userId: string
   carVersionId: string
   title: string
+  slug: string
   content: string
   pros?: string | null
   cons?: string | null
@@ -972,6 +1005,7 @@ export type ReviewUpdateToOneWithWhereWithoutCommentsInput = {
 export type ReviewUpdateWithoutCommentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
   pros?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cons?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -991,6 +1025,7 @@ export type ReviewUncheckedUpdateWithoutCommentsInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   carVersionId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
   pros?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cons?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1006,6 +1041,7 @@ export type ReviewUncheckedUpdateWithoutCommentsInput = {
 export type ReviewCreateWithoutVotesInput = {
   id?: string
   title: string
+  slug: string
   content: string
   pros?: string | null
   cons?: string | null
@@ -1025,6 +1061,7 @@ export type ReviewUncheckedCreateWithoutVotesInput = {
   userId: string
   carVersionId: string
   title: string
+  slug: string
   content: string
   pros?: string | null
   cons?: string | null
@@ -1056,6 +1093,7 @@ export type ReviewUpdateToOneWithWhereWithoutVotesInput = {
 export type ReviewUpdateWithoutVotesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
   pros?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cons?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1075,6 +1113,7 @@ export type ReviewUncheckedUpdateWithoutVotesInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   carVersionId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
   pros?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cons?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1091,6 +1130,7 @@ export type ReviewCreateManyUserInput = {
   id?: string
   carVersionId: string
   title: string
+  slug: string
   content: string
   pros?: string | null
   cons?: string | null
@@ -1104,6 +1144,7 @@ export type ReviewCreateManyUserInput = {
 export type ReviewUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
   pros?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cons?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1122,6 +1163,7 @@ export type ReviewUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   carVersionId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
   pros?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cons?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1139,6 +1181,7 @@ export type ReviewUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   carVersionId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
   pros?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cons?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1153,6 +1196,7 @@ export type ReviewCreateManyCarVersionInput = {
   id?: string
   userId: string
   title: string
+  slug: string
   content: string
   pros?: string | null
   cons?: string | null
@@ -1166,6 +1210,7 @@ export type ReviewCreateManyCarVersionInput = {
 export type ReviewUpdateWithoutCarVersionInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
   pros?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cons?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1184,6 +1229,7 @@ export type ReviewUncheckedUpdateWithoutCarVersionInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
   pros?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cons?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1201,6 +1247,7 @@ export type ReviewUncheckedUpdateManyWithoutCarVersionInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
   pros?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cons?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1265,6 +1312,7 @@ export type ReviewSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   userId?: boolean
   carVersionId?: boolean
   title?: boolean
+  slug?: boolean
   content?: boolean
   pros?: boolean
   cons?: boolean
@@ -1286,6 +1334,7 @@ export type ReviewSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
   userId?: boolean
   carVersionId?: boolean
   title?: boolean
+  slug?: boolean
   content?: boolean
   pros?: boolean
   cons?: boolean
@@ -1303,6 +1352,7 @@ export type ReviewSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
   userId?: boolean
   carVersionId?: boolean
   title?: boolean
+  slug?: boolean
   content?: boolean
   pros?: boolean
   cons?: boolean
@@ -1320,6 +1370,7 @@ export type ReviewSelectScalar = {
   userId?: boolean
   carVersionId?: boolean
   title?: boolean
+  slug?: boolean
   content?: boolean
   pros?: boolean
   cons?: boolean
@@ -1330,7 +1381,7 @@ export type ReviewSelectScalar = {
   updatedAt?: boolean
 }
 
-export type ReviewOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "carVersionId" | "title" | "content" | "pros" | "cons" | "ownershipTimeMonths" | "kmDriven" | "score" | "createdAt" | "updatedAt", ExtArgs["result"]["review"]>
+export type ReviewOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "carVersionId" | "title" | "slug" | "content" | "pros" | "cons" | "ownershipTimeMonths" | "kmDriven" | "score" | "createdAt" | "updatedAt", ExtArgs["result"]["review"]>
 export type ReviewInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   carVersion?: boolean | Prisma.CarVersionDefaultArgs<ExtArgs>
@@ -1362,6 +1413,7 @@ export type $ReviewPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     userId: string
     carVersionId: string
     title: string
+    slug: string
     content: string
     pros: string | null
     cons: string | null
@@ -1802,6 +1854,7 @@ export interface ReviewFieldRefs {
   readonly userId: Prisma.FieldRef<"Review", 'String'>
   readonly carVersionId: Prisma.FieldRef<"Review", 'String'>
   readonly title: Prisma.FieldRef<"Review", 'String'>
+  readonly slug: Prisma.FieldRef<"Review", 'String'>
   readonly content: Prisma.FieldRef<"Review", 'String'>
   readonly pros: Prisma.FieldRef<"Review", 'String'>
   readonly cons: Prisma.FieldRef<"Review", 'String'>

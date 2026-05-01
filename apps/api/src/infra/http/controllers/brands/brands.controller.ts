@@ -11,21 +11,25 @@ import {
 	ApiBadRequestResponse,
 	ApiBearerAuth,
 	ApiCreatedResponse,
+	ApiNotFoundResponse,
 	ApiOkResponse,
 	ApiOperation,
 	ApiParam,
 	ApiTags,
 } from "@nestjs/swagger";
 import type { Response } from "express";
-import { CreateBrandDto } from "src/domain/cars/dtos/create-brand.dto";
-import { CreateModelDto } from "src/domain/cars/dtos/create-model.dto";
-import { CreateVersionDto } from "src/domain/cars/dtos/create-version.dto";
-import { CreateBrandUseCase } from "src/domain/cars/use-cases/create-brand.usecase";
-import { CreateModelUseCase } from "src/domain/cars/use-cases/create-model.usecase";
-import { CreateVersionUseCase } from "src/domain/cars/use-cases/create-version.usecase";
-import { ListBrandsUseCase } from "src/domain/cars/use-cases/list-brands.usecase";
-import { ListModelsUseCase } from "src/domain/cars/use-cases/list-models.usecase";
-import { ListVersionsUseCase } from "src/domain/cars/use-cases/list-versions.usecase";
+import { CreateBrandDto } from "src/application/cars/dtos/create-brand.dto";
+import { CreateModelDto } from "src/application/cars/dtos/create-model.dto";
+import { CreateVersionDto } from "src/application/cars/dtos/create-version.dto";
+import { CreateBrandUseCase } from "src/application/cars/use-cases/create-brand.usecase";
+import { CreateModelUseCase } from "src/application/cars/use-cases/create-model.usecase";
+import { CreateVersionUseCase } from "src/application/cars/use-cases/create-version.usecase";
+import { GetBrandUseCase } from "src/application/cars/use-cases/get-brand.usecase";
+import { GetModelUseCase } from "src/application/cars/use-cases/get-model.usecase";
+import { GetVersionUseCase } from "src/application/cars/use-cases/get-version.usecase";
+import { ListBrandsUseCase } from "src/application/cars/use-cases/list-brands.usecase";
+import { ListModelsUseCase } from "src/application/cars/use-cases/list-models.usecase";
+import { ListVersionsUseCase } from "src/application/cars/use-cases/list-versions.usecase";
 import { Roles } from "src/infra/auth/decorators/roles.decorator";
 import { IsPublic } from "src/shared/decorators/is-public.decorator";
 
@@ -35,14 +39,17 @@ export class BrandsController {
 	constructor(
 		private createBrandService: CreateBrandUseCase,
 		private listBrandsService: ListBrandsUseCase,
+		private getBrandService: GetBrandUseCase,
 		private createModelService: CreateModelUseCase,
 		private listModelsService: ListModelsUseCase,
+		private getModelService: GetModelUseCase,
 		private createVersionService: CreateVersionUseCase,
 		private listVersionsService: ListVersionsUseCase,
+		private getVersionService: GetVersionUseCase,
 	) {}
 
 	@Post()
-	@Roles("ADMIN")
+	@Roles("admin")
 	@ApiBearerAuth()
 	@ApiOperation({ description: "Criar nova marca (ADMIN)" })
 	@ApiCreatedResponse({ description: "Marca criada com sucesso" })
@@ -66,13 +73,26 @@ export class BrandsController {
 		return res.status(HttpStatus.OK).json({ brands });
 	}
 
+	@Get(":brandSlug")
+	@IsPublic()
+	@ApiOperation({ description: "Buscar marca por slug com modelos" })
+	@ApiParam({ name: "brandSlug", example: "volkswagen" })
+	@ApiOkResponse({ description: "Marca com modelos" })
+	@ApiNotFoundResponse({ description: "Marca não encontrada" })
+	async getBrand(@Param("brandSlug") brandSlug: string, @Res() res: Response) {
+		const brand = await this.getBrandService.execute(brandSlug);
+		return res.status(HttpStatus.OK).json({ brand });
+	}
+
 	@Post(":brandSlug/models")
-	@Roles("ADMIN")
+	@Roles("admin")
 	@ApiBearerAuth()
 	@ApiOperation({ description: "Criar novo modelo (ADMIN)" })
 	@ApiParam({ name: "brandSlug", example: "volkswagen" })
 	@ApiCreatedResponse({ description: "Modelo criado com sucesso" })
-	@ApiBadRequestResponse({ description: "Marca não encontrada ou slug duplicado" })
+	@ApiBadRequestResponse({
+		description: "Marca não encontrada ou slug duplicado",
+	})
 	async createModel(
 		@Param("brandSlug") brandSlug: string,
 		@Body() data: CreateModelDto,
@@ -100,14 +120,32 @@ export class BrandsController {
 		return res.status(HttpStatus.OK).json({ models });
 	}
 
+	@Get(":brandSlug/models/:modelSlug")
+	@IsPublic()
+	@ApiOperation({ description: "Buscar modelo por slug com versões" })
+	@ApiParam({ name: "brandSlug", example: "volkswagen" })
+	@ApiParam({ name: "modelSlug", example: "polo" })
+	@ApiOkResponse({ description: "Modelo com versões" })
+	@ApiNotFoundResponse({ description: "Marca ou modelo não encontrado" })
+	async getModel(
+		@Param("brandSlug") brandSlug: string,
+		@Param("modelSlug") modelSlug: string,
+		@Res() res: Response,
+	) {
+		const model = await this.getModelService.execute(brandSlug, modelSlug);
+		return res.status(HttpStatus.OK).json({ model });
+	}
+
 	@Post(":brandSlug/models/:modelSlug/versions")
-	@Roles("ADMIN")
+	@Roles("admin")
 	@ApiBearerAuth()
 	@ApiOperation({ description: "Criar nova versão (ADMIN)" })
 	@ApiParam({ name: "brandSlug", example: "volkswagen" })
 	@ApiParam({ name: "modelSlug", example: "polo" })
 	@ApiCreatedResponse({ description: "Versão criada com sucesso" })
-	@ApiBadRequestResponse({ description: "Modelo não encontrado ou slug duplicado" })
+	@ApiBadRequestResponse({
+		description: "Modelo não encontrado ou slug duplicado",
+	})
 	async createVersion(
 		@Param("brandSlug") brandSlug: string,
 		@Param("modelSlug") modelSlug: string,
@@ -143,5 +181,21 @@ export class BrandsController {
 		);
 
 		return res.status(HttpStatus.OK).json({ versions });
+	}
+
+	@Get(":brandSlug/models/:modelSlug/versions/:versionSlug")
+	@IsPublic()
+	@ApiOperation({ description: "Buscar versão por slug" })
+	@ApiParam({ name: "brandSlug", example: "volkswagen" })
+	@ApiParam({ name: "modelSlug", example: "polo" })
+	@ApiParam({ name: "versionSlug", example: "2024-polo-track" })
+	@ApiOkResponse({ description: "Detalhes da versão" })
+	@ApiNotFoundResponse({ description: "Versão não encontrada" })
+	async getVersion(
+		@Param("versionSlug") versionSlug: string,
+		@Res() res: Response,
+	) {
+		const version = await this.getVersionService.execute(versionSlug);
+		return res.status(HttpStatus.OK).json({ version });
 	}
 }

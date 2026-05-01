@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
-import { CreateCommentDto } from "../../../../domain/comments/dtos/create-comment.dto";
-import { CommentEntity } from "../../../../domain/comments/entities/comment.entity";
-import { CommentsRepositoryProps } from "../../../../domain/comments/repositories/comments.repository";
+import { CreateCommentDto } from "../../../../application/comments/dtos/create-comment.dto";
+import { CommentEntity } from "../../../../application/comments/entities/comment.entity";
+import { CommentsRepositoryProps } from "../../../../application/comments/repositories/comments.repository";
 import { PrismaService } from "../prisma.service";
 
 @Injectable()

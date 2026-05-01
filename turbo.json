@@ -1,17 +1,22 @@
 {
-  "$schema": "https://turborepo.dev/schema.json",
-  "globalDependencies": ["**/.env.*local"],
-  "tasks": {
-    "dev": {
-      "cache": false,
-      "persistent": true
-    },
-    "build": {
-      "dependsOn": ["^build"],
-      "outputs": [".next/**", "!.next/cache/**", "dist/**"]
-    },
-    "lint": {},
-    "test": {},
-    "test:e2e": {}
-  }
+	"$schema": "https://turborepo.dev/schema.json",
+	"globalDependencies": ["**/.env.*local"],
+	"globalEnv": [
+		"RESEND_API_KEY",
+		"RESEND_FROM_EMAIL",
+		"PASSWORD_RESET_BASE_URL"
+	],
+	"tasks": {
+		"dev": {
+			"cache": false,
+			"persistent": true
+		},
+		"build": {
+			"dependsOn": ["^build"],
+			"outputs": [".next/**", "!.next/cache/**", "dist/**"]
+		},
+		"lint": {},
+		"test": {},
+		"test:e2e": {}
+	}
 }

@@ -24,13 +24,14 @@ import { Response } from "express";
 import {
 	CreateReviewDto,
 	UpdateReviewDto,
-} from "src/domain/reviews/dtos/create-review.dto";
-import { CreateReviewUseCase } from "src/domain/reviews/use-cases/create-review.usecase";
-import { DeleteReviewUseCase } from "src/domain/reviews/use-cases/delete-review.usecase";
-import { GetReviewUseCase } from "src/domain/reviews/use-cases/get-review.usecase";
-import { ListReviewsUseCase } from "src/domain/reviews/use-cases/list-reviews.usecase";
-import { UpdateReviewUseCase } from "src/domain/reviews/use-cases/update-review.usecase";
-import { UserEntity } from "src/domain/users/entities/user.entity";
+} from "src/application/reviews/dtos/create-review.dto";
+import { CreateReviewUseCase } from "src/application/reviews/use-cases/create-review.usecase";
+import { DeleteReviewUseCase } from "src/application/reviews/use-cases/delete-review.usecase";
+import { GetReviewUseCase } from "src/application/reviews/use-cases/get-review.usecase";
+import { GetReviewBySlugUseCase } from "src/application/reviews/use-cases/get-review-by-slug.usecase";
+import { ListReviewsUseCase } from "src/application/reviews/use-cases/list-reviews.usecase";
+import { UpdateReviewUseCase } from "src/application/reviews/use-cases/update-review.usecase";
+import { UserEntity } from "src/application/users/entities/user.entity";
 import { IsPublic } from "src/shared/decorators/is-public.decorator";
 import { LoggedInUser } from "src/shared/decorators/logged-in.decorator";
 
@@ -40,6 +41,7 @@ export class ReviewsController {
 	constructor(
 		private createReviewService: CreateReviewUseCase,
 		private getReviewService: GetReviewUseCase,
+		private getReviewBySlugService: GetReviewBySlugUseCase,
 		private listReviewsService: ListReviewsUseCase,
 		private updateReviewService: UpdateReviewUseCase,
 		private deleteReviewService: DeleteReviewUseCase,
@@ -85,16 +87,25 @@ export class ReviewsController {
 		return res.status(HttpStatus.OK).json({ reviews });
 	}
 
+	@Get("slug/:slug")
+	@IsPublic()
+	@ApiOperation({ description: "Detalhe de uma review pelo slug" })
+	@ApiParam({ name: "slug" })
+	@ApiOkResponse({ description: "Review encontrada" })
+	@ApiBadRequestResponse({ description: "Review não encontrada" })
+	async findBySlug(@Param("slug") slug: string, @Res() res: Response) {
+		const review = await this.getReviewBySlugService.execute(slug);
+
+		return res.status(HttpStatus.OK).json({ review });
+	}
+
 	@Get(":reviewId")
 	@IsPublic()
 	@ApiOperation({ description: "Detalhe de uma review" })
 	@ApiParam({ name: "reviewId" })
 	@ApiOkResponse({ description: "Review encontrada" })
 	@ApiBadRequestResponse({ description: "Review não encontrada" })
-	async findById(
-		@Param("reviewId") reviewId: string,
-		@Res() res: Response,
-	) {
+	async findById(@Param("reviewId") reviewId: string, @Res() res: Response) {
 		const review = await this.getReviewService.execute(reviewId);
 
 		return res.status(HttpStatus.OK).json({ review });
@@ -105,7 +116,9 @@ export class ReviewsController {
 	@ApiOperation({ description: "Editar review (autor)" })
 	@ApiParam({ name: "reviewId" })
 	@ApiOkResponse({ description: "Review atualizada com sucesso" })
-	@ApiBadRequestResponse({ description: "Review não encontrada ou sem permissão" })
+	@ApiBadRequestResponse({
+		description: "Review não encontrada ou sem permissão",
+	})
 	async update(
 		@LoggedInUser() user: UserEntity,
 		@Param("reviewId") reviewId: string,
@@ -129,7 +142,9 @@ export class ReviewsController {
 	@ApiOperation({ description: "Remover review (autor ou ADMIN)" })
 	@ApiParam({ name: "reviewId" })
 	@ApiOkResponse({ description: "Review removida com sucesso" })
-	@ApiBadRequestResponse({ description: "Review não encontrada ou sem permissão" })
+	@ApiBadRequestResponse({
+		description: "Review não encontrada ou sem permissão",
+	})
 	async delete(
 		@LoggedInUser() user: UserEntity,
 		@Param("reviewId") reviewId: string,

@@ -52,6 +52,8 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   User: 'User',
+  Session: 'Session',
+  UserToken: 'UserToken',
   Role: 'Role',
   Brand: 'Brand',
   Model: 'Model',
@@ -84,16 +86,44 @@ export const UserScalarFieldEnum = {
   email: 'email',
   passwordHash: 'passwordHash',
   active: 'active',
+  confirmedEmail: 'confirmedEmail',
   createdAt: 'createdAt'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
+export const SessionScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  refreshToken: 'refreshToken',
+  userAgent: 'userAgent',
+  ipAddress: 'ipAddress',
+  isRevoked: 'isRevoked',
+  expiresAt: 'expiresAt',
+  createdAt: 'createdAt'
+} as const
+
+export type SessionScalarFieldEnum = (typeof SessionScalarFieldEnum)[keyof typeof SessionScalarFieldEnum]
+
+
+export const UserTokenScalarFieldEnum = {
+  id: 'id',
+  refreshToken: 'refreshToken',
+  expiresDate: 'expiresDate',
+  userId: 'userId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type UserTokenScalarFieldEnum = (typeof UserTokenScalarFieldEnum)[keyof typeof UserTokenScalarFieldEnum]
+
+
 export const RoleScalarFieldEnum = {
   id: 'id',
-  type: 'type',
-  userId: 'userId'
+  name: 'name',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 } as const
 
 export type RoleScalarFieldEnum = (typeof RoleScalarFieldEnum)[keyof typeof RoleScalarFieldEnum]
@@ -139,6 +169,7 @@ export const ReviewScalarFieldEnum = {
   userId: 'userId',
   carVersionId: 'carVersionId',
   title: 'title',
+  slug: 'slug',
   content: 'content',
   pros: 'pros',
   cons: 'cons',

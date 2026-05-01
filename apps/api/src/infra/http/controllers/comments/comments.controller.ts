@@ -18,11 +18,11 @@ import {
 	ApiTags,
 } from "@nestjs/swagger";
 import { Response } from "express";
-import { CreateCommentDto } from "src/domain/comments/dtos/create-comment.dto";
-import { CreateCommentUseCase } from "src/domain/comments/use-cases/create-comment.usecase";
-import { DeleteCommentUseCase } from "src/domain/comments/use-cases/delete-comment.usecase";
-import { ListCommentsUseCase } from "src/domain/comments/use-cases/list-comments.usecase";
-import { UserEntity } from "src/domain/users/entities/user.entity";
+import { CreateCommentDto } from "src/application/comments/dtos/create-comment.dto";
+import { CreateCommentUseCase } from "src/application/comments/use-cases/create-comment.usecase";
+import { DeleteCommentUseCase } from "src/application/comments/use-cases/delete-comment.usecase";
+import { ListCommentsUseCase } from "src/application/comments/use-cases/list-comments.usecase";
+import { UserEntity } from "src/application/users/entities/user.entity";
 import { IsPublic } from "src/shared/decorators/is-public.decorator";
 import { LoggedInUser } from "src/shared/decorators/logged-in.decorator";
 
@@ -64,10 +64,7 @@ export class CommentsController {
 	@ApiOperation({ description: "Listar comentários de uma review" })
 	@ApiParam({ name: "reviewId" })
 	@ApiOkResponse({ description: "Lista de comentários" })
-	async list(
-		@Param("reviewId") reviewId: string,
-		@Res() res: Response,
-	) {
+	async list(@Param("reviewId") reviewId: string, @Res() res: Response) {
 		const comments = await this.listCommentsService.execute(reviewId);
 
 		return res.status(HttpStatus.OK).json({ comments });
@@ -79,7 +76,9 @@ export class CommentsController {
 	@ApiParam({ name: "reviewId" })
 	@ApiParam({ name: "commentId" })
 	@ApiOkResponse({ description: "Comentário removido com sucesso" })
-	@ApiBadRequestResponse({ description: "Comentário não encontrado ou sem permissão" })
+	@ApiBadRequestResponse({
+		description: "Comentário não encontrado ou sem permissão",
+	})
 	async delete(
 		@LoggedInUser() user: UserEntity,
 		@Param("reviewId") reviewId: string,
