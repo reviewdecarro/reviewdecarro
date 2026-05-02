@@ -25,6 +25,9 @@
 			},
 			"correctness": {
 				"noUnusedFunctionParameters": "off"
+			},
+			"suspicious": {
+				"noArrayIndexKey": "off"
 			}
 		}
 	},

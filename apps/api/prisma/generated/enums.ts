@@ -29,3 +29,13 @@ export const RatingCategory = {
 } as const
 
 export type RatingCategory = (typeof RatingCategory)[keyof typeof RatingCategory]
+
+
+export const ReviewStatus = {
+  DRAFT: 'DRAFT',
+  PUBLISHED: 'PUBLISHED',
+  HIDDEN: 'HIDDEN',
+  DELETED: 'DELETED'
+} as const
+
+export type ReviewStatus = (typeof ReviewStatus)[keyof typeof ReviewStatus]

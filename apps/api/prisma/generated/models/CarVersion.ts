@@ -20,24 +20,13 @@ export type CarVersionModel = runtime.Types.Result.DefaultSelection<Prisma.$CarV
 
 export type AggregateCarVersion = {
   _count: CarVersionCountAggregateOutputType | null
-  _avg: CarVersionAvgAggregateOutputType | null
-  _sum: CarVersionSumAggregateOutputType | null
   _min: CarVersionMinAggregateOutputType | null
   _max: CarVersionMaxAggregateOutputType | null
-}
-
-export type CarVersionAvgAggregateOutputType = {
-  year: number | null
-}
-
-export type CarVersionSumAggregateOutputType = {
-  year: number | null
 }
 
 export type CarVersionMinAggregateOutputType = {
   id: string | null
   modelId: string | null
-  year: number | null
   versionName: string | null
   engine: string | null
   transmission: string | null
@@ -48,7 +37,6 @@ export type CarVersionMinAggregateOutputType = {
 export type CarVersionMaxAggregateOutputType = {
   id: string | null
   modelId: string | null
-  year: number | null
   versionName: string | null
   engine: string | null
   transmission: string | null
@@ -59,7 +47,6 @@ export type CarVersionMaxAggregateOutputType = {
 export type CarVersionCountAggregateOutputType = {
   id: number
   modelId: number
-  year: number
   versionName: number
   engine: number
   transmission: number
@@ -69,18 +56,9 @@ export type CarVersionCountAggregateOutputType = {
 }
 
 
-export type CarVersionAvgAggregateInputType = {
-  year?: true
-}
-
-export type CarVersionSumAggregateInputType = {
-  year?: true
-}
-
 export type CarVersionMinAggregateInputType = {
   id?: true
   modelId?: true
-  year?: true
   versionName?: true
   engine?: true
   transmission?: true
@@ -91,7 +69,6 @@ export type CarVersionMinAggregateInputType = {
 export type CarVersionMaxAggregateInputType = {
   id?: true
   modelId?: true
-  year?: true
   versionName?: true
   engine?: true
   transmission?: true
@@ -102,7 +79,6 @@ export type CarVersionMaxAggregateInputType = {
 export type CarVersionCountAggregateInputType = {
   id?: true
   modelId?: true
-  year?: true
   versionName?: true
   engine?: true
   transmission?: true
@@ -149,18 +125,6 @@ export type CarVersionAggregateArgs<ExtArgs extends runtime.Types.Extensions.Int
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
-   * Select which fields to average
-  **/
-  _avg?: CarVersionAvgAggregateInputType
-  /**
-   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-   * 
-   * Select which fields to sum
-  **/
-  _sum?: CarVersionSumAggregateInputType
-  /**
-   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-   * 
    * Select which fields to find the minimum value
   **/
   _min?: CarVersionMinAggregateInputType
@@ -191,8 +155,6 @@ export type CarVersionGroupByArgs<ExtArgs extends runtime.Types.Extensions.Inter
   take?: number
   skip?: number
   _count?: CarVersionCountAggregateInputType | true
-  _avg?: CarVersionAvgAggregateInputType
-  _sum?: CarVersionSumAggregateInputType
   _min?: CarVersionMinAggregateInputType
   _max?: CarVersionMaxAggregateInputType
 }
@@ -200,15 +162,12 @@ export type CarVersionGroupByArgs<ExtArgs extends runtime.Types.Extensions.Inter
 export type CarVersionGroupByOutputType = {
   id: string
   modelId: string
-  year: number
   versionName: string
   engine: string | null
   transmission: string | null
   slug: string
   createdAt: Date
   _count: CarVersionCountAggregateOutputType | null
-  _avg: CarVersionAvgAggregateOutputType | null
-  _sum: CarVersionSumAggregateOutputType | null
   _min: CarVersionMinAggregateOutputType | null
   _max: CarVersionMaxAggregateOutputType | null
 }
@@ -234,59 +193,54 @@ export type CarVersionWhereInput = {
   NOT?: Prisma.CarVersionWhereInput | Prisma.CarVersionWhereInput[]
   id?: Prisma.StringFilter<"CarVersion"> | string
   modelId?: Prisma.StringFilter<"CarVersion"> | string
-  year?: Prisma.IntFilter<"CarVersion"> | number
   versionName?: Prisma.StringFilter<"CarVersion"> | string
   engine?: Prisma.StringNullableFilter<"CarVersion"> | string | null
   transmission?: Prisma.StringNullableFilter<"CarVersion"> | string | null
   slug?: Prisma.StringFilter<"CarVersion"> | string
   createdAt?: Prisma.DateTimeFilter<"CarVersion"> | Date | string
   model?: Prisma.XOR<Prisma.ModelScalarRelationFilter, Prisma.ModelWhereInput>
-  reviews?: Prisma.ReviewListRelationFilter
+  years?: Prisma.CarVersionYearListRelationFilter
 }
 
 export type CarVersionOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   modelId?: Prisma.SortOrder
-  year?: Prisma.SortOrder
   versionName?: Prisma.SortOrder
   engine?: Prisma.SortOrderInput | Prisma.SortOrder
   transmission?: Prisma.SortOrderInput | Prisma.SortOrder
   slug?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   model?: Prisma.ModelOrderByWithRelationInput
-  reviews?: Prisma.ReviewOrderByRelationAggregateInput
+  years?: Prisma.CarVersionYearOrderByRelationAggregateInput
 }
 
 export type CarVersionWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  slug?: string
+  carVersion_modelId_slug_unique?: Prisma.CarVersionCarVersion_modelId_slug_uniqueCompoundUniqueInput
   AND?: Prisma.CarVersionWhereInput | Prisma.CarVersionWhereInput[]
   OR?: Prisma.CarVersionWhereInput[]
   NOT?: Prisma.CarVersionWhereInput | Prisma.CarVersionWhereInput[]
   modelId?: Prisma.StringFilter<"CarVersion"> | string
-  year?: Prisma.IntFilter<"CarVersion"> | number
   versionName?: Prisma.StringFilter<"CarVersion"> | string
   engine?: Prisma.StringNullableFilter<"CarVersion"> | string | null
   transmission?: Prisma.StringNullableFilter<"CarVersion"> | string | null
+  slug?: Prisma.StringFilter<"CarVersion"> | string
   createdAt?: Prisma.DateTimeFilter<"CarVersion"> | Date | string
   model?: Prisma.XOR<Prisma.ModelScalarRelationFilter, Prisma.ModelWhereInput>
-  reviews?: Prisma.ReviewListRelationFilter
-}, "id" | "slug">
+  years?: Prisma.CarVersionYearListRelationFilter
+}, "id" | "carVersion_modelId_slug_unique">
 
 export type CarVersionOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   modelId?: Prisma.SortOrder
-  year?: Prisma.SortOrder
   versionName?: Prisma.SortOrder
   engine?: Prisma.SortOrderInput | Prisma.SortOrder
   transmission?: Prisma.SortOrderInput | Prisma.SortOrder
   slug?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   _count?: Prisma.CarVersionCountOrderByAggregateInput
-  _avg?: Prisma.CarVersionAvgOrderByAggregateInput
   _max?: Prisma.CarVersionMaxOrderByAggregateInput
   _min?: Prisma.CarVersionMinOrderByAggregateInput
-  _sum?: Prisma.CarVersionSumOrderByAggregateInput
 }
 
 export type CarVersionScalarWhereWithAggregatesInput = {
@@ -295,7 +249,6 @@ export type CarVersionScalarWhereWithAggregatesInput = {
   NOT?: Prisma.CarVersionScalarWhereWithAggregatesInput | Prisma.CarVersionScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"CarVersion"> | string
   modelId?: Prisma.StringWithAggregatesFilter<"CarVersion"> | string
-  year?: Prisma.IntWithAggregatesFilter<"CarVersion"> | number
   versionName?: Prisma.StringWithAggregatesFilter<"CarVersion"> | string
   engine?: Prisma.StringNullableWithAggregatesFilter<"CarVersion"> | string | null
   transmission?: Prisma.StringNullableWithAggregatesFilter<"CarVersion"> | string | null
@@ -305,56 +258,51 @@ export type CarVersionScalarWhereWithAggregatesInput = {
 
 export type CarVersionCreateInput = {
   id?: string
-  year: number
   versionName: string
   engine?: string | null
   transmission?: string | null
   slug: string
   createdAt?: Date | string
   model: Prisma.ModelCreateNestedOneWithoutCarVersionsInput
-  reviews?: Prisma.ReviewCreateNestedManyWithoutCarVersionInput
+  years?: Prisma.CarVersionYearCreateNestedManyWithoutCarVersionInput
 }
 
 export type CarVersionUncheckedCreateInput = {
   id?: string
   modelId: string
-  year: number
   versionName: string
   engine?: string | null
   transmission?: string | null
   slug: string
   createdAt?: Date | string
-  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutCarVersionInput
+  years?: Prisma.CarVersionYearUncheckedCreateNestedManyWithoutCarVersionInput
 }
 
 export type CarVersionUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  year?: Prisma.IntFieldUpdateOperationsInput | number
   versionName?: Prisma.StringFieldUpdateOperationsInput | string
   engine?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   transmission?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   model?: Prisma.ModelUpdateOneRequiredWithoutCarVersionsNestedInput
-  reviews?: Prisma.ReviewUpdateManyWithoutCarVersionNestedInput
+  years?: Prisma.CarVersionYearUpdateManyWithoutCarVersionNestedInput
 }
 
 export type CarVersionUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   modelId?: Prisma.StringFieldUpdateOperationsInput | string
-  year?: Prisma.IntFieldUpdateOperationsInput | number
   versionName?: Prisma.StringFieldUpdateOperationsInput | string
   engine?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   transmission?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutCarVersionNestedInput
+  years?: Prisma.CarVersionYearUncheckedUpdateManyWithoutCarVersionNestedInput
 }
 
 export type CarVersionCreateManyInput = {
   id?: string
   modelId: string
-  year: number
   versionName: string
   engine?: string | null
   transmission?: string | null
@@ -364,7 +312,6 @@ export type CarVersionCreateManyInput = {
 
 export type CarVersionUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  year?: Prisma.IntFieldUpdateOperationsInput | number
   versionName?: Prisma.StringFieldUpdateOperationsInput | string
   engine?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   transmission?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -375,7 +322,6 @@ export type CarVersionUpdateManyMutationInput = {
 export type CarVersionUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   modelId?: Prisma.StringFieldUpdateOperationsInput | string
-  year?: Prisma.IntFieldUpdateOperationsInput | number
   versionName?: Prisma.StringFieldUpdateOperationsInput | string
   engine?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   transmission?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -393,10 +339,14 @@ export type CarVersionOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
+export type CarVersionCarVersion_modelId_slug_uniqueCompoundUniqueInput = {
+  modelId: string
+  slug: string
+}
+
 export type CarVersionCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   modelId?: Prisma.SortOrder
-  year?: Prisma.SortOrder
   versionName?: Prisma.SortOrder
   engine?: Prisma.SortOrder
   transmission?: Prisma.SortOrder
@@ -404,14 +354,9 @@ export type CarVersionCountOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
 }
 
-export type CarVersionAvgOrderByAggregateInput = {
-  year?: Prisma.SortOrder
-}
-
 export type CarVersionMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   modelId?: Prisma.SortOrder
-  year?: Prisma.SortOrder
   versionName?: Prisma.SortOrder
   engine?: Prisma.SortOrder
   transmission?: Prisma.SortOrder
@@ -422,16 +367,11 @@ export type CarVersionMaxOrderByAggregateInput = {
 export type CarVersionMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   modelId?: Prisma.SortOrder
-  year?: Prisma.SortOrder
   versionName?: Prisma.SortOrder
   engine?: Prisma.SortOrder
   transmission?: Prisma.SortOrder
   slug?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
-}
-
-export type CarVersionSumOrderByAggregateInput = {
-  year?: Prisma.SortOrder
 }
 
 export type CarVersionScalarRelationFilter = {
@@ -481,48 +421,38 @@ export type CarVersionUncheckedUpdateManyWithoutModelNestedInput = {
   deleteMany?: Prisma.CarVersionScalarWhereInput | Prisma.CarVersionScalarWhereInput[]
 }
 
-export type IntFieldUpdateOperationsInput = {
-  set?: number
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
-}
-
-export type CarVersionCreateNestedOneWithoutReviewsInput = {
-  create?: Prisma.XOR<Prisma.CarVersionCreateWithoutReviewsInput, Prisma.CarVersionUncheckedCreateWithoutReviewsInput>
-  connectOrCreate?: Prisma.CarVersionCreateOrConnectWithoutReviewsInput
+export type CarVersionCreateNestedOneWithoutYearsInput = {
+  create?: Prisma.XOR<Prisma.CarVersionCreateWithoutYearsInput, Prisma.CarVersionUncheckedCreateWithoutYearsInput>
+  connectOrCreate?: Prisma.CarVersionCreateOrConnectWithoutYearsInput
   connect?: Prisma.CarVersionWhereUniqueInput
 }
 
-export type CarVersionUpdateOneRequiredWithoutReviewsNestedInput = {
-  create?: Prisma.XOR<Prisma.CarVersionCreateWithoutReviewsInput, Prisma.CarVersionUncheckedCreateWithoutReviewsInput>
-  connectOrCreate?: Prisma.CarVersionCreateOrConnectWithoutReviewsInput
-  upsert?: Prisma.CarVersionUpsertWithoutReviewsInput
+export type CarVersionUpdateOneRequiredWithoutYearsNestedInput = {
+  create?: Prisma.XOR<Prisma.CarVersionCreateWithoutYearsInput, Prisma.CarVersionUncheckedCreateWithoutYearsInput>
+  connectOrCreate?: Prisma.CarVersionCreateOrConnectWithoutYearsInput
+  upsert?: Prisma.CarVersionUpsertWithoutYearsInput
   connect?: Prisma.CarVersionWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.CarVersionUpdateToOneWithWhereWithoutReviewsInput, Prisma.CarVersionUpdateWithoutReviewsInput>, Prisma.CarVersionUncheckedUpdateWithoutReviewsInput>
+  update?: Prisma.XOR<Prisma.XOR<Prisma.CarVersionUpdateToOneWithWhereWithoutYearsInput, Prisma.CarVersionUpdateWithoutYearsInput>, Prisma.CarVersionUncheckedUpdateWithoutYearsInput>
 }
 
 export type CarVersionCreateWithoutModelInput = {
   id?: string
-  year: number
   versionName: string
   engine?: string | null
   transmission?: string | null
   slug: string
   createdAt?: Date | string
-  reviews?: Prisma.ReviewCreateNestedManyWithoutCarVersionInput
+  years?: Prisma.CarVersionYearCreateNestedManyWithoutCarVersionInput
 }
 
 export type CarVersionUncheckedCreateWithoutModelInput = {
   id?: string
-  year: number
   versionName: string
   engine?: string | null
   transmission?: string | null
   slug: string
   createdAt?: Date | string
-  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutCarVersionInput
+  years?: Prisma.CarVersionYearUncheckedCreateNestedManyWithoutCarVersionInput
 }
 
 export type CarVersionCreateOrConnectWithoutModelInput = {
@@ -557,7 +487,6 @@ export type CarVersionScalarWhereInput = {
   NOT?: Prisma.CarVersionScalarWhereInput | Prisma.CarVersionScalarWhereInput[]
   id?: Prisma.StringFilter<"CarVersion"> | string
   modelId?: Prisma.StringFilter<"CarVersion"> | string
-  year?: Prisma.IntFilter<"CarVersion"> | number
   versionName?: Prisma.StringFilter<"CarVersion"> | string
   engine?: Prisma.StringNullableFilter<"CarVersion"> | string | null
   transmission?: Prisma.StringNullableFilter<"CarVersion"> | string | null
@@ -565,9 +494,8 @@ export type CarVersionScalarWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"CarVersion"> | Date | string
 }
 
-export type CarVersionCreateWithoutReviewsInput = {
+export type CarVersionCreateWithoutYearsInput = {
   id?: string
-  year: number
   versionName: string
   engine?: string | null
   transmission?: string | null
@@ -576,10 +504,9 @@ export type CarVersionCreateWithoutReviewsInput = {
   model: Prisma.ModelCreateNestedOneWithoutCarVersionsInput
 }
 
-export type CarVersionUncheckedCreateWithoutReviewsInput = {
+export type CarVersionUncheckedCreateWithoutYearsInput = {
   id?: string
   modelId: string
-  year: number
   versionName: string
   engine?: string | null
   transmission?: string | null
@@ -587,25 +514,24 @@ export type CarVersionUncheckedCreateWithoutReviewsInput = {
   createdAt?: Date | string
 }
 
-export type CarVersionCreateOrConnectWithoutReviewsInput = {
+export type CarVersionCreateOrConnectWithoutYearsInput = {
   where: Prisma.CarVersionWhereUniqueInput
-  create: Prisma.XOR<Prisma.CarVersionCreateWithoutReviewsInput, Prisma.CarVersionUncheckedCreateWithoutReviewsInput>
+  create: Prisma.XOR<Prisma.CarVersionCreateWithoutYearsInput, Prisma.CarVersionUncheckedCreateWithoutYearsInput>
 }
 
-export type CarVersionUpsertWithoutReviewsInput = {
-  update: Prisma.XOR<Prisma.CarVersionUpdateWithoutReviewsInput, Prisma.CarVersionUncheckedUpdateWithoutReviewsInput>
-  create: Prisma.XOR<Prisma.CarVersionCreateWithoutReviewsInput, Prisma.CarVersionUncheckedCreateWithoutReviewsInput>
+export type CarVersionUpsertWithoutYearsInput = {
+  update: Prisma.XOR<Prisma.CarVersionUpdateWithoutYearsInput, Prisma.CarVersionUncheckedUpdateWithoutYearsInput>
+  create: Prisma.XOR<Prisma.CarVersionCreateWithoutYearsInput, Prisma.CarVersionUncheckedCreateWithoutYearsInput>
   where?: Prisma.CarVersionWhereInput
 }
 
-export type CarVersionUpdateToOneWithWhereWithoutReviewsInput = {
+export type CarVersionUpdateToOneWithWhereWithoutYearsInput = {
   where?: Prisma.CarVersionWhereInput
-  data: Prisma.XOR<Prisma.CarVersionUpdateWithoutReviewsInput, Prisma.CarVersionUncheckedUpdateWithoutReviewsInput>
+  data: Prisma.XOR<Prisma.CarVersionUpdateWithoutYearsInput, Prisma.CarVersionUncheckedUpdateWithoutYearsInput>
 }
 
-export type CarVersionUpdateWithoutReviewsInput = {
+export type CarVersionUpdateWithoutYearsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  year?: Prisma.IntFieldUpdateOperationsInput | number
   versionName?: Prisma.StringFieldUpdateOperationsInput | string
   engine?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   transmission?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -614,10 +540,9 @@ export type CarVersionUpdateWithoutReviewsInput = {
   model?: Prisma.ModelUpdateOneRequiredWithoutCarVersionsNestedInput
 }
 
-export type CarVersionUncheckedUpdateWithoutReviewsInput = {
+export type CarVersionUncheckedUpdateWithoutYearsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   modelId?: Prisma.StringFieldUpdateOperationsInput | string
-  year?: Prisma.IntFieldUpdateOperationsInput | number
   versionName?: Prisma.StringFieldUpdateOperationsInput | string
   engine?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   transmission?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -627,7 +552,6 @@ export type CarVersionUncheckedUpdateWithoutReviewsInput = {
 
 export type CarVersionCreateManyModelInput = {
   id?: string
-  year: number
   versionName: string
   engine?: string | null
   transmission?: string | null
@@ -637,29 +561,26 @@ export type CarVersionCreateManyModelInput = {
 
 export type CarVersionUpdateWithoutModelInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  year?: Prisma.IntFieldUpdateOperationsInput | number
   versionName?: Prisma.StringFieldUpdateOperationsInput | string
   engine?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   transmission?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  reviews?: Prisma.ReviewUpdateManyWithoutCarVersionNestedInput
+  years?: Prisma.CarVersionYearUpdateManyWithoutCarVersionNestedInput
 }
 
 export type CarVersionUncheckedUpdateWithoutModelInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  year?: Prisma.IntFieldUpdateOperationsInput | number
   versionName?: Prisma.StringFieldUpdateOperationsInput | string
   engine?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   transmission?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutCarVersionNestedInput
+  years?: Prisma.CarVersionYearUncheckedUpdateManyWithoutCarVersionNestedInput
 }
 
 export type CarVersionUncheckedUpdateManyWithoutModelInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  year?: Prisma.IntFieldUpdateOperationsInput | number
   versionName?: Prisma.StringFieldUpdateOperationsInput | string
   engine?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   transmission?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -673,11 +594,11 @@ export type CarVersionUncheckedUpdateManyWithoutModelInput = {
  */
 
 export type CarVersionCountOutputType = {
-  reviews: number
+  years: number
 }
 
 export type CarVersionCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  reviews?: boolean | CarVersionCountOutputTypeCountReviewsArgs
+  years?: boolean | CarVersionCountOutputTypeCountYearsArgs
 }
 
 /**
@@ -693,29 +614,27 @@ export type CarVersionCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.E
 /**
  * CarVersionCountOutputType without action
  */
-export type CarVersionCountOutputTypeCountReviewsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.ReviewWhereInput
+export type CarVersionCountOutputTypeCountYearsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CarVersionYearWhereInput
 }
 
 
 export type CarVersionSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   modelId?: boolean
-  year?: boolean
   versionName?: boolean
   engine?: boolean
   transmission?: boolean
   slug?: boolean
   createdAt?: boolean
   model?: boolean | Prisma.ModelDefaultArgs<ExtArgs>
-  reviews?: boolean | Prisma.CarVersion$reviewsArgs<ExtArgs>
+  years?: boolean | Prisma.CarVersion$yearsArgs<ExtArgs>
   _count?: boolean | Prisma.CarVersionCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["carVersion"]>
 
 export type CarVersionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   modelId?: boolean
-  year?: boolean
   versionName?: boolean
   engine?: boolean
   transmission?: boolean
@@ -727,7 +646,6 @@ export type CarVersionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ex
 export type CarVersionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   modelId?: boolean
-  year?: boolean
   versionName?: boolean
   engine?: boolean
   transmission?: boolean
@@ -739,7 +657,6 @@ export type CarVersionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ex
 export type CarVersionSelectScalar = {
   id?: boolean
   modelId?: boolean
-  year?: boolean
   versionName?: boolean
   engine?: boolean
   transmission?: boolean
@@ -747,10 +664,10 @@ export type CarVersionSelectScalar = {
   createdAt?: boolean
 }
 
-export type CarVersionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "modelId" | "year" | "versionName" | "engine" | "transmission" | "slug" | "createdAt", ExtArgs["result"]["carVersion"]>
+export type CarVersionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "modelId" | "versionName" | "engine" | "transmission" | "slug" | "createdAt", ExtArgs["result"]["carVersion"]>
 export type CarVersionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   model?: boolean | Prisma.ModelDefaultArgs<ExtArgs>
-  reviews?: boolean | Prisma.CarVersion$reviewsArgs<ExtArgs>
+  years?: boolean | Prisma.CarVersion$yearsArgs<ExtArgs>
   _count?: boolean | Prisma.CarVersionCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type CarVersionIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -764,12 +681,11 @@ export type $CarVersionPayload<ExtArgs extends runtime.Types.Extensions.Internal
   name: "CarVersion"
   objects: {
     model: Prisma.$ModelPayload<ExtArgs>
-    reviews: Prisma.$ReviewPayload<ExtArgs>[]
+    years: Prisma.$CarVersionYearPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     modelId: string
-    year: number
     versionName: string
     engine: string | null
     transmission: string | null
@@ -1170,7 +1086,7 @@ readonly fields: CarVersionFieldRefs;
 export interface Prisma__CarVersionClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   model<T extends Prisma.ModelDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ModelDefaultArgs<ExtArgs>>): Prisma.Prisma__ModelClient<runtime.Types.Result.GetResult<Prisma.$ModelPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  reviews<T extends Prisma.CarVersion$reviewsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CarVersion$reviewsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  years<T extends Prisma.CarVersion$yearsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CarVersion$yearsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CarVersionYearPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1202,7 +1118,6 @@ export interface Prisma__CarVersionClient<T, Null = never, ExtArgs extends runti
 export interface CarVersionFieldRefs {
   readonly id: Prisma.FieldRef<"CarVersion", 'String'>
   readonly modelId: Prisma.FieldRef<"CarVersion", 'String'>
-  readonly year: Prisma.FieldRef<"CarVersion", 'Int'>
   readonly versionName: Prisma.FieldRef<"CarVersion", 'String'>
   readonly engine: Prisma.FieldRef<"CarVersion", 'String'>
   readonly transmission: Prisma.FieldRef<"CarVersion", 'String'>
@@ -1609,27 +1524,27 @@ export type CarVersionDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.In
 }
 
 /**
- * CarVersion.reviews
+ * CarVersion.years
  */
-export type CarVersion$reviewsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type CarVersion$yearsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the Review
+   * Select specific fields to fetch from the CarVersionYear
    */
-  select?: Prisma.ReviewSelect<ExtArgs> | null
+  select?: Prisma.CarVersionYearSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the Review
+   * Omit specific fields from the CarVersionYear
    */
-  omit?: Prisma.ReviewOmit<ExtArgs> | null
+  omit?: Prisma.CarVersionYearOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.ReviewInclude<ExtArgs> | null
-  where?: Prisma.ReviewWhereInput
-  orderBy?: Prisma.ReviewOrderByWithRelationInput | Prisma.ReviewOrderByWithRelationInput[]
-  cursor?: Prisma.ReviewWhereUniqueInput
+  include?: Prisma.CarVersionYearInclude<ExtArgs> | null
+  where?: Prisma.CarVersionYearWhereInput
+  orderBy?: Prisma.CarVersionYearOrderByWithRelationInput | Prisma.CarVersionYearOrderByWithRelationInput[]
+  cursor?: Prisma.CarVersionYearWhereUniqueInput
   take?: number
   skip?: number
-  distinct?: Prisma.ReviewScalarFieldEnum | Prisma.ReviewScalarFieldEnum[]
+  distinct?: Prisma.CarVersionYearScalarFieldEnum | Prisma.CarVersionYearScalarFieldEnum[]
 }
 
 /**

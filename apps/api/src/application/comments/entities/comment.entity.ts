@@ -17,6 +17,12 @@ export class CommentEntity implements CommentModel {
 	@Expose()
 	createdAt: Date;
 
+	@Expose()
+	user?: {
+		id: string;
+		username: string;
+	};
+
 	constructor(partial: Partial<CommentEntity>) {
 		Object.assign(this, partial);
 	}

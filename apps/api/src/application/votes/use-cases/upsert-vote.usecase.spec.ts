@@ -23,6 +23,7 @@ describe("UpsertVoteUseCase", () => {
 				id: "review-1",
 				userId: "author",
 				carVersionId: "v1",
+				commentsCount: 0,
 				title: "t",
 				content: "c",
 				pros: null,
@@ -57,7 +58,7 @@ describe("UpsertVoteUseCase", () => {
 
 		expect(result).toHaveProperty("type", "DOWN");
 		expect(votesRepository.items).toHaveLength(1);
-		expect(votesRepository.items[0].type).toBe("DOWN");
+		expect(votesRepository.items[0]?.type).toBe("DOWN");
 	});
 
 	it("should throw BadRequestError when review not found", async () => {

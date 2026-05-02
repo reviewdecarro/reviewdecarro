@@ -129,49 +129,86 @@ model Model {
 model CarVersion {
   id           String   @id @default(uuid())
   modelId      String
-  year         Int
   versionName  String
   engine       String?
   transmission String?
-  slug         String   @unique
+  slug         String
   createdAt    DateTime @default(now())
 
-  model   Model    @relation(fields: [modelId], references: [id])
-  reviews Review[]
+  model Model            @relation(fields: [modelId], references: [id])
+  years CarVersionYear[]
 
+  @@unique([modelId, slug], name: "carVersion_modelId_slug_unique")
   @@index([modelId])
   @@map("car_versions")
+}
+
+model CarVersionYear {
+  id           String   @id @default(uuid())
+  carVersionId String
+  year         Int
+  createdAt    DateTime @default(now())
+
+  carVersion CarVersion @relation(fields: [carVersionId], references: [id])
+  reviews    Review[]
+
+  @@unique([carVersionId, year])
+  @@index([year])
+  @@index([carVersionId])
+  @@map("car_version_years")
 }
 
 //
 // REVIEWS
 //
 
+enum ReviewStatus {
+  DRAFT
+  PUBLISHED
+  HIDDEN
+  DELETED
+}
+
 model Review {
-  id                  String   @id @default(uuid())
-  userId              String
-  carVersionId        String
-  title               String
-  slug                String   @unique
-  content             String
-  pros                String?
-  cons                String?
+  id               String @id @default(uuid())
+  userId           String
+  carVersionYearId String
+
+  title   String
+  slug    String  @unique
+  content String
+  pros    String?
+  cons    String?
+
   ownershipTimeMonths Int?
   kmDriven            Int?
-  score               Float    @default(0)
-  createdAt           DateTime @default(now())
-  updatedAt           DateTime @updatedAt
 
-  user       User           @relation(fields: [userId], references: [id])
-  carVersion CarVersion     @relation(fields: [carVersionId], references: [id])
-  ratings    ReviewRating[]
-  comments   Comment[]
-  votes      ReviewVote[]
+  score         Float @default(0)
+  averageRating Float @default(0)
+  ratingsCount  Int   @default(0)
+  votesCount    Int   @default(0)
+  commentsCount Int   @default(0)
 
-  @@index([carVersionId])
+  status      ReviewStatus @default(PUBLISHED)
+  publishedAt DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user           User           @relation(fields: [userId], references: [id])
+  carVersionYear CarVersionYear @relation(fields: [carVersionYearId], references: [id])
+  ratings        ReviewRating[]
+  comments       Comment[]
+  votes          ReviewVote[]
+
+  @@index([carVersionYearId])
   @@index([userId])
   @@index([score])
   @@index([createdAt])
+  @@index([status, createdAt])
+  @@index([carVersionYearId, status, score])
+  @@index([carVersionYearId, status, createdAt])
+  @@index([userId, createdAt])
   @@map("reviews")
 }
 

@@ -10,10 +10,12 @@ export abstract class ReviewsRepositoryProps {
 	abstract findById(id: string): Promise<ReviewEntity | null>;
 	abstract findBySlug(slug: string): Promise<ReviewEntity | null>;
 	abstract findAll(filters?: {
-		carVersionId?: string;
+		carVersionYearId?: string;
 		userId?: string;
 		query?: string;
 	}): Promise<ReviewEntity[]>;
 	abstract update(id: string, data: UpdateReviewDto): Promise<ReviewEntity>;
+	abstract incrementCommentsCount(reviewId: string): Promise<void>;
+	abstract decrementCommentsCount(reviewId: string): Promise<void>;
 	abstract delete(id: string): Promise<void>;
 }

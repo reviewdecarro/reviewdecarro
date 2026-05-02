@@ -27,6 +27,8 @@ const mockVersionsRepository: jest.Mocked<VersionsRepositoryProps> = {
 	findById: jest.fn(),
 	findByModelId: jest.fn(),
 	findBySlug: jest.fn(),
+	findYearsByModelId: jest.fn(),
+	findYearById: jest.fn(),
 };
 
 describe("ListVersionsUseCase", () => {

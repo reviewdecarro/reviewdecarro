@@ -53,6 +53,11 @@ export type Model = Prisma.ModelModel
  */
 export type CarVersion = Prisma.CarVersionModel
 /**
+ * Model CarVersionYear
+ * 
+ */
+export type CarVersionYear = Prisma.CarVersionYearModel
+/**
  * Model Review
  * 
  */

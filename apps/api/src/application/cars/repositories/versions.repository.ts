@@ -1,4 +1,5 @@
 import type { CreateVersionDto } from "../dtos/create-version.dto";
+import type { CarVersionYearEntity } from "../entities/car-version-year.entity";
 import type { CarVersionEntity } from "../entities/car-version.entity";
 
 export abstract class VersionsRepositoryProps {
@@ -9,4 +10,8 @@ export abstract class VersionsRepositoryProps {
 	abstract findById(id: string): Promise<CarVersionEntity | null>;
 	abstract findByModelId(modelId: string): Promise<CarVersionEntity[]>;
 	abstract findBySlug(slug: string): Promise<CarVersionEntity | null>;
+	abstract findYearsByModelId(modelId: string): Promise<number[]>;
+	findYearById(_id: string): Promise<CarVersionYearEntity | null> {
+		return Promise.resolve(null);
+	}
 }

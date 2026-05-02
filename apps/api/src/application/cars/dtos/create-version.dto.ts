@@ -1,5 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
-import { Expose } from "class-transformer";
+import { Expose, Type } from "class-transformer";
 import { IsInt, IsOptional, IsString, Min, MinLength } from "class-validator";
 
 export class CreateVersionDto {
@@ -38,10 +38,6 @@ export class VersionResponseDto {
 	@Expose()
 	modelId: string;
 
-	@ApiProperty({ example: 2024 })
-	@Expose()
-	year: number;
-
 	@ApiProperty({ example: "Polo Track 1.0" })
 	@Expose()
 	versionName: string;
@@ -57,6 +53,33 @@ export class VersionResponseDto {
 	@ApiProperty({ example: "polo-track-1-0-2024" })
 	@Expose()
 	slug: string;
+
+	@ApiProperty({ example: "2026-01-01T00:00:00.000Z" })
+	@Expose()
+	createdAt: Date;
+
+	@ApiPropertyOptional({ type: () => [VersionYearResponseDto] })
+	@Expose()
+	@Type(() => VersionYearResponseDto)
+	years?: VersionYearResponseDto[];
+
+	@ApiPropertyOptional({ example: 2024 })
+	@Expose()
+	year?: number;
+}
+
+export class VersionYearResponseDto {
+	@ApiProperty({ example: "uuid-year" })
+	@Expose()
+	id: string;
+
+	@ApiProperty({ example: "uuid-version" })
+	@Expose()
+	carVersionId: string;
+
+	@ApiProperty({ example: 2024 })
+	@Expose()
+	year: number;
 
 	@ApiProperty({ example: "2026-01-01T00:00:00.000Z" })
 	@Expose()

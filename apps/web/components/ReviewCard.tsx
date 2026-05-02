@@ -2,23 +2,37 @@
 
 import Link from 'next/link';
 import { useState } from 'react';
-import type { Car, Review } from '@/types';
-import { CarPlaceholder } from './CarPlaceholder';
+import type { Car, PublicReview, Review } from '@/types';
 import { ScoreBadge } from './ScoreBadge';
 import { TagBadge } from './TagBadge';
 
 type ReviewCardProps = {
-  review: Review;
-  car: Car;
+  review: Review | PublicReview;
+  car?: Car;
   compact?: boolean;
 };
 
 export function ReviewCard({ review, car, compact }: ReviewCardProps) {
+  const reviewHref = 'slug' in review && review.slug
+    ? `/reviews/${review.slug}`
+    : `/reviews/${review.id}`;
+  const vehicleTag = 'vehicle' in review && review.vehicle
+    ? review.vehicle.brand
+    : car?.segment ?? '';
+  const yearTag = 'vehicle' in review && review.vehicle
+    ? review.vehicle.year
+    : car?.year ?? '';
+  const commentsCount = 'commentsCount' in review && review.commentsCount !== undefined
+    ? review.commentsCount
+    : 'comments' in review
+      ? review.comments
+      : 0;
+
   const [hovered, setHovered] = useState(false);
 
   return (
     <Link
-      href={`/reviews/${review.id}`}
+      href={reviewHref}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       className="block w-full rounded-xl overflow-hidden border transition-all duration-200"
@@ -29,16 +43,13 @@ export function ReviewCard({ review, car, compact }: ReviewCardProps) {
         transform:   hovered ? 'translateY(-2px)' : 'none',
       }}
     >
-      <CarPlaceholder
-        brand={car.brand}
-        model={car.model}
-        segment={car.segment}
-        className={`w-full ${compact ? 'h-[110px]' : 'h-[150px]'}`}
-      />
       <div className={compact ? 'p-3' : 'p-4'}>
         <div className="flex items-start justify-between gap-2 mb-2">
-          <TagBadge label={car.segment} />
+          <TagBadge label={vehicleTag} />
           <ScoreBadge score={review.score} size="sm" />
+        </div>
+        <div className="text-[11px] font-medium uppercase tracking-[0.06em] mb-2" style={{ color: 'var(--text-light)' }}>
+          {yearTag}
         </div>
         <div
           className="font-display font-bold leading-snug mb-2"
@@ -51,7 +62,7 @@ export function ReviewCard({ review, car, compact }: ReviewCardProps) {
           <span>·</span>
           <span>{review.date}</span>
           <span>·</span>
-          <span>{review.comments} comments</span>
+          <span>{commentsCount} comentários</span>
         </div>
       </div>
     </Link>
