@@ -15,6 +15,9 @@ export class ReviewEntity {
 	carVersionId?: string;
 
 	@Expose()
+	commentsCount: number;
+
+	@Expose()
 	title: string;
 
 	@Expose()
@@ -47,6 +50,33 @@ export class ReviewEntity {
 	@Expose()
 	ratings?: ReviewRatingEntity[];
 
+	@Expose()
+	user?: {
+		id: string;
+		username: string;
+	};
+
+	@Expose()
+	carVersionYear?: {
+		id: string;
+		year: number;
+		carVersion?: {
+			id: string;
+			versionName: string;
+			slug: string;
+			model?: {
+				id: string;
+				name: string;
+				slug: string;
+				brand?: {
+					id: string;
+					name: string;
+					slug: string;
+				};
+			};
+		};
+	};
+
 	constructor({ ratings, ...partial }: Partial<ReviewEntity>) {
 		Object.assign(this, partial);
 
@@ -56,6 +86,10 @@ export class ReviewEntity {
 
 		if (!this.carVersionId) {
 			this.carVersionId = this.carVersionYearId;
+		}
+
+		if (this.commentsCount === undefined) {
+			this.commentsCount = 0;
 		}
 
 		if (ratings) {

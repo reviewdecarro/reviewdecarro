@@ -2,9 +2,10 @@ import { beforeEach, describe, expect, it, jest } from "@jest/globals";
 import { JwtService } from "@nestjs/jwt";
 import { AuthService } from "./auth.service";
 
-const mockJwtService: jest.Mocked<Pick<JwtService, "signAsync">> = {
-	signAsync: jest.fn(),
-};
+const signAsyncMock = jest.fn() as any;
+const mockJwtService = {
+	signAsync: signAsyncMock,
+} as unknown as JwtService;
 
 describe("AuthService", () => {
 	let sut: AuthService;
@@ -16,7 +17,7 @@ describe("AuthService", () => {
 
 	describe("generateToken", () => {
 		it("should return an accessToken", async () => {
-			mockJwtService.signAsync.mockResolvedValue("jwt-token-123");
+			signAsyncMock.mockResolvedValue("jwt-token-123");
 
 			const result = await sut.generateToken({
 				sub: "user-id",
@@ -24,7 +25,7 @@ describe("AuthService", () => {
 			});
 
 			expect(result).toEqual({ accessToken: "jwt-token-123" });
-			expect(mockJwtService.signAsync).toHaveBeenCalledWith({
+			expect(signAsyncMock).toHaveBeenCalledWith({
 				sub: "user-id",
 				sessionId: "session-id",
 			});

@@ -1,11 +1,15 @@
 import { Injectable } from "@nestjs/common";
 import { BadRequestError } from "../../../shared/errors/types/bad-request-error";
+import { ReviewsRepositoryProps } from "../../reviews/repositories/reviews.repository";
 import { UserEntity } from "../../users/entities/user.entity";
 import { CommentsRepositoryProps } from "../repositories/comments.repository";
 
 @Injectable()
 export class DeleteCommentUseCase {
-	constructor(private commentsRepository: CommentsRepositoryProps) {}
+	constructor(
+		private commentsRepository: CommentsRepositoryProps,
+		private reviewsRepository: ReviewsRepositoryProps,
+	) {}
 
 	async execute(user: UserEntity, reviewId: string, commentId: string) {
 		const comment = await this.commentsRepository.findById(commentId);
@@ -21,5 +25,6 @@ export class DeleteCommentUseCase {
 		}
 
 		await this.commentsRepository.delete(commentId);
+		await this.reviewsRepository.decrementCommentsCount(reviewId);
 	}
 }

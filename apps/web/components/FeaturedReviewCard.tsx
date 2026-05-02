@@ -2,21 +2,36 @@
 
 import Link from 'next/link';
 import { useState } from 'react';
-import type { Car, Review } from '@/types';
+import type { Car, PublicReview, Review } from '@/types';
 import { ScoreBadge } from './ScoreBadge';
 import { TagBadge } from './TagBadge';
 
 type FeaturedReviewCardProps = {
-  review: Review;
-  car: Car;
+  review: Review | PublicReview;
+  car?: Car;
 };
 
 export function FeaturedReviewCard({ review, car }: FeaturedReviewCardProps) {
+  const reviewHref = 'slug' in review && review.slug
+    ? `/reviews/${review.slug}`
+    : `/reviews/${review.id}`;
+  const brandTag = 'vehicle' in review && review.vehicle
+    ? review.vehicle.brand
+    : car?.segment ?? '';
+  const yearTag = 'vehicle' in review && review.vehicle
+    ? review.vehicle.year
+    : car?.year ?? '';
+  const commentsCount = 'commentsCount' in review && review.commentsCount !== undefined
+    ? review.commentsCount
+    : 'comments' in review
+      ? review.comments
+      : 0;
+
   const [hovered, setHovered] = useState(false);
 
   return (
     <Link
-      href={`/reviews/${review.id}`}
+      href={reviewHref}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       className="block w-full h-full rounded-2xl overflow-hidden border transition-all duration-200"
@@ -29,8 +44,8 @@ export function FeaturedReviewCard({ review, car }: FeaturedReviewCardProps) {
     >
       <div className="flex items-start justify-between gap-3 p-5 pb-0">
         <div className="flex flex-wrap gap-1.5">
-          <TagBadge label={car.segment} />
-          <TagBadge label={`${car.year}`} />
+          <TagBadge label={brandTag} />
+          <TagBadge label={`${yearTag}`} />
         </div>
         <ScoreBadge score={review.score} size="md" />
       </div>
@@ -47,14 +62,14 @@ export function FeaturedReviewCard({ review, car }: FeaturedReviewCardProps) {
           {review.title}
         </div>
         <p className="text-[14px] leading-relaxed mb-3.5" style={{ color: 'var(--text-muted)', textWrap: 'pretty' } as React.CSSProperties}>
-          {review.excerpt}
+          {review.excerpt ?? ''}
         </p>
         <div className="text-[13px] flex gap-2.5" style={{ color: 'var(--text-light)' }}>
           <span className="font-medium" style={{ color: 'var(--accent)' }}>{review.author}</span>
           <span>·</span>
           <span>{review.date}</span>
           <span>·</span>
-          <span>{review.comments} comentários</span>
+          <span>{commentsCount} comentários</span>
         </div>
       </div>
     </Link>

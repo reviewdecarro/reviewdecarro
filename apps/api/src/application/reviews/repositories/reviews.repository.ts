@@ -15,5 +15,7 @@ export abstract class ReviewsRepositoryProps {
 		query?: string;
 	}): Promise<ReviewEntity[]>;
 	abstract update(id: string, data: UpdateReviewDto): Promise<ReviewEntity>;
+	abstract incrementCommentsCount(reviewId: string): Promise<void>;
+	abstract decrementCommentsCount(reviewId: string): Promise<void>;
 	abstract delete(id: string): Promise<void>;
 }

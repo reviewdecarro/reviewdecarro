@@ -1,22 +1,37 @@
 'use client';
 
 import { useState } from 'react';
-import type { Car, Review } from '@/types';
+import type { Car, PublicReview, Review } from '@/types';
 import { ReviewCard } from '@/components/ReviewCard';
 
-type ReviewWithCar = { review: Review; car: Car };
+type ReviewWithCar = {
+  review: Review | PublicReview;
+  car?: Car;
+};
 
 type ReviewsFilterProps = {
   items: ReviewWithCar[];
-  segments: string[];
 };
 
-export function ReviewsFilter({ items, segments }: ReviewsFilterProps) {
+function getItemLabel(item: ReviewWithCar) {
+  if (item.car) {
+    return item.car.segment;
+  }
+
+  if ('vehicle' in item.review && item.review.vehicle) {
+    return item.review.vehicle.brand;
+  }
+
+  return 'Sem categoria';
+}
+
+export function ReviewsFilter({ items }: ReviewsFilterProps) {
   const [active, setActive] = useState('Todos');
+  const segments = [...new Set(items.map(getItemLabel))].filter(Boolean);
 
   const filtered = active === 'Todos'
     ? items
-    : items.filter(({ car }) => car.segment === active);
+    : items.filter((item) => getItemLabel(item) === active);
 
   return (
     <>

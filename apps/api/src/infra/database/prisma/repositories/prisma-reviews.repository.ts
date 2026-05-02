@@ -7,6 +7,34 @@ import { ReviewEntity } from "../../../../application/reviews/entities/review.en
 import { ReviewsRepositoryProps } from "../../../../application/reviews/repositories/reviews.repository";
 import { PrismaService } from "../prisma.service";
 
+const reviewInclude = {
+	ratings: true,
+	user: {
+		select: {
+			id: true,
+			username: true,
+		},
+	},
+	carVersionYear: {
+		include: {
+			carVersion: {
+				include: {
+					model: {
+						include: {
+							brand: true,
+						},
+					},
+				},
+			},
+		},
+	},
+	_count: {
+		select: {
+			comments: true,
+		},
+	},
+} as const;
+
 @Injectable()
 export class PrismaReviewsRepository implements ReviewsRepositoryProps {
 	constructor(private prisma: PrismaService) {}
@@ -39,27 +67,33 @@ export class PrismaReviewsRepository implements ReviewsRepositoryProps {
 						}
 					: undefined,
 			},
-			include: { ratings: true },
+			include: reviewInclude,
 		});
 
-		return new ReviewEntity(review);
+		return new ReviewEntity({
+			...review,
+			commentsCount: review._count.comments,
+		});
 	}
 
 	async findById(id: string): Promise<ReviewEntity | null> {
 		const review = await this.prisma.review.findUnique({
 			where: { id },
-			include: { ratings: true },
+			include: reviewInclude,
 		});
 
 		if (!review) return null;
 
-		return new ReviewEntity(review);
+		return new ReviewEntity({
+			...review,
+			commentsCount: review._count.comments,
+		});
 	}
 
 	async findBySlug(slug: string): Promise<ReviewEntity | null> {
 		const review = await this.prisma.review.findUnique({
 			where: { slug },
-			include: { ratings: true },
+			include: reviewInclude,
 		});
 
 		if (!review) return null;
@@ -91,11 +125,17 @@ export class PrismaReviewsRepository implements ReviewsRepositoryProps {
 
 		const reviews = await this.prisma.review.findMany({
 			where,
-			include: { ratings: true },
+			include: reviewInclude,
 			orderBy: { createdAt: "desc" },
 		});
 
-		return reviews.map((review) => new ReviewEntity(review));
+		return reviews.map(
+			(review) =>
+				new ReviewEntity({
+					...review,
+					commentsCount: review._count.comments,
+				}),
+		);
 	}
 
 	async update(id: string, data: UpdateReviewDto): Promise<ReviewEntity> {
@@ -123,10 +163,35 @@ export class PrismaReviewsRepository implements ReviewsRepositoryProps {
 		const review = await this.prisma.review.update({
 			where: { id },
 			data: updateData,
-			include: { ratings: true },
+			include: reviewInclude,
 		});
 
-		return new ReviewEntity(review);
+		return new ReviewEntity({
+			...review,
+			commentsCount: review._count.comments,
+		});
+	}
+
+	async incrementCommentsCount(reviewId: string): Promise<void> {
+		await this.prisma.review.update({
+			where: { id: reviewId },
+			data: {
+				commentsCount: {
+					increment: 1,
+				},
+			},
+		});
+	}
+
+	async decrementCommentsCount(reviewId: string): Promise<void> {
+		await this.prisma.review.update({
+			where: { id: reviewId },
+			data: {
+				commentsCount: {
+					decrement: 1,
+				},
+			},
+		});
 	}
 
 	async delete(id: string): Promise<void> {

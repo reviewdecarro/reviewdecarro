@@ -129,6 +129,97 @@ export class UpdateReviewDto {
 	readonly ratings?: RatingDto[];
 }
 
+export class RatingResponseDto {
+	@ApiProperty()
+	@Expose()
+	id: string;
+
+	@ApiProperty()
+	@Expose()
+	category: string;
+
+	@ApiProperty()
+	@Expose()
+	value: number;
+}
+
+export class ReviewBrandResponseDto {
+	@ApiProperty()
+	@Expose()
+	id: string;
+
+	@ApiProperty()
+	@Expose()
+	name: string;
+
+	@ApiProperty()
+	@Expose()
+	slug: string;
+}
+
+export class ReviewModelResponseDto {
+	@ApiProperty()
+	@Expose()
+	id: string;
+
+	@ApiProperty()
+	@Expose()
+	name: string;
+
+	@ApiProperty()
+	@Expose()
+	slug: string;
+
+	@ApiPropertyOptional({ type: () => ReviewBrandResponseDto })
+	@Expose()
+	@Type(() => ReviewBrandResponseDto)
+	brand?: ReviewBrandResponseDto;
+}
+
+export class ReviewVersionResponseDto {
+	@ApiProperty()
+	@Expose()
+	id: string;
+
+	@ApiProperty()
+	@Expose()
+	versionName: string;
+
+	@ApiProperty()
+	@Expose()
+	slug: string;
+
+	@ApiPropertyOptional({ type: () => ReviewModelResponseDto })
+	@Expose()
+	@Type(() => ReviewModelResponseDto)
+	model?: ReviewModelResponseDto;
+}
+
+export class ReviewYearResponseDto {
+	@ApiProperty()
+	@Expose()
+	id: string;
+
+	@ApiProperty()
+	@Expose()
+	year: number;
+
+	@ApiPropertyOptional({ type: () => ReviewVersionResponseDto })
+	@Expose()
+	@Type(() => ReviewVersionResponseDto)
+	carVersion?: ReviewVersionResponseDto;
+}
+
+export class ReviewAuthorResponseDto {
+	@ApiProperty()
+	@Expose()
+	id: string;
+
+	@ApiProperty()
+	@Expose()
+	username: string;
+}
+
 export class ReviewResponseDto {
 	@ApiProperty()
 	@Expose()
@@ -145,6 +236,10 @@ export class ReviewResponseDto {
 	@ApiPropertyOptional()
 	@Expose()
 	carVersionId?: string;
+
+	@ApiProperty()
+	@Expose()
+	commentsCount: number;
 
 	@ApiProperty()
 	@Expose()
@@ -189,18 +284,14 @@ export class ReviewResponseDto {
 	@ApiPropertyOptional()
 	@Expose()
 	ratings: RatingResponseDto[];
-}
 
-export class RatingResponseDto {
-	@ApiProperty()
+	@ApiPropertyOptional({ type: () => ReviewAuthorResponseDto })
 	@Expose()
-	id: string;
+	@Type(() => ReviewAuthorResponseDto)
+	user?: ReviewAuthorResponseDto;
 
-	@ApiProperty()
+	@ApiPropertyOptional({ type: () => ReviewYearResponseDto })
 	@Expose()
-	category: string;
-
-	@ApiProperty()
-	@Expose()
-	value: number;
+	@Type(() => ReviewYearResponseDto)
+	carVersionYear?: ReviewYearResponseDto;
 }

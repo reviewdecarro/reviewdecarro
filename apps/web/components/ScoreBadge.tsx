@@ -6,9 +6,9 @@ type ScoreBadgeProps = {
 };
 
 function getScoreColor(score: number): string {
-	if (score >= 9.0) return "oklch(0.57 0.17 148)";
-	if (score >= 8.0) return "oklch(0.60 0.15 165)";
-	if (score >= 7.0) return "oklch(0.65 0.16 78)";
+	if (score >= 4.5) return "oklch(0.57 0.17 148)";
+	if (score >= 4.0) return "oklch(0.60 0.15 165)";
+	if (score >= 3.0) return "oklch(0.65 0.16 78)";
 	return "oklch(0.60 0.17 28)";
 }
 
@@ -31,7 +31,7 @@ export function ScoreBadge({ score, size = "md" }: ScoreBadgeProps) {
 				{score.toFixed(1)}
 			</span>
 			<span style={{ color, fontSize: "55%", opacity: 0.7, lineHeight: 1 }}>
-				/10
+				/5
 			</span>
 		</div>
 	);

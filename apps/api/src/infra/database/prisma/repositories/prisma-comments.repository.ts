@@ -19,6 +19,14 @@ export class PrismaCommentsRepository implements CommentsRepositoryProps {
 				userId,
 				content: data.content,
 			},
+			include: {
+				user: {
+					select: {
+						id: true,
+						username: true,
+					},
+				},
+			},
 		});
 
 		return new CommentEntity(comment);
@@ -27,6 +35,14 @@ export class PrismaCommentsRepository implements CommentsRepositoryProps {
 	async findById(id: string): Promise<CommentEntity | null> {
 		const comment = await this.prisma.comment.findUnique({
 			where: { id },
+			include: {
+				user: {
+					select: {
+						id: true,
+						username: true,
+					},
+				},
+			},
 		});
 
 		if (!comment) return null;
@@ -37,6 +53,14 @@ export class PrismaCommentsRepository implements CommentsRepositoryProps {
 	async findByReviewId(reviewId: string): Promise<CommentEntity[]> {
 		const comments = await this.prisma.comment.findMany({
 			where: { reviewId },
+			include: {
+				user: {
+					select: {
+						id: true,
+						username: true,
+					},
+				},
+			},
 			orderBy: { createdAt: "asc" },
 		});
 

@@ -23,6 +23,7 @@ export class InMemoryReviewsRepository extends ReviewsRepositoryProps {
 			id: reviewId,
 			userId,
 			carVersionYearId,
+			commentsCount: 0,
 			title: data.title,
 			slug,
 			content: data.content,
@@ -101,6 +102,7 @@ export class InMemoryReviewsRepository extends ReviewsRepositoryProps {
 				data.ownershipTimeMonths ?? current.ownershipTimeMonths,
 			kmDriven: data.kmDriven ?? current.kmDriven,
 			score: data.score ?? current.score,
+			commentsCount: current.commentsCount ?? 0,
 			updatedAt: new Date(),
 			ratings: data.ratings
 				? data.ratings.map(
@@ -118,6 +120,22 @@ export class InMemoryReviewsRepository extends ReviewsRepositoryProps {
 		this.items = this.items.map((r) => (r.id === id ? updated : r));
 
 		return updated;
+	}
+
+	async incrementCommentsCount(reviewId: string): Promise<void> {
+		const review = this.items.find((item) => item.id === reviewId);
+
+		if (review) {
+			review.commentsCount = (review.commentsCount ?? 0) + 1;
+		}
+	}
+
+	async decrementCommentsCount(reviewId: string): Promise<void> {
+		const review = this.items.find((item) => item.id === reviewId);
+
+		if (review) {
+			review.commentsCount = Math.max((review.commentsCount ?? 0) - 1, 0);
+		}
 	}
 
 	async delete(id: string): Promise<void> {
