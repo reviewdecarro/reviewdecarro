@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState, type FormEvent } from "react";
+import { type FormEvent, useEffect, useRef, useState } from "react";
 
 export function LoginForm() {
 	const router = useRouter();
@@ -11,19 +11,32 @@ export function LoginForm() {
 	const [showPass, setShowPass] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState("");
+	const submitTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+	useEffect(() => {
+		return () => {
+			if (submitTimerRef.current !== null) {
+				clearTimeout(submitTimerRef.current);
+			}
+		};
+	}, []);
 
 	function handleSubmit(e: FormEvent<HTMLFormElement>) {
 		e.preventDefault();
 
 		if (!email || !password) {
-			setError("Please fill in all fields.");
+			setError("Preencha todos os campos.");
 			return;
 		}
 
 		setError("");
 		setLoading(true);
 
-		window.setTimeout(() => {
+		if (submitTimerRef.current !== null) {
+			clearTimeout(submitTimerRef.current);
+		}
+
+		submitTimerRef.current = setTimeout(() => {
 			setLoading(false);
 			router.push("/");
 		}, 1200);
@@ -36,10 +49,10 @@ export function LoginForm() {
 					className="font-display font-extrabold text-[30px] mb-2"
 					style={{ color: "var(--text)" }}
 				>
-					Welcome back
+					Bem-vindo de volta
 				</h1>
 				<p className="text-[15px]" style={{ color: "var(--text-muted)" }}>
-					Sign in to your account to continue.
+					Entre na sua conta para continuar.
 				</p>
 			</div>
 
@@ -61,8 +74,9 @@ export function LoginForm() {
 					<label
 						className="block text-[13px] font-medium mb-1.5"
 						style={{ color: "var(--text-muted)" }}
+						htmlFor="email"
 					>
-						Email
+						E-mail
 					</label>
 					<div className="relative">
 						<div
@@ -70,6 +84,7 @@ export function LoginForm() {
 							style={{ color: "var(--text-light)" }}
 						>
 							<svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+								<title>E-mail</title>
 								<rect
 									x="1"
 									y="3"
@@ -87,10 +102,11 @@ export function LoginForm() {
 							</svg>
 						</div>
 						<input
+							id="email"
 							type="email"
 							value={email}
 							onChange={(e) => setEmail(e.target.value)}
-							placeholder="you@example.com"
+							placeholder="voce@exemplo.com"
 							className="w-full rounded-xl pl-10 pr-4 py-3 text-[14px] border outline-none transition-colors duration-150"
 							style={{
 								background: "var(--surface)",
@@ -107,8 +123,9 @@ export function LoginForm() {
 					<label
 						className="block text-[13px] font-medium mb-1.5"
 						style={{ color: "var(--text-muted)" }}
+						htmlFor="password"
 					>
-						Password
+						Senha
 					</label>
 					<div className="relative">
 						<div
@@ -116,6 +133,7 @@ export function LoginForm() {
 							style={{ color: "var(--text-light)" }}
 						>
 							<svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+								<title>Senha</title>
 								<rect
 									x="3"
 									y="7"
@@ -134,6 +152,7 @@ export function LoginForm() {
 							</svg>
 						</div>
 						<input
+							id="password"
 							type={showPass ? "text" : "password"}
 							value={password}
 							onChange={(e) => setPassword(e.target.value)}
@@ -155,6 +174,7 @@ export function LoginForm() {
 						>
 							{showPass ? (
 								<svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+									<title>Ocultar senha</title>
 									<path
 										d="M1 8s2.5-5 7-5 7 5 7 5-2.5 5-7 5-7-5-7-5z"
 										stroke="currentColor"
@@ -176,6 +196,7 @@ export function LoginForm() {
 								</svg>
 							) : (
 								<svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+									<title>Mostrar senha</title>
 									<path
 										d="M1 8s2.5-5 7-5 7 5 7 5-2.5 5-7 5-7-5-7-5z"
 										stroke="currentColor"
@@ -194,6 +215,14 @@ export function LoginForm() {
 					</div>
 				</div>
 
+				<Link
+					href="/forgot-password"
+					className="text-[12px] border-none bg-transparent cursor-pointer inline-flex"
+					style={{ color: "var(--accent)" }}
+				>
+					Esqueceu a senha?
+				</Link>
+
 				<button
 					type="submit"
 					disabled={loading}
@@ -211,6 +240,7 @@ export function LoginForm() {
 								viewBox="0 0 16 16"
 								fill="none"
 							>
+								<title>Carregando</title>
 								<circle
 									cx="8"
 									cy="8"
@@ -226,10 +256,10 @@ export function LoginForm() {
 									strokeLinecap="round"
 								/>
 							</svg>
-							Signing in…
+							Entrando…
 						</>
 					) : (
-						"Sign in"
+						"Entrar"
 					)}
 				</button>
 			</form>
@@ -238,13 +268,13 @@ export function LoginForm() {
 				className="text-center mt-6 text-[14px]"
 				style={{ color: "var(--text-muted)" }}
 			>
-				Don&apos;t have an account?{" "}
+				Não tem uma conta?{" "}
 				<Link
 					href="/register"
 					className="font-semibold border-none bg-transparent cursor-pointer text-[14px]"
 					style={{ color: "var(--accent)" }}
 				>
-					Create one
+					Criar uma
 				</Link>
 			</p>
 		</div>
