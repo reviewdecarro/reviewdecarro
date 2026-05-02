@@ -7,6 +7,7 @@ import { GetModelUseCase } from "src/application/cars/use-cases/get-model.usecas
 import { GetVersionUseCase } from "src/application/cars/use-cases/get-version.usecase";
 import { ListBrandsUseCase } from "src/application/cars/use-cases/list-brands.usecase";
 import { ListModelsUseCase } from "src/application/cars/use-cases/list-models.usecase";
+import { ListVersionYearsUseCase } from "src/application/cars/use-cases/list-version-years.usecase";
 import { ListVersionsUseCase } from "src/application/cars/use-cases/list-versions.usecase";
 import { DatabaseModule } from "src/infra/database/database.module";
 import { BrandsController } from "../brands/brands.controller";
@@ -23,6 +24,7 @@ import { BrandsController } from "../brands/brands.controller";
 		GetModelUseCase,
 		CreateVersionUseCase,
 		ListVersionsUseCase,
+		ListVersionYearsUseCase,
 		GetVersionUseCase,
 	],
 })

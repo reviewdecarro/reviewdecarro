@@ -16,7 +16,7 @@ describe("ListReviewsUseCase", () => {
 		return new ReviewEntity({
 			id: overrides.id ?? "r1",
 			userId: overrides.userId ?? "user-1",
-			carVersionId: overrides.carVersionId ?? "v1",
+			carVersionYearId: overrides.carVersionYearId ?? "year-1",
 			title: overrides.title ?? "Title",
 			content: overrides.content ?? "Content",
 			pros: null,
@@ -40,13 +40,13 @@ describe("ListReviewsUseCase", () => {
 		expect(result).toHaveLength(2);
 	});
 
-	it("should filter by carVersionId", async () => {
+	it("should filter by carVersionYearId", async () => {
 		reviewsRepository.items.push(
-			makeReview({ id: "a", carVersionId: "v1" }),
-			makeReview({ id: "b", carVersionId: "v2" }),
+			makeReview({ id: "a", carVersionYearId: "year-1" }),
+			makeReview({ id: "b", carVersionYearId: "year-2" }),
 		);
 
-		const result = await sut.execute({ carVersionId: "v2" });
+		const result = await sut.execute({ carVersionYearId: "year-2" });
 
 		expect(result).toHaveLength(1);
 		expect(result[0]).toHaveProperty("id", "b");

@@ -47,6 +47,15 @@ export type Thread = {
   category: string;
 };
 
+export type ForumComment = {
+  id: number;
+  author: string;
+  date: string;
+  body: string;
+  contextType: "review" | "thread";
+  contextTitle: string;
+};
+
 export type BlogPost = {
   id: number;
   title: string;

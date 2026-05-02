@@ -12,16 +12,16 @@ type ReviewsFilterProps = {
 };
 
 export function ReviewsFilter({ items, segments }: ReviewsFilterProps) {
-  const [active, setActive] = useState('All');
+  const [active, setActive] = useState('Todos');
 
-  const filtered = active === 'All'
+  const filtered = active === 'Todos'
     ? items
     : items.filter(({ car }) => car.segment === active);
 
   return (
     <>
       <div className="flex flex-wrap gap-2 mb-8">
-        {['All', ...segments].map(seg => (
+        {['Todos', ...segments].map(seg => (
           <button
             key={seg}
             onClick={() => setActive(seg)}

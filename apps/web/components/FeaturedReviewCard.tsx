@@ -3,7 +3,6 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import type { Car, Review } from '@/types';
-import { CarPlaceholder } from './CarPlaceholder';
 import { ScoreBadge } from './ScoreBadge';
 import { TagBadge } from './TagBadge';
 
@@ -28,24 +27,21 @@ export function FeaturedReviewCard({ review, car }: FeaturedReviewCardProps) {
         transform:   hovered ? 'translateY(-2px)' : 'none',
       }}
     >
-      <div className="relative">
-        <CarPlaceholder brand={car.brand} model={car.model} segment={car.segment} className="w-full h-[240px]" />
-        <div className="absolute top-3.5 left-3.5">
-          <span
-            className="text-[11px] font-semibold px-2.5 py-1 rounded-full tracking-[0.06em] uppercase text-white"
-            style={{ background: 'var(--accent)' }}
-          >
-            Editor&apos;s Pick
-          </span>
-        </div>
-        <div className="absolute top-3.5 right-3.5">
-          <ScoreBadge score={review.score} size="md" />
-        </div>
-      </div>
-      <div className="p-5 pb-6">
-        <div className="flex gap-1.5 mb-3">
+      <div className="flex items-start justify-between gap-3 p-5 pb-0">
+        <div className="flex flex-wrap gap-1.5">
           <TagBadge label={car.segment} />
           <TagBadge label={`${car.year}`} />
+        </div>
+        <ScoreBadge score={review.score} size="md" />
+      </div>
+      <div className="p-5 pb-6">
+        <div className="mb-3">
+          <span
+            className="inline-flex text-[11px] font-semibold px-2.5 py-1 rounded-full tracking-[0.06em] uppercase text-white"
+            style={{ background: 'var(--accent)' }}
+          >
+            Escolha do editor
+          </span>
         </div>
         <div className="font-display font-extrabold text-xl leading-tight mb-2.5" style={{ color: 'var(--text)', textWrap: 'pretty' } as React.CSSProperties}>
           {review.title}
@@ -58,7 +54,7 @@ export function FeaturedReviewCard({ review, car }: FeaturedReviewCardProps) {
           <span>·</span>
           <span>{review.date}</span>
           <span>·</span>
-          <span>{review.comments} comments</span>
+          <span>{review.comments} comentários</span>
         </div>
       </div>
     </Link>

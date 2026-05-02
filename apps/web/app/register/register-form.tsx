@@ -1,5 +1,6 @@
 "use client";
 
+import { Eye, EyeOff, LoaderCircle, Mail, Lock } from "lucide-react";
 import { type FormEvent, useState } from "react";
 import Link from "next/link";
 
@@ -199,23 +200,7 @@ export function RegisterForm() {
 							className="absolute left-3.5 top-1/2 -translate-y-1/2"
 							style={{ color: "var(--text-light)" }}
 						>
-							<svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-								<title>E-mail</title>
-								<rect
-									x="1"
-									y="3"
-									width="14"
-									height="10"
-									rx="2"
-									stroke="currentColor"
-									strokeWidth="1.4"
-								/>
-								<path
-									d="M1 5.5L8 9.5L15 5.5"
-									stroke="currentColor"
-									strokeWidth="1.4"
-								/>
-							</svg>
+							<Mail size={16} strokeWidth={1.8} />
 						</div>
 						<input
 							id="register-email"
@@ -262,24 +247,7 @@ export function RegisterForm() {
 							className="absolute left-3.5 top-1/2 -translate-y-1/2"
 							style={{ color: "var(--text-light)" }}
 						>
-							<svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-								<title>Senha</title>
-								<rect
-									x="3"
-									y="7"
-									width="10"
-									height="7"
-									rx="2"
-									stroke="currentColor"
-									strokeWidth="1.4"
-								/>
-								<path
-									d="M5 7V5a3 3 0 0 1 6 0v2"
-									stroke="currentColor"
-									strokeWidth="1.4"
-									strokeLinecap="round"
-								/>
-							</svg>
+							<Lock size={16} strokeWidth={1.8} />
 						</div>
 						<input
 							id="register-password"
@@ -308,21 +276,11 @@ export function RegisterForm() {
 							className="absolute right-3.5 top-1/2 -translate-y-1/2 border-none bg-transparent cursor-pointer p-0"
 							style={{ color: "var(--text-light)" }}
 						>
-							<svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-								<title>{showPass ? "Ocultar senha" : "Mostrar senha"}</title>
-								<path
-									d="M1 8s2.5-5 7-5 7 5 7 5-2.5 5-7 5-7-5-7-5z"
-									stroke="currentColor"
-									strokeWidth="1.4"
-								/>
-								<circle
-									cx="8"
-									cy="8"
-									r="2"
-									stroke="currentColor"
-									strokeWidth="1.4"
-								/>
-							</svg>
+							{showPass ? (
+								<EyeOff size={16} strokeWidth={1.8} />
+							) : (
+								<Eye size={16} strokeWidth={1.8} />
+							)}
 						</button>
 					</div>
 					{password.length > 0 && (
@@ -395,33 +353,11 @@ export function RegisterForm() {
 								: "var(--accent)",
 					}}
 				>
-					{loading ? (
-						<>
-							<svg
-								className="animate-spin"
-								width="16"
-								height="16"
-								viewBox="0 0 16 16"
-								fill="none"
-							>
-								<title>Carregando</title>
-								<circle
-									cx="8"
-									cy="8"
-									r="6"
-									stroke="white"
-									strokeWidth="2"
-									strokeOpacity="0.3"
-								/>
-								<path
-									d="M8 2a6 6 0 0 1 6 6"
-									stroke="white"
-									strokeWidth="2"
-									strokeLinecap="round"
-								/>
-							</svg>
-							Criando sua conta…
-						</>
+						{loading ? (
+							<>
+								<LoaderCircle className="animate-spin" size={16} strokeWidth={2} />
+								Criando sua conta…
+							</>
 					) : (
 						"Criar conta"
 					)}

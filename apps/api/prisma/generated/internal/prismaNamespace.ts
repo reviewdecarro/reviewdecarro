@@ -391,6 +391,7 @@ export const ModelName = {
   Brand: 'Brand',
   Model: 'Model',
   CarVersion: 'CarVersion',
+  CarVersionYear: 'CarVersionYear',
   Review: 'Review',
   ReviewRating: 'ReviewRating',
   Comment: 'Comment',
@@ -410,7 +411,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "session" | "userToken" | "role" | "brand" | "model" | "carVersion" | "review" | "reviewRating" | "comment" | "reviewVote"
+    modelProps: "user" | "session" | "userToken" | "role" | "brand" | "model" | "carVersion" | "carVersionYear" | "review" | "reviewRating" | "comment" | "reviewVote"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -932,6 +933,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    CarVersionYear: {
+      payload: Prisma.$CarVersionYearPayload<ExtArgs>
+      fields: Prisma.CarVersionYearFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.CarVersionYearFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CarVersionYearPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.CarVersionYearFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CarVersionYearPayload>
+        }
+        findFirst: {
+          args: Prisma.CarVersionYearFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CarVersionYearPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.CarVersionYearFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CarVersionYearPayload>
+        }
+        findMany: {
+          args: Prisma.CarVersionYearFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CarVersionYearPayload>[]
+        }
+        create: {
+          args: Prisma.CarVersionYearCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CarVersionYearPayload>
+        }
+        createMany: {
+          args: Prisma.CarVersionYearCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.CarVersionYearCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CarVersionYearPayload>[]
+        }
+        delete: {
+          args: Prisma.CarVersionYearDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CarVersionYearPayload>
+        }
+        update: {
+          args: Prisma.CarVersionYearUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CarVersionYearPayload>
+        }
+        deleteMany: {
+          args: Prisma.CarVersionYearDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.CarVersionYearUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.CarVersionYearUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CarVersionYearPayload>[]
+        }
+        upsert: {
+          args: Prisma.CarVersionYearUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CarVersionYearPayload>
+        }
+        aggregate: {
+          args: Prisma.CarVersionYearAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateCarVersionYear>
+        }
+        groupBy: {
+          args: Prisma.CarVersionYearGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CarVersionYearGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.CarVersionYearCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CarVersionYearCountAggregateOutputType> | number
+        }
+      }
+    }
     Review: {
       payload: Prisma.$ReviewPayload<ExtArgs>
       fields: Prisma.ReviewFieldRefs
@@ -1340,7 +1415,6 @@ export type ModelScalarFieldEnum = (typeof ModelScalarFieldEnum)[keyof typeof Mo
 export const CarVersionScalarFieldEnum = {
   id: 'id',
   modelId: 'modelId',
-  year: 'year',
   versionName: 'versionName',
   engine: 'engine',
   transmission: 'transmission',
@@ -1351,10 +1425,20 @@ export const CarVersionScalarFieldEnum = {
 export type CarVersionScalarFieldEnum = (typeof CarVersionScalarFieldEnum)[keyof typeof CarVersionScalarFieldEnum]
 
 
+export const CarVersionYearScalarFieldEnum = {
+  id: 'id',
+  carVersionId: 'carVersionId',
+  year: 'year',
+  createdAt: 'createdAt'
+} as const
+
+export type CarVersionYearScalarFieldEnum = (typeof CarVersionYearScalarFieldEnum)[keyof typeof CarVersionYearScalarFieldEnum]
+
+
 export const ReviewScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
-  carVersionId: 'carVersionId',
+  carVersionYearId: 'carVersionYearId',
   title: 'title',
   slug: 'slug',
   content: 'content',
@@ -1363,6 +1447,12 @@ export const ReviewScalarFieldEnum = {
   ownershipTimeMonths: 'ownershipTimeMonths',
   kmDriven: 'kmDriven',
   score: 'score',
+  averageRating: 'averageRating',
+  ratingsCount: 'ratingsCount',
+  votesCount: 'votesCount',
+  commentsCount: 'commentsCount',
+  status: 'status',
+  publishedAt: 'publishedAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -1492,6 +1582,20 @@ export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, '
  * Reference to a field of type 'Float[]'
  */
 export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
+    
+
+
+/**
+ * Reference to a field of type 'ReviewStatus'
+ */
+export type EnumReviewStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ReviewStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'ReviewStatus[]'
+ */
+export type ListEnumReviewStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ReviewStatus[]'>
     
 
 
@@ -1639,6 +1743,7 @@ export type GlobalOmitConfig = {
   brand?: Prisma.BrandOmit
   model?: Prisma.ModelOmit
   carVersion?: Prisma.CarVersionOmit
+  carVersionYear?: Prisma.CarVersionYearOmit
   review?: Prisma.ReviewOmit
   reviewRating?: Prisma.ReviewRatingOmit
   comment?: Prisma.CommentOmit

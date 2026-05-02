@@ -30,18 +30,26 @@ export type ReviewAvgAggregateOutputType = {
   ownershipTimeMonths: number | null
   kmDriven: number | null
   score: number | null
+  averageRating: number | null
+  ratingsCount: number | null
+  votesCount: number | null
+  commentsCount: number | null
 }
 
 export type ReviewSumAggregateOutputType = {
   ownershipTimeMonths: number | null
   kmDriven: number | null
   score: number | null
+  averageRating: number | null
+  ratingsCount: number | null
+  votesCount: number | null
+  commentsCount: number | null
 }
 
 export type ReviewMinAggregateOutputType = {
   id: string | null
   userId: string | null
-  carVersionId: string | null
+  carVersionYearId: string | null
   title: string | null
   slug: string | null
   content: string | null
@@ -50,6 +58,12 @@ export type ReviewMinAggregateOutputType = {
   ownershipTimeMonths: number | null
   kmDriven: number | null
   score: number | null
+  averageRating: number | null
+  ratingsCount: number | null
+  votesCount: number | null
+  commentsCount: number | null
+  status: $Enums.ReviewStatus | null
+  publishedAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -57,7 +71,7 @@ export type ReviewMinAggregateOutputType = {
 export type ReviewMaxAggregateOutputType = {
   id: string | null
   userId: string | null
-  carVersionId: string | null
+  carVersionYearId: string | null
   title: string | null
   slug: string | null
   content: string | null
@@ -66,6 +80,12 @@ export type ReviewMaxAggregateOutputType = {
   ownershipTimeMonths: number | null
   kmDriven: number | null
   score: number | null
+  averageRating: number | null
+  ratingsCount: number | null
+  votesCount: number | null
+  commentsCount: number | null
+  status: $Enums.ReviewStatus | null
+  publishedAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -73,7 +93,7 @@ export type ReviewMaxAggregateOutputType = {
 export type ReviewCountAggregateOutputType = {
   id: number
   userId: number
-  carVersionId: number
+  carVersionYearId: number
   title: number
   slug: number
   content: number
@@ -82,6 +102,12 @@ export type ReviewCountAggregateOutputType = {
   ownershipTimeMonths: number
   kmDriven: number
   score: number
+  averageRating: number
+  ratingsCount: number
+  votesCount: number
+  commentsCount: number
+  status: number
+  publishedAt: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -92,18 +118,26 @@ export type ReviewAvgAggregateInputType = {
   ownershipTimeMonths?: true
   kmDriven?: true
   score?: true
+  averageRating?: true
+  ratingsCount?: true
+  votesCount?: true
+  commentsCount?: true
 }
 
 export type ReviewSumAggregateInputType = {
   ownershipTimeMonths?: true
   kmDriven?: true
   score?: true
+  averageRating?: true
+  ratingsCount?: true
+  votesCount?: true
+  commentsCount?: true
 }
 
 export type ReviewMinAggregateInputType = {
   id?: true
   userId?: true
-  carVersionId?: true
+  carVersionYearId?: true
   title?: true
   slug?: true
   content?: true
@@ -112,6 +146,12 @@ export type ReviewMinAggregateInputType = {
   ownershipTimeMonths?: true
   kmDriven?: true
   score?: true
+  averageRating?: true
+  ratingsCount?: true
+  votesCount?: true
+  commentsCount?: true
+  status?: true
+  publishedAt?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -119,7 +159,7 @@ export type ReviewMinAggregateInputType = {
 export type ReviewMaxAggregateInputType = {
   id?: true
   userId?: true
-  carVersionId?: true
+  carVersionYearId?: true
   title?: true
   slug?: true
   content?: true
@@ -128,6 +168,12 @@ export type ReviewMaxAggregateInputType = {
   ownershipTimeMonths?: true
   kmDriven?: true
   score?: true
+  averageRating?: true
+  ratingsCount?: true
+  votesCount?: true
+  commentsCount?: true
+  status?: true
+  publishedAt?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -135,7 +181,7 @@ export type ReviewMaxAggregateInputType = {
 export type ReviewCountAggregateInputType = {
   id?: true
   userId?: true
-  carVersionId?: true
+  carVersionYearId?: true
   title?: true
   slug?: true
   content?: true
@@ -144,6 +190,12 @@ export type ReviewCountAggregateInputType = {
   ownershipTimeMonths?: true
   kmDriven?: true
   score?: true
+  averageRating?: true
+  ratingsCount?: true
+  votesCount?: true
+  commentsCount?: true
+  status?: true
+  publishedAt?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -238,7 +290,7 @@ export type ReviewGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalA
 export type ReviewGroupByOutputType = {
   id: string
   userId: string
-  carVersionId: string
+  carVersionYearId: string
   title: string
   slug: string
   content: string
@@ -247,6 +299,12 @@ export type ReviewGroupByOutputType = {
   ownershipTimeMonths: number | null
   kmDriven: number | null
   score: number
+  averageRating: number
+  ratingsCount: number
+  votesCount: number
+  commentsCount: number
+  status: $Enums.ReviewStatus
+  publishedAt: Date | null
   createdAt: Date
   updatedAt: Date
   _count: ReviewCountAggregateOutputType | null
@@ -277,7 +335,7 @@ export type ReviewWhereInput = {
   NOT?: Prisma.ReviewWhereInput | Prisma.ReviewWhereInput[]
   id?: Prisma.StringFilter<"Review"> | string
   userId?: Prisma.StringFilter<"Review"> | string
-  carVersionId?: Prisma.StringFilter<"Review"> | string
+  carVersionYearId?: Prisma.StringFilter<"Review"> | string
   title?: Prisma.StringFilter<"Review"> | string
   slug?: Prisma.StringFilter<"Review"> | string
   content?: Prisma.StringFilter<"Review"> | string
@@ -286,10 +344,16 @@ export type ReviewWhereInput = {
   ownershipTimeMonths?: Prisma.IntNullableFilter<"Review"> | number | null
   kmDriven?: Prisma.IntNullableFilter<"Review"> | number | null
   score?: Prisma.FloatFilter<"Review"> | number
+  averageRating?: Prisma.FloatFilter<"Review"> | number
+  ratingsCount?: Prisma.IntFilter<"Review"> | number
+  votesCount?: Prisma.IntFilter<"Review"> | number
+  commentsCount?: Prisma.IntFilter<"Review"> | number
+  status?: Prisma.EnumReviewStatusFilter<"Review"> | $Enums.ReviewStatus
+  publishedAt?: Prisma.DateTimeNullableFilter<"Review"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Review"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Review"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
-  carVersion?: Prisma.XOR<Prisma.CarVersionScalarRelationFilter, Prisma.CarVersionWhereInput>
+  carVersionYear?: Prisma.XOR<Prisma.CarVersionYearScalarRelationFilter, Prisma.CarVersionYearWhereInput>
   ratings?: Prisma.ReviewRatingListRelationFilter
   comments?: Prisma.CommentListRelationFilter
   votes?: Prisma.ReviewVoteListRelationFilter
@@ -298,7 +362,7 @@ export type ReviewWhereInput = {
 export type ReviewOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  carVersionId?: Prisma.SortOrder
+  carVersionYearId?: Prisma.SortOrder
   title?: Prisma.SortOrder
   slug?: Prisma.SortOrder
   content?: Prisma.SortOrder
@@ -307,10 +371,16 @@ export type ReviewOrderByWithRelationInput = {
   ownershipTimeMonths?: Prisma.SortOrderInput | Prisma.SortOrder
   kmDriven?: Prisma.SortOrderInput | Prisma.SortOrder
   score?: Prisma.SortOrder
+  averageRating?: Prisma.SortOrder
+  ratingsCount?: Prisma.SortOrder
+  votesCount?: Prisma.SortOrder
+  commentsCount?: Prisma.SortOrder
+  status?: Prisma.SortOrder
+  publishedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
-  carVersion?: Prisma.CarVersionOrderByWithRelationInput
+  carVersionYear?: Prisma.CarVersionYearOrderByWithRelationInput
   ratings?: Prisma.ReviewRatingOrderByRelationAggregateInput
   comments?: Prisma.CommentOrderByRelationAggregateInput
   votes?: Prisma.ReviewVoteOrderByRelationAggregateInput
@@ -323,7 +393,7 @@ export type ReviewWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.ReviewWhereInput[]
   NOT?: Prisma.ReviewWhereInput | Prisma.ReviewWhereInput[]
   userId?: Prisma.StringFilter<"Review"> | string
-  carVersionId?: Prisma.StringFilter<"Review"> | string
+  carVersionYearId?: Prisma.StringFilter<"Review"> | string
   title?: Prisma.StringFilter<"Review"> | string
   content?: Prisma.StringFilter<"Review"> | string
   pros?: Prisma.StringNullableFilter<"Review"> | string | null
@@ -331,10 +401,16 @@ export type ReviewWhereUniqueInput = Prisma.AtLeast<{
   ownershipTimeMonths?: Prisma.IntNullableFilter<"Review"> | number | null
   kmDriven?: Prisma.IntNullableFilter<"Review"> | number | null
   score?: Prisma.FloatFilter<"Review"> | number
+  averageRating?: Prisma.FloatFilter<"Review"> | number
+  ratingsCount?: Prisma.IntFilter<"Review"> | number
+  votesCount?: Prisma.IntFilter<"Review"> | number
+  commentsCount?: Prisma.IntFilter<"Review"> | number
+  status?: Prisma.EnumReviewStatusFilter<"Review"> | $Enums.ReviewStatus
+  publishedAt?: Prisma.DateTimeNullableFilter<"Review"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Review"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Review"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
-  carVersion?: Prisma.XOR<Prisma.CarVersionScalarRelationFilter, Prisma.CarVersionWhereInput>
+  carVersionYear?: Prisma.XOR<Prisma.CarVersionYearScalarRelationFilter, Prisma.CarVersionYearWhereInput>
   ratings?: Prisma.ReviewRatingListRelationFilter
   comments?: Prisma.CommentListRelationFilter
   votes?: Prisma.ReviewVoteListRelationFilter
@@ -343,7 +419,7 @@ export type ReviewWhereUniqueInput = Prisma.AtLeast<{
 export type ReviewOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  carVersionId?: Prisma.SortOrder
+  carVersionYearId?: Prisma.SortOrder
   title?: Prisma.SortOrder
   slug?: Prisma.SortOrder
   content?: Prisma.SortOrder
@@ -352,6 +428,12 @@ export type ReviewOrderByWithAggregationInput = {
   ownershipTimeMonths?: Prisma.SortOrderInput | Prisma.SortOrder
   kmDriven?: Prisma.SortOrderInput | Prisma.SortOrder
   score?: Prisma.SortOrder
+  averageRating?: Prisma.SortOrder
+  ratingsCount?: Prisma.SortOrder
+  votesCount?: Prisma.SortOrder
+  commentsCount?: Prisma.SortOrder
+  status?: Prisma.SortOrder
+  publishedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.ReviewCountOrderByAggregateInput
@@ -367,7 +449,7 @@ export type ReviewScalarWhereWithAggregatesInput = {
   NOT?: Prisma.ReviewScalarWhereWithAggregatesInput | Prisma.ReviewScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Review"> | string
   userId?: Prisma.StringWithAggregatesFilter<"Review"> | string
-  carVersionId?: Prisma.StringWithAggregatesFilter<"Review"> | string
+  carVersionYearId?: Prisma.StringWithAggregatesFilter<"Review"> | string
   title?: Prisma.StringWithAggregatesFilter<"Review"> | string
   slug?: Prisma.StringWithAggregatesFilter<"Review"> | string
   content?: Prisma.StringWithAggregatesFilter<"Review"> | string
@@ -376,6 +458,12 @@ export type ReviewScalarWhereWithAggregatesInput = {
   ownershipTimeMonths?: Prisma.IntNullableWithAggregatesFilter<"Review"> | number | null
   kmDriven?: Prisma.IntNullableWithAggregatesFilter<"Review"> | number | null
   score?: Prisma.FloatWithAggregatesFilter<"Review"> | number
+  averageRating?: Prisma.FloatWithAggregatesFilter<"Review"> | number
+  ratingsCount?: Prisma.IntWithAggregatesFilter<"Review"> | number
+  votesCount?: Prisma.IntWithAggregatesFilter<"Review"> | number
+  commentsCount?: Prisma.IntWithAggregatesFilter<"Review"> | number
+  status?: Prisma.EnumReviewStatusWithAggregatesFilter<"Review"> | $Enums.ReviewStatus
+  publishedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Review"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Review"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Review"> | Date | string
 }
@@ -390,10 +478,16 @@ export type ReviewCreateInput = {
   ownershipTimeMonths?: number | null
   kmDriven?: number | null
   score?: number
+  averageRating?: number
+  ratingsCount?: number
+  votesCount?: number
+  commentsCount?: number
+  status?: $Enums.ReviewStatus
+  publishedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutReviewsInput
-  carVersion: Prisma.CarVersionCreateNestedOneWithoutReviewsInput
+  carVersionYear: Prisma.CarVersionYearCreateNestedOneWithoutReviewsInput
   ratings?: Prisma.ReviewRatingCreateNestedManyWithoutReviewInput
   comments?: Prisma.CommentCreateNestedManyWithoutReviewInput
   votes?: Prisma.ReviewVoteCreateNestedManyWithoutReviewInput
@@ -402,7 +496,7 @@ export type ReviewCreateInput = {
 export type ReviewUncheckedCreateInput = {
   id?: string
   userId: string
-  carVersionId: string
+  carVersionYearId: string
   title: string
   slug: string
   content: string
@@ -411,6 +505,12 @@ export type ReviewUncheckedCreateInput = {
   ownershipTimeMonths?: number | null
   kmDriven?: number | null
   score?: number
+  averageRating?: number
+  ratingsCount?: number
+  votesCount?: number
+  commentsCount?: number
+  status?: $Enums.ReviewStatus
+  publishedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   ratings?: Prisma.ReviewRatingUncheckedCreateNestedManyWithoutReviewInput
@@ -428,10 +528,16 @@ export type ReviewUpdateInput = {
   ownershipTimeMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   kmDriven?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   score?: Prisma.FloatFieldUpdateOperationsInput | number
+  averageRating?: Prisma.FloatFieldUpdateOperationsInput | number
+  ratingsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  votesCount?: Prisma.IntFieldUpdateOperationsInput | number
+  commentsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumReviewStatusFieldUpdateOperationsInput | $Enums.ReviewStatus
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutReviewsNestedInput
-  carVersion?: Prisma.CarVersionUpdateOneRequiredWithoutReviewsNestedInput
+  carVersionYear?: Prisma.CarVersionYearUpdateOneRequiredWithoutReviewsNestedInput
   ratings?: Prisma.ReviewRatingUpdateManyWithoutReviewNestedInput
   comments?: Prisma.CommentUpdateManyWithoutReviewNestedInput
   votes?: Prisma.ReviewVoteUpdateManyWithoutReviewNestedInput
@@ -440,7 +546,7 @@ export type ReviewUpdateInput = {
 export type ReviewUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  carVersionId?: Prisma.StringFieldUpdateOperationsInput | string
+  carVersionYearId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
@@ -449,6 +555,12 @@ export type ReviewUncheckedUpdateInput = {
   ownershipTimeMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   kmDriven?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   score?: Prisma.FloatFieldUpdateOperationsInput | number
+  averageRating?: Prisma.FloatFieldUpdateOperationsInput | number
+  ratingsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  votesCount?: Prisma.IntFieldUpdateOperationsInput | number
+  commentsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumReviewStatusFieldUpdateOperationsInput | $Enums.ReviewStatus
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   ratings?: Prisma.ReviewRatingUncheckedUpdateManyWithoutReviewNestedInput
@@ -459,7 +571,7 @@ export type ReviewUncheckedUpdateInput = {
 export type ReviewCreateManyInput = {
   id?: string
   userId: string
-  carVersionId: string
+  carVersionYearId: string
   title: string
   slug: string
   content: string
@@ -468,6 +580,12 @@ export type ReviewCreateManyInput = {
   ownershipTimeMonths?: number | null
   kmDriven?: number | null
   score?: number
+  averageRating?: number
+  ratingsCount?: number
+  votesCount?: number
+  commentsCount?: number
+  status?: $Enums.ReviewStatus
+  publishedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -482,6 +600,12 @@ export type ReviewUpdateManyMutationInput = {
   ownershipTimeMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   kmDriven?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   score?: Prisma.FloatFieldUpdateOperationsInput | number
+  averageRating?: Prisma.FloatFieldUpdateOperationsInput | number
+  ratingsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  votesCount?: Prisma.IntFieldUpdateOperationsInput | number
+  commentsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumReviewStatusFieldUpdateOperationsInput | $Enums.ReviewStatus
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -489,7 +613,7 @@ export type ReviewUpdateManyMutationInput = {
 export type ReviewUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  carVersionId?: Prisma.StringFieldUpdateOperationsInput | string
+  carVersionYearId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
@@ -498,6 +622,12 @@ export type ReviewUncheckedUpdateManyInput = {
   ownershipTimeMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   kmDriven?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   score?: Prisma.FloatFieldUpdateOperationsInput | number
+  averageRating?: Prisma.FloatFieldUpdateOperationsInput | number
+  ratingsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  votesCount?: Prisma.IntFieldUpdateOperationsInput | number
+  commentsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumReviewStatusFieldUpdateOperationsInput | $Enums.ReviewStatus
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -515,7 +645,7 @@ export type ReviewOrderByRelationAggregateInput = {
 export type ReviewCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  carVersionId?: Prisma.SortOrder
+  carVersionYearId?: Prisma.SortOrder
   title?: Prisma.SortOrder
   slug?: Prisma.SortOrder
   content?: Prisma.SortOrder
@@ -524,6 +654,12 @@ export type ReviewCountOrderByAggregateInput = {
   ownershipTimeMonths?: Prisma.SortOrder
   kmDriven?: Prisma.SortOrder
   score?: Prisma.SortOrder
+  averageRating?: Prisma.SortOrder
+  ratingsCount?: Prisma.SortOrder
+  votesCount?: Prisma.SortOrder
+  commentsCount?: Prisma.SortOrder
+  status?: Prisma.SortOrder
+  publishedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -532,12 +668,16 @@ export type ReviewAvgOrderByAggregateInput = {
   ownershipTimeMonths?: Prisma.SortOrder
   kmDriven?: Prisma.SortOrder
   score?: Prisma.SortOrder
+  averageRating?: Prisma.SortOrder
+  ratingsCount?: Prisma.SortOrder
+  votesCount?: Prisma.SortOrder
+  commentsCount?: Prisma.SortOrder
 }
 
 export type ReviewMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  carVersionId?: Prisma.SortOrder
+  carVersionYearId?: Prisma.SortOrder
   title?: Prisma.SortOrder
   slug?: Prisma.SortOrder
   content?: Prisma.SortOrder
@@ -546,6 +686,12 @@ export type ReviewMaxOrderByAggregateInput = {
   ownershipTimeMonths?: Prisma.SortOrder
   kmDriven?: Prisma.SortOrder
   score?: Prisma.SortOrder
+  averageRating?: Prisma.SortOrder
+  ratingsCount?: Prisma.SortOrder
+  votesCount?: Prisma.SortOrder
+  commentsCount?: Prisma.SortOrder
+  status?: Prisma.SortOrder
+  publishedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -553,7 +699,7 @@ export type ReviewMaxOrderByAggregateInput = {
 export type ReviewMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  carVersionId?: Prisma.SortOrder
+  carVersionYearId?: Prisma.SortOrder
   title?: Prisma.SortOrder
   slug?: Prisma.SortOrder
   content?: Prisma.SortOrder
@@ -562,6 +708,12 @@ export type ReviewMinOrderByAggregateInput = {
   ownershipTimeMonths?: Prisma.SortOrder
   kmDriven?: Prisma.SortOrder
   score?: Prisma.SortOrder
+  averageRating?: Prisma.SortOrder
+  ratingsCount?: Prisma.SortOrder
+  votesCount?: Prisma.SortOrder
+  commentsCount?: Prisma.SortOrder
+  status?: Prisma.SortOrder
+  publishedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -570,6 +722,10 @@ export type ReviewSumOrderByAggregateInput = {
   ownershipTimeMonths?: Prisma.SortOrder
   kmDriven?: Prisma.SortOrder
   score?: Prisma.SortOrder
+  averageRating?: Prisma.SortOrder
+  ratingsCount?: Prisma.SortOrder
+  votesCount?: Prisma.SortOrder
+  commentsCount?: Prisma.SortOrder
 }
 
 export type ReviewScalarRelationFilter = {
@@ -619,45 +775,45 @@ export type ReviewUncheckedUpdateManyWithoutUserNestedInput = {
   deleteMany?: Prisma.ReviewScalarWhereInput | Prisma.ReviewScalarWhereInput[]
 }
 
-export type ReviewCreateNestedManyWithoutCarVersionInput = {
-  create?: Prisma.XOR<Prisma.ReviewCreateWithoutCarVersionInput, Prisma.ReviewUncheckedCreateWithoutCarVersionInput> | Prisma.ReviewCreateWithoutCarVersionInput[] | Prisma.ReviewUncheckedCreateWithoutCarVersionInput[]
-  connectOrCreate?: Prisma.ReviewCreateOrConnectWithoutCarVersionInput | Prisma.ReviewCreateOrConnectWithoutCarVersionInput[]
-  createMany?: Prisma.ReviewCreateManyCarVersionInputEnvelope
+export type ReviewCreateNestedManyWithoutCarVersionYearInput = {
+  create?: Prisma.XOR<Prisma.ReviewCreateWithoutCarVersionYearInput, Prisma.ReviewUncheckedCreateWithoutCarVersionYearInput> | Prisma.ReviewCreateWithoutCarVersionYearInput[] | Prisma.ReviewUncheckedCreateWithoutCarVersionYearInput[]
+  connectOrCreate?: Prisma.ReviewCreateOrConnectWithoutCarVersionYearInput | Prisma.ReviewCreateOrConnectWithoutCarVersionYearInput[]
+  createMany?: Prisma.ReviewCreateManyCarVersionYearInputEnvelope
   connect?: Prisma.ReviewWhereUniqueInput | Prisma.ReviewWhereUniqueInput[]
 }
 
-export type ReviewUncheckedCreateNestedManyWithoutCarVersionInput = {
-  create?: Prisma.XOR<Prisma.ReviewCreateWithoutCarVersionInput, Prisma.ReviewUncheckedCreateWithoutCarVersionInput> | Prisma.ReviewCreateWithoutCarVersionInput[] | Prisma.ReviewUncheckedCreateWithoutCarVersionInput[]
-  connectOrCreate?: Prisma.ReviewCreateOrConnectWithoutCarVersionInput | Prisma.ReviewCreateOrConnectWithoutCarVersionInput[]
-  createMany?: Prisma.ReviewCreateManyCarVersionInputEnvelope
+export type ReviewUncheckedCreateNestedManyWithoutCarVersionYearInput = {
+  create?: Prisma.XOR<Prisma.ReviewCreateWithoutCarVersionYearInput, Prisma.ReviewUncheckedCreateWithoutCarVersionYearInput> | Prisma.ReviewCreateWithoutCarVersionYearInput[] | Prisma.ReviewUncheckedCreateWithoutCarVersionYearInput[]
+  connectOrCreate?: Prisma.ReviewCreateOrConnectWithoutCarVersionYearInput | Prisma.ReviewCreateOrConnectWithoutCarVersionYearInput[]
+  createMany?: Prisma.ReviewCreateManyCarVersionYearInputEnvelope
   connect?: Prisma.ReviewWhereUniqueInput | Prisma.ReviewWhereUniqueInput[]
 }
 
-export type ReviewUpdateManyWithoutCarVersionNestedInput = {
-  create?: Prisma.XOR<Prisma.ReviewCreateWithoutCarVersionInput, Prisma.ReviewUncheckedCreateWithoutCarVersionInput> | Prisma.ReviewCreateWithoutCarVersionInput[] | Prisma.ReviewUncheckedCreateWithoutCarVersionInput[]
-  connectOrCreate?: Prisma.ReviewCreateOrConnectWithoutCarVersionInput | Prisma.ReviewCreateOrConnectWithoutCarVersionInput[]
-  upsert?: Prisma.ReviewUpsertWithWhereUniqueWithoutCarVersionInput | Prisma.ReviewUpsertWithWhereUniqueWithoutCarVersionInput[]
-  createMany?: Prisma.ReviewCreateManyCarVersionInputEnvelope
+export type ReviewUpdateManyWithoutCarVersionYearNestedInput = {
+  create?: Prisma.XOR<Prisma.ReviewCreateWithoutCarVersionYearInput, Prisma.ReviewUncheckedCreateWithoutCarVersionYearInput> | Prisma.ReviewCreateWithoutCarVersionYearInput[] | Prisma.ReviewUncheckedCreateWithoutCarVersionYearInput[]
+  connectOrCreate?: Prisma.ReviewCreateOrConnectWithoutCarVersionYearInput | Prisma.ReviewCreateOrConnectWithoutCarVersionYearInput[]
+  upsert?: Prisma.ReviewUpsertWithWhereUniqueWithoutCarVersionYearInput | Prisma.ReviewUpsertWithWhereUniqueWithoutCarVersionYearInput[]
+  createMany?: Prisma.ReviewCreateManyCarVersionYearInputEnvelope
   set?: Prisma.ReviewWhereUniqueInput | Prisma.ReviewWhereUniqueInput[]
   disconnect?: Prisma.ReviewWhereUniqueInput | Prisma.ReviewWhereUniqueInput[]
   delete?: Prisma.ReviewWhereUniqueInput | Prisma.ReviewWhereUniqueInput[]
   connect?: Prisma.ReviewWhereUniqueInput | Prisma.ReviewWhereUniqueInput[]
-  update?: Prisma.ReviewUpdateWithWhereUniqueWithoutCarVersionInput | Prisma.ReviewUpdateWithWhereUniqueWithoutCarVersionInput[]
-  updateMany?: Prisma.ReviewUpdateManyWithWhereWithoutCarVersionInput | Prisma.ReviewUpdateManyWithWhereWithoutCarVersionInput[]
+  update?: Prisma.ReviewUpdateWithWhereUniqueWithoutCarVersionYearInput | Prisma.ReviewUpdateWithWhereUniqueWithoutCarVersionYearInput[]
+  updateMany?: Prisma.ReviewUpdateManyWithWhereWithoutCarVersionYearInput | Prisma.ReviewUpdateManyWithWhereWithoutCarVersionYearInput[]
   deleteMany?: Prisma.ReviewScalarWhereInput | Prisma.ReviewScalarWhereInput[]
 }
 
-export type ReviewUncheckedUpdateManyWithoutCarVersionNestedInput = {
-  create?: Prisma.XOR<Prisma.ReviewCreateWithoutCarVersionInput, Prisma.ReviewUncheckedCreateWithoutCarVersionInput> | Prisma.ReviewCreateWithoutCarVersionInput[] | Prisma.ReviewUncheckedCreateWithoutCarVersionInput[]
-  connectOrCreate?: Prisma.ReviewCreateOrConnectWithoutCarVersionInput | Prisma.ReviewCreateOrConnectWithoutCarVersionInput[]
-  upsert?: Prisma.ReviewUpsertWithWhereUniqueWithoutCarVersionInput | Prisma.ReviewUpsertWithWhereUniqueWithoutCarVersionInput[]
-  createMany?: Prisma.ReviewCreateManyCarVersionInputEnvelope
+export type ReviewUncheckedUpdateManyWithoutCarVersionYearNestedInput = {
+  create?: Prisma.XOR<Prisma.ReviewCreateWithoutCarVersionYearInput, Prisma.ReviewUncheckedCreateWithoutCarVersionYearInput> | Prisma.ReviewCreateWithoutCarVersionYearInput[] | Prisma.ReviewUncheckedCreateWithoutCarVersionYearInput[]
+  connectOrCreate?: Prisma.ReviewCreateOrConnectWithoutCarVersionYearInput | Prisma.ReviewCreateOrConnectWithoutCarVersionYearInput[]
+  upsert?: Prisma.ReviewUpsertWithWhereUniqueWithoutCarVersionYearInput | Prisma.ReviewUpsertWithWhereUniqueWithoutCarVersionYearInput[]
+  createMany?: Prisma.ReviewCreateManyCarVersionYearInputEnvelope
   set?: Prisma.ReviewWhereUniqueInput | Prisma.ReviewWhereUniqueInput[]
   disconnect?: Prisma.ReviewWhereUniqueInput | Prisma.ReviewWhereUniqueInput[]
   delete?: Prisma.ReviewWhereUniqueInput | Prisma.ReviewWhereUniqueInput[]
   connect?: Prisma.ReviewWhereUniqueInput | Prisma.ReviewWhereUniqueInput[]
-  update?: Prisma.ReviewUpdateWithWhereUniqueWithoutCarVersionInput | Prisma.ReviewUpdateWithWhereUniqueWithoutCarVersionInput[]
-  updateMany?: Prisma.ReviewUpdateManyWithWhereWithoutCarVersionInput | Prisma.ReviewUpdateManyWithWhereWithoutCarVersionInput[]
+  update?: Prisma.ReviewUpdateWithWhereUniqueWithoutCarVersionYearInput | Prisma.ReviewUpdateWithWhereUniqueWithoutCarVersionYearInput[]
+  updateMany?: Prisma.ReviewUpdateManyWithWhereWithoutCarVersionYearInput | Prisma.ReviewUpdateManyWithWhereWithoutCarVersionYearInput[]
   deleteMany?: Prisma.ReviewScalarWhereInput | Prisma.ReviewScalarWhereInput[]
 }
 
@@ -675,6 +831,14 @@ export type FloatFieldUpdateOperationsInput = {
   decrement?: number
   multiply?: number
   divide?: number
+}
+
+export type EnumReviewStatusFieldUpdateOperationsInput = {
+  set?: $Enums.ReviewStatus
+}
+
+export type NullableDateTimeFieldUpdateOperationsInput = {
+  set?: Date | string | null
 }
 
 export type ReviewCreateNestedOneWithoutRatingsInput = {
@@ -729,9 +893,15 @@ export type ReviewCreateWithoutUserInput = {
   ownershipTimeMonths?: number | null
   kmDriven?: number | null
   score?: number
+  averageRating?: number
+  ratingsCount?: number
+  votesCount?: number
+  commentsCount?: number
+  status?: $Enums.ReviewStatus
+  publishedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  carVersion: Prisma.CarVersionCreateNestedOneWithoutReviewsInput
+  carVersionYear: Prisma.CarVersionYearCreateNestedOneWithoutReviewsInput
   ratings?: Prisma.ReviewRatingCreateNestedManyWithoutReviewInput
   comments?: Prisma.CommentCreateNestedManyWithoutReviewInput
   votes?: Prisma.ReviewVoteCreateNestedManyWithoutReviewInput
@@ -739,7 +909,7 @@ export type ReviewCreateWithoutUserInput = {
 
 export type ReviewUncheckedCreateWithoutUserInput = {
   id?: string
-  carVersionId: string
+  carVersionYearId: string
   title: string
   slug: string
   content: string
@@ -748,6 +918,12 @@ export type ReviewUncheckedCreateWithoutUserInput = {
   ownershipTimeMonths?: number | null
   kmDriven?: number | null
   score?: number
+  averageRating?: number
+  ratingsCount?: number
+  votesCount?: number
+  commentsCount?: number
+  status?: $Enums.ReviewStatus
+  publishedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   ratings?: Prisma.ReviewRatingUncheckedCreateNestedManyWithoutReviewInput
@@ -787,7 +963,7 @@ export type ReviewScalarWhereInput = {
   NOT?: Prisma.ReviewScalarWhereInput | Prisma.ReviewScalarWhereInput[]
   id?: Prisma.StringFilter<"Review"> | string
   userId?: Prisma.StringFilter<"Review"> | string
-  carVersionId?: Prisma.StringFilter<"Review"> | string
+  carVersionYearId?: Prisma.StringFilter<"Review"> | string
   title?: Prisma.StringFilter<"Review"> | string
   slug?: Prisma.StringFilter<"Review"> | string
   content?: Prisma.StringFilter<"Review"> | string
@@ -796,11 +972,17 @@ export type ReviewScalarWhereInput = {
   ownershipTimeMonths?: Prisma.IntNullableFilter<"Review"> | number | null
   kmDriven?: Prisma.IntNullableFilter<"Review"> | number | null
   score?: Prisma.FloatFilter<"Review"> | number
+  averageRating?: Prisma.FloatFilter<"Review"> | number
+  ratingsCount?: Prisma.IntFilter<"Review"> | number
+  votesCount?: Prisma.IntFilter<"Review"> | number
+  commentsCount?: Prisma.IntFilter<"Review"> | number
+  status?: Prisma.EnumReviewStatusFilter<"Review"> | $Enums.ReviewStatus
+  publishedAt?: Prisma.DateTimeNullableFilter<"Review"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Review"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Review"> | Date | string
 }
 
-export type ReviewCreateWithoutCarVersionInput = {
+export type ReviewCreateWithoutCarVersionYearInput = {
   id?: string
   title: string
   slug: string
@@ -810,6 +992,12 @@ export type ReviewCreateWithoutCarVersionInput = {
   ownershipTimeMonths?: number | null
   kmDriven?: number | null
   score?: number
+  averageRating?: number
+  ratingsCount?: number
+  votesCount?: number
+  commentsCount?: number
+  status?: $Enums.ReviewStatus
+  publishedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutReviewsInput
@@ -818,7 +1006,7 @@ export type ReviewCreateWithoutCarVersionInput = {
   votes?: Prisma.ReviewVoteCreateNestedManyWithoutReviewInput
 }
 
-export type ReviewUncheckedCreateWithoutCarVersionInput = {
+export type ReviewUncheckedCreateWithoutCarVersionYearInput = {
   id?: string
   userId: string
   title: string
@@ -829,6 +1017,12 @@ export type ReviewUncheckedCreateWithoutCarVersionInput = {
   ownershipTimeMonths?: number | null
   kmDriven?: number | null
   score?: number
+  averageRating?: number
+  ratingsCount?: number
+  votesCount?: number
+  commentsCount?: number
+  status?: $Enums.ReviewStatus
+  publishedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   ratings?: Prisma.ReviewRatingUncheckedCreateNestedManyWithoutReviewInput
@@ -836,30 +1030,30 @@ export type ReviewUncheckedCreateWithoutCarVersionInput = {
   votes?: Prisma.ReviewVoteUncheckedCreateNestedManyWithoutReviewInput
 }
 
-export type ReviewCreateOrConnectWithoutCarVersionInput = {
+export type ReviewCreateOrConnectWithoutCarVersionYearInput = {
   where: Prisma.ReviewWhereUniqueInput
-  create: Prisma.XOR<Prisma.ReviewCreateWithoutCarVersionInput, Prisma.ReviewUncheckedCreateWithoutCarVersionInput>
+  create: Prisma.XOR<Prisma.ReviewCreateWithoutCarVersionYearInput, Prisma.ReviewUncheckedCreateWithoutCarVersionYearInput>
 }
 
-export type ReviewCreateManyCarVersionInputEnvelope = {
-  data: Prisma.ReviewCreateManyCarVersionInput | Prisma.ReviewCreateManyCarVersionInput[]
+export type ReviewCreateManyCarVersionYearInputEnvelope = {
+  data: Prisma.ReviewCreateManyCarVersionYearInput | Prisma.ReviewCreateManyCarVersionYearInput[]
   skipDuplicates?: boolean
 }
 
-export type ReviewUpsertWithWhereUniqueWithoutCarVersionInput = {
+export type ReviewUpsertWithWhereUniqueWithoutCarVersionYearInput = {
   where: Prisma.ReviewWhereUniqueInput
-  update: Prisma.XOR<Prisma.ReviewUpdateWithoutCarVersionInput, Prisma.ReviewUncheckedUpdateWithoutCarVersionInput>
-  create: Prisma.XOR<Prisma.ReviewCreateWithoutCarVersionInput, Prisma.ReviewUncheckedCreateWithoutCarVersionInput>
+  update: Prisma.XOR<Prisma.ReviewUpdateWithoutCarVersionYearInput, Prisma.ReviewUncheckedUpdateWithoutCarVersionYearInput>
+  create: Prisma.XOR<Prisma.ReviewCreateWithoutCarVersionYearInput, Prisma.ReviewUncheckedCreateWithoutCarVersionYearInput>
 }
 
-export type ReviewUpdateWithWhereUniqueWithoutCarVersionInput = {
+export type ReviewUpdateWithWhereUniqueWithoutCarVersionYearInput = {
   where: Prisma.ReviewWhereUniqueInput
-  data: Prisma.XOR<Prisma.ReviewUpdateWithoutCarVersionInput, Prisma.ReviewUncheckedUpdateWithoutCarVersionInput>
+  data: Prisma.XOR<Prisma.ReviewUpdateWithoutCarVersionYearInput, Prisma.ReviewUncheckedUpdateWithoutCarVersionYearInput>
 }
 
-export type ReviewUpdateManyWithWhereWithoutCarVersionInput = {
+export type ReviewUpdateManyWithWhereWithoutCarVersionYearInput = {
   where: Prisma.ReviewScalarWhereInput
-  data: Prisma.XOR<Prisma.ReviewUpdateManyMutationInput, Prisma.ReviewUncheckedUpdateManyWithoutCarVersionInput>
+  data: Prisma.XOR<Prisma.ReviewUpdateManyMutationInput, Prisma.ReviewUncheckedUpdateManyWithoutCarVersionYearInput>
 }
 
 export type ReviewCreateWithoutRatingsInput = {
@@ -872,10 +1066,16 @@ export type ReviewCreateWithoutRatingsInput = {
   ownershipTimeMonths?: number | null
   kmDriven?: number | null
   score?: number
+  averageRating?: number
+  ratingsCount?: number
+  votesCount?: number
+  commentsCount?: number
+  status?: $Enums.ReviewStatus
+  publishedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutReviewsInput
-  carVersion: Prisma.CarVersionCreateNestedOneWithoutReviewsInput
+  carVersionYear: Prisma.CarVersionYearCreateNestedOneWithoutReviewsInput
   comments?: Prisma.CommentCreateNestedManyWithoutReviewInput
   votes?: Prisma.ReviewVoteCreateNestedManyWithoutReviewInput
 }
@@ -883,7 +1083,7 @@ export type ReviewCreateWithoutRatingsInput = {
 export type ReviewUncheckedCreateWithoutRatingsInput = {
   id?: string
   userId: string
-  carVersionId: string
+  carVersionYearId: string
   title: string
   slug: string
   content: string
@@ -892,6 +1092,12 @@ export type ReviewUncheckedCreateWithoutRatingsInput = {
   ownershipTimeMonths?: number | null
   kmDriven?: number | null
   score?: number
+  averageRating?: number
+  ratingsCount?: number
+  votesCount?: number
+  commentsCount?: number
+  status?: $Enums.ReviewStatus
+  publishedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   comments?: Prisma.CommentUncheckedCreateNestedManyWithoutReviewInput
@@ -924,10 +1130,16 @@ export type ReviewUpdateWithoutRatingsInput = {
   ownershipTimeMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   kmDriven?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   score?: Prisma.FloatFieldUpdateOperationsInput | number
+  averageRating?: Prisma.FloatFieldUpdateOperationsInput | number
+  ratingsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  votesCount?: Prisma.IntFieldUpdateOperationsInput | number
+  commentsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumReviewStatusFieldUpdateOperationsInput | $Enums.ReviewStatus
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutReviewsNestedInput
-  carVersion?: Prisma.CarVersionUpdateOneRequiredWithoutReviewsNestedInput
+  carVersionYear?: Prisma.CarVersionYearUpdateOneRequiredWithoutReviewsNestedInput
   comments?: Prisma.CommentUpdateManyWithoutReviewNestedInput
   votes?: Prisma.ReviewVoteUpdateManyWithoutReviewNestedInput
 }
@@ -935,7 +1147,7 @@ export type ReviewUpdateWithoutRatingsInput = {
 export type ReviewUncheckedUpdateWithoutRatingsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  carVersionId?: Prisma.StringFieldUpdateOperationsInput | string
+  carVersionYearId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
@@ -944,6 +1156,12 @@ export type ReviewUncheckedUpdateWithoutRatingsInput = {
   ownershipTimeMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   kmDriven?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   score?: Prisma.FloatFieldUpdateOperationsInput | number
+  averageRating?: Prisma.FloatFieldUpdateOperationsInput | number
+  ratingsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  votesCount?: Prisma.IntFieldUpdateOperationsInput | number
+  commentsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumReviewStatusFieldUpdateOperationsInput | $Enums.ReviewStatus
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   comments?: Prisma.CommentUncheckedUpdateManyWithoutReviewNestedInput
@@ -960,10 +1178,16 @@ export type ReviewCreateWithoutCommentsInput = {
   ownershipTimeMonths?: number | null
   kmDriven?: number | null
   score?: number
+  averageRating?: number
+  ratingsCount?: number
+  votesCount?: number
+  commentsCount?: number
+  status?: $Enums.ReviewStatus
+  publishedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutReviewsInput
-  carVersion: Prisma.CarVersionCreateNestedOneWithoutReviewsInput
+  carVersionYear: Prisma.CarVersionYearCreateNestedOneWithoutReviewsInput
   ratings?: Prisma.ReviewRatingCreateNestedManyWithoutReviewInput
   votes?: Prisma.ReviewVoteCreateNestedManyWithoutReviewInput
 }
@@ -971,7 +1195,7 @@ export type ReviewCreateWithoutCommentsInput = {
 export type ReviewUncheckedCreateWithoutCommentsInput = {
   id?: string
   userId: string
-  carVersionId: string
+  carVersionYearId: string
   title: string
   slug: string
   content: string
@@ -980,6 +1204,12 @@ export type ReviewUncheckedCreateWithoutCommentsInput = {
   ownershipTimeMonths?: number | null
   kmDriven?: number | null
   score?: number
+  averageRating?: number
+  ratingsCount?: number
+  votesCount?: number
+  commentsCount?: number
+  status?: $Enums.ReviewStatus
+  publishedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   ratings?: Prisma.ReviewRatingUncheckedCreateNestedManyWithoutReviewInput
@@ -1012,10 +1242,16 @@ export type ReviewUpdateWithoutCommentsInput = {
   ownershipTimeMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   kmDriven?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   score?: Prisma.FloatFieldUpdateOperationsInput | number
+  averageRating?: Prisma.FloatFieldUpdateOperationsInput | number
+  ratingsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  votesCount?: Prisma.IntFieldUpdateOperationsInput | number
+  commentsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumReviewStatusFieldUpdateOperationsInput | $Enums.ReviewStatus
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutReviewsNestedInput
-  carVersion?: Prisma.CarVersionUpdateOneRequiredWithoutReviewsNestedInput
+  carVersionYear?: Prisma.CarVersionYearUpdateOneRequiredWithoutReviewsNestedInput
   ratings?: Prisma.ReviewRatingUpdateManyWithoutReviewNestedInput
   votes?: Prisma.ReviewVoteUpdateManyWithoutReviewNestedInput
 }
@@ -1023,7 +1259,7 @@ export type ReviewUpdateWithoutCommentsInput = {
 export type ReviewUncheckedUpdateWithoutCommentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  carVersionId?: Prisma.StringFieldUpdateOperationsInput | string
+  carVersionYearId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1032,6 +1268,12 @@ export type ReviewUncheckedUpdateWithoutCommentsInput = {
   ownershipTimeMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   kmDriven?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   score?: Prisma.FloatFieldUpdateOperationsInput | number
+  averageRating?: Prisma.FloatFieldUpdateOperationsInput | number
+  ratingsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  votesCount?: Prisma.IntFieldUpdateOperationsInput | number
+  commentsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumReviewStatusFieldUpdateOperationsInput | $Enums.ReviewStatus
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   ratings?: Prisma.ReviewRatingUncheckedUpdateManyWithoutReviewNestedInput
@@ -1048,10 +1290,16 @@ export type ReviewCreateWithoutVotesInput = {
   ownershipTimeMonths?: number | null
   kmDriven?: number | null
   score?: number
+  averageRating?: number
+  ratingsCount?: number
+  votesCount?: number
+  commentsCount?: number
+  status?: $Enums.ReviewStatus
+  publishedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutReviewsInput
-  carVersion: Prisma.CarVersionCreateNestedOneWithoutReviewsInput
+  carVersionYear: Prisma.CarVersionYearCreateNestedOneWithoutReviewsInput
   ratings?: Prisma.ReviewRatingCreateNestedManyWithoutReviewInput
   comments?: Prisma.CommentCreateNestedManyWithoutReviewInput
 }
@@ -1059,7 +1307,7 @@ export type ReviewCreateWithoutVotesInput = {
 export type ReviewUncheckedCreateWithoutVotesInput = {
   id?: string
   userId: string
-  carVersionId: string
+  carVersionYearId: string
   title: string
   slug: string
   content: string
@@ -1068,6 +1316,12 @@ export type ReviewUncheckedCreateWithoutVotesInput = {
   ownershipTimeMonths?: number | null
   kmDriven?: number | null
   score?: number
+  averageRating?: number
+  ratingsCount?: number
+  votesCount?: number
+  commentsCount?: number
+  status?: $Enums.ReviewStatus
+  publishedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   ratings?: Prisma.ReviewRatingUncheckedCreateNestedManyWithoutReviewInput
@@ -1100,10 +1354,16 @@ export type ReviewUpdateWithoutVotesInput = {
   ownershipTimeMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   kmDriven?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   score?: Prisma.FloatFieldUpdateOperationsInput | number
+  averageRating?: Prisma.FloatFieldUpdateOperationsInput | number
+  ratingsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  votesCount?: Prisma.IntFieldUpdateOperationsInput | number
+  commentsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumReviewStatusFieldUpdateOperationsInput | $Enums.ReviewStatus
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutReviewsNestedInput
-  carVersion?: Prisma.CarVersionUpdateOneRequiredWithoutReviewsNestedInput
+  carVersionYear?: Prisma.CarVersionYearUpdateOneRequiredWithoutReviewsNestedInput
   ratings?: Prisma.ReviewRatingUpdateManyWithoutReviewNestedInput
   comments?: Prisma.CommentUpdateManyWithoutReviewNestedInput
 }
@@ -1111,7 +1371,7 @@ export type ReviewUpdateWithoutVotesInput = {
 export type ReviewUncheckedUpdateWithoutVotesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  carVersionId?: Prisma.StringFieldUpdateOperationsInput | string
+  carVersionYearId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1120,6 +1380,12 @@ export type ReviewUncheckedUpdateWithoutVotesInput = {
   ownershipTimeMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   kmDriven?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   score?: Prisma.FloatFieldUpdateOperationsInput | number
+  averageRating?: Prisma.FloatFieldUpdateOperationsInput | number
+  ratingsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  votesCount?: Prisma.IntFieldUpdateOperationsInput | number
+  commentsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumReviewStatusFieldUpdateOperationsInput | $Enums.ReviewStatus
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   ratings?: Prisma.ReviewRatingUncheckedUpdateManyWithoutReviewNestedInput
@@ -1128,7 +1394,7 @@ export type ReviewUncheckedUpdateWithoutVotesInput = {
 
 export type ReviewCreateManyUserInput = {
   id?: string
-  carVersionId: string
+  carVersionYearId: string
   title: string
   slug: string
   content: string
@@ -1137,6 +1403,12 @@ export type ReviewCreateManyUserInput = {
   ownershipTimeMonths?: number | null
   kmDriven?: number | null
   score?: number
+  averageRating?: number
+  ratingsCount?: number
+  votesCount?: number
+  commentsCount?: number
+  status?: $Enums.ReviewStatus
+  publishedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -1151,9 +1423,15 @@ export type ReviewUpdateWithoutUserInput = {
   ownershipTimeMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   kmDriven?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   score?: Prisma.FloatFieldUpdateOperationsInput | number
+  averageRating?: Prisma.FloatFieldUpdateOperationsInput | number
+  ratingsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  votesCount?: Prisma.IntFieldUpdateOperationsInput | number
+  commentsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumReviewStatusFieldUpdateOperationsInput | $Enums.ReviewStatus
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  carVersion?: Prisma.CarVersionUpdateOneRequiredWithoutReviewsNestedInput
+  carVersionYear?: Prisma.CarVersionYearUpdateOneRequiredWithoutReviewsNestedInput
   ratings?: Prisma.ReviewRatingUpdateManyWithoutReviewNestedInput
   comments?: Prisma.CommentUpdateManyWithoutReviewNestedInput
   votes?: Prisma.ReviewVoteUpdateManyWithoutReviewNestedInput
@@ -1161,7 +1439,7 @@ export type ReviewUpdateWithoutUserInput = {
 
 export type ReviewUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  carVersionId?: Prisma.StringFieldUpdateOperationsInput | string
+  carVersionYearId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1170,6 +1448,12 @@ export type ReviewUncheckedUpdateWithoutUserInput = {
   ownershipTimeMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   kmDriven?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   score?: Prisma.FloatFieldUpdateOperationsInput | number
+  averageRating?: Prisma.FloatFieldUpdateOperationsInput | number
+  ratingsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  votesCount?: Prisma.IntFieldUpdateOperationsInput | number
+  commentsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumReviewStatusFieldUpdateOperationsInput | $Enums.ReviewStatus
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   ratings?: Prisma.ReviewRatingUncheckedUpdateManyWithoutReviewNestedInput
@@ -1179,7 +1463,7 @@ export type ReviewUncheckedUpdateWithoutUserInput = {
 
 export type ReviewUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  carVersionId?: Prisma.StringFieldUpdateOperationsInput | string
+  carVersionYearId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1188,11 +1472,17 @@ export type ReviewUncheckedUpdateManyWithoutUserInput = {
   ownershipTimeMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   kmDriven?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   score?: Prisma.FloatFieldUpdateOperationsInput | number
+  averageRating?: Prisma.FloatFieldUpdateOperationsInput | number
+  ratingsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  votesCount?: Prisma.IntFieldUpdateOperationsInput | number
+  commentsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumReviewStatusFieldUpdateOperationsInput | $Enums.ReviewStatus
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type ReviewCreateManyCarVersionInput = {
+export type ReviewCreateManyCarVersionYearInput = {
   id?: string
   userId: string
   title: string
@@ -1203,11 +1493,17 @@ export type ReviewCreateManyCarVersionInput = {
   ownershipTimeMonths?: number | null
   kmDriven?: number | null
   score?: number
+  averageRating?: number
+  ratingsCount?: number
+  votesCount?: number
+  commentsCount?: number
+  status?: $Enums.ReviewStatus
+  publishedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
 
-export type ReviewUpdateWithoutCarVersionInput = {
+export type ReviewUpdateWithoutCarVersionYearInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1217,6 +1513,12 @@ export type ReviewUpdateWithoutCarVersionInput = {
   ownershipTimeMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   kmDriven?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   score?: Prisma.FloatFieldUpdateOperationsInput | number
+  averageRating?: Prisma.FloatFieldUpdateOperationsInput | number
+  ratingsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  votesCount?: Prisma.IntFieldUpdateOperationsInput | number
+  commentsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumReviewStatusFieldUpdateOperationsInput | $Enums.ReviewStatus
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutReviewsNestedInput
@@ -1225,7 +1527,7 @@ export type ReviewUpdateWithoutCarVersionInput = {
   votes?: Prisma.ReviewVoteUpdateManyWithoutReviewNestedInput
 }
 
-export type ReviewUncheckedUpdateWithoutCarVersionInput = {
+export type ReviewUncheckedUpdateWithoutCarVersionYearInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1236,6 +1538,12 @@ export type ReviewUncheckedUpdateWithoutCarVersionInput = {
   ownershipTimeMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   kmDriven?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   score?: Prisma.FloatFieldUpdateOperationsInput | number
+  averageRating?: Prisma.FloatFieldUpdateOperationsInput | number
+  ratingsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  votesCount?: Prisma.IntFieldUpdateOperationsInput | number
+  commentsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumReviewStatusFieldUpdateOperationsInput | $Enums.ReviewStatus
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   ratings?: Prisma.ReviewRatingUncheckedUpdateManyWithoutReviewNestedInput
@@ -1243,7 +1551,7 @@ export type ReviewUncheckedUpdateWithoutCarVersionInput = {
   votes?: Prisma.ReviewVoteUncheckedUpdateManyWithoutReviewNestedInput
 }
 
-export type ReviewUncheckedUpdateManyWithoutCarVersionInput = {
+export type ReviewUncheckedUpdateManyWithoutCarVersionYearInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1254,6 +1562,12 @@ export type ReviewUncheckedUpdateManyWithoutCarVersionInput = {
   ownershipTimeMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   kmDriven?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   score?: Prisma.FloatFieldUpdateOperationsInput | number
+  averageRating?: Prisma.FloatFieldUpdateOperationsInput | number
+  ratingsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  votesCount?: Prisma.IntFieldUpdateOperationsInput | number
+  commentsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumReviewStatusFieldUpdateOperationsInput | $Enums.ReviewStatus
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1310,7 +1624,7 @@ export type ReviewCountOutputTypeCountVotesArgs<ExtArgs extends runtime.Types.Ex
 export type ReviewSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   userId?: boolean
-  carVersionId?: boolean
+  carVersionYearId?: boolean
   title?: boolean
   slug?: boolean
   content?: boolean
@@ -1319,10 +1633,16 @@ export type ReviewSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   ownershipTimeMonths?: boolean
   kmDriven?: boolean
   score?: boolean
+  averageRating?: boolean
+  ratingsCount?: boolean
+  votesCount?: boolean
+  commentsCount?: boolean
+  status?: boolean
+  publishedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  carVersion?: boolean | Prisma.CarVersionDefaultArgs<ExtArgs>
+  carVersionYear?: boolean | Prisma.CarVersionYearDefaultArgs<ExtArgs>
   ratings?: boolean | Prisma.Review$ratingsArgs<ExtArgs>
   comments?: boolean | Prisma.Review$commentsArgs<ExtArgs>
   votes?: boolean | Prisma.Review$votesArgs<ExtArgs>
@@ -1332,7 +1652,7 @@ export type ReviewSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
 export type ReviewSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   userId?: boolean
-  carVersionId?: boolean
+  carVersionYearId?: boolean
   title?: boolean
   slug?: boolean
   content?: boolean
@@ -1341,16 +1661,22 @@ export type ReviewSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
   ownershipTimeMonths?: boolean
   kmDriven?: boolean
   score?: boolean
+  averageRating?: boolean
+  ratingsCount?: boolean
+  votesCount?: boolean
+  commentsCount?: boolean
+  status?: boolean
+  publishedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  carVersion?: boolean | Prisma.CarVersionDefaultArgs<ExtArgs>
+  carVersionYear?: boolean | Prisma.CarVersionYearDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["review"]>
 
 export type ReviewSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   userId?: boolean
-  carVersionId?: boolean
+  carVersionYearId?: boolean
   title?: boolean
   slug?: boolean
   content?: boolean
@@ -1359,16 +1685,22 @@ export type ReviewSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
   ownershipTimeMonths?: boolean
   kmDriven?: boolean
   score?: boolean
+  averageRating?: boolean
+  ratingsCount?: boolean
+  votesCount?: boolean
+  commentsCount?: boolean
+  status?: boolean
+  publishedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  carVersion?: boolean | Prisma.CarVersionDefaultArgs<ExtArgs>
+  carVersionYear?: boolean | Prisma.CarVersionYearDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["review"]>
 
 export type ReviewSelectScalar = {
   id?: boolean
   userId?: boolean
-  carVersionId?: boolean
+  carVersionYearId?: boolean
   title?: boolean
   slug?: boolean
   content?: boolean
@@ -1377,14 +1709,20 @@ export type ReviewSelectScalar = {
   ownershipTimeMonths?: boolean
   kmDriven?: boolean
   score?: boolean
+  averageRating?: boolean
+  ratingsCount?: boolean
+  votesCount?: boolean
+  commentsCount?: boolean
+  status?: boolean
+  publishedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type ReviewOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "carVersionId" | "title" | "slug" | "content" | "pros" | "cons" | "ownershipTimeMonths" | "kmDriven" | "score" | "createdAt" | "updatedAt", ExtArgs["result"]["review"]>
+export type ReviewOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "carVersionYearId" | "title" | "slug" | "content" | "pros" | "cons" | "ownershipTimeMonths" | "kmDriven" | "score" | "averageRating" | "ratingsCount" | "votesCount" | "commentsCount" | "status" | "publishedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["review"]>
 export type ReviewInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  carVersion?: boolean | Prisma.CarVersionDefaultArgs<ExtArgs>
+  carVersionYear?: boolean | Prisma.CarVersionYearDefaultArgs<ExtArgs>
   ratings?: boolean | Prisma.Review$ratingsArgs<ExtArgs>
   comments?: boolean | Prisma.Review$commentsArgs<ExtArgs>
   votes?: boolean | Prisma.Review$votesArgs<ExtArgs>
@@ -1392,18 +1730,18 @@ export type ReviewInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs 
 }
 export type ReviewIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  carVersion?: boolean | Prisma.CarVersionDefaultArgs<ExtArgs>
+  carVersionYear?: boolean | Prisma.CarVersionYearDefaultArgs<ExtArgs>
 }
 export type ReviewIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  carVersion?: boolean | Prisma.CarVersionDefaultArgs<ExtArgs>
+  carVersionYear?: boolean | Prisma.CarVersionYearDefaultArgs<ExtArgs>
 }
 
 export type $ReviewPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Review"
   objects: {
     user: Prisma.$UserPayload<ExtArgs>
-    carVersion: Prisma.$CarVersionPayload<ExtArgs>
+    carVersionYear: Prisma.$CarVersionYearPayload<ExtArgs>
     ratings: Prisma.$ReviewRatingPayload<ExtArgs>[]
     comments: Prisma.$CommentPayload<ExtArgs>[]
     votes: Prisma.$ReviewVotePayload<ExtArgs>[]
@@ -1411,7 +1749,7 @@ export type $ReviewPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     userId: string
-    carVersionId: string
+    carVersionYearId: string
     title: string
     slug: string
     content: string
@@ -1420,6 +1758,12 @@ export type $ReviewPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     ownershipTimeMonths: number | null
     kmDriven: number | null
     score: number
+    averageRating: number
+    ratingsCount: number
+    votesCount: number
+    commentsCount: number
+    status: $Enums.ReviewStatus
+    publishedAt: Date | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["review"]>
@@ -1817,7 +2161,7 @@ readonly fields: ReviewFieldRefs;
 export interface Prisma__ReviewClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  carVersion<T extends Prisma.CarVersionDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CarVersionDefaultArgs<ExtArgs>>): Prisma.Prisma__CarVersionClient<runtime.Types.Result.GetResult<Prisma.$CarVersionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  carVersionYear<T extends Prisma.CarVersionYearDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CarVersionYearDefaultArgs<ExtArgs>>): Prisma.Prisma__CarVersionYearClient<runtime.Types.Result.GetResult<Prisma.$CarVersionYearPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   ratings<T extends Prisma.Review$ratingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Review$ratingsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ReviewRatingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   comments<T extends Prisma.Review$commentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Review$commentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   votes<T extends Prisma.Review$votesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Review$votesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ReviewVotePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -1852,7 +2196,7 @@ export interface Prisma__ReviewClient<T, Null = never, ExtArgs extends runtime.T
 export interface ReviewFieldRefs {
   readonly id: Prisma.FieldRef<"Review", 'String'>
   readonly userId: Prisma.FieldRef<"Review", 'String'>
-  readonly carVersionId: Prisma.FieldRef<"Review", 'String'>
+  readonly carVersionYearId: Prisma.FieldRef<"Review", 'String'>
   readonly title: Prisma.FieldRef<"Review", 'String'>
   readonly slug: Prisma.FieldRef<"Review", 'String'>
   readonly content: Prisma.FieldRef<"Review", 'String'>
@@ -1861,6 +2205,12 @@ export interface ReviewFieldRefs {
   readonly ownershipTimeMonths: Prisma.FieldRef<"Review", 'Int'>
   readonly kmDriven: Prisma.FieldRef<"Review", 'Int'>
   readonly score: Prisma.FieldRef<"Review", 'Float'>
+  readonly averageRating: Prisma.FieldRef<"Review", 'Float'>
+  readonly ratingsCount: Prisma.FieldRef<"Review", 'Int'>
+  readonly votesCount: Prisma.FieldRef<"Review", 'Int'>
+  readonly commentsCount: Prisma.FieldRef<"Review", 'Int'>
+  readonly status: Prisma.FieldRef<"Review", 'ReviewStatus'>
+  readonly publishedAt: Prisma.FieldRef<"Review", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"Review", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Review", 'DateTime'>
 }

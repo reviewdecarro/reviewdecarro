@@ -15,13 +15,14 @@ export class InMemoryReviewsRepository extends ReviewsRepositoryProps {
 		slug: string,
 		data: CreateReviewDto,
 	): Promise<ReviewEntity> {
+		const carVersionYearId = data.carVersionYearId ?? "";
 		const now = new Date();
 		const reviewId = randomUUID();
 
 		const review = new ReviewEntity({
 			id: reviewId,
 			userId,
-			carVersionId: data.carVersionId,
+			carVersionYearId,
 			title: data.title,
 			slug,
 			content: data.content,
@@ -57,14 +58,14 @@ export class InMemoryReviewsRepository extends ReviewsRepositoryProps {
 	}
 
 	async findAll(filters?: {
-		carVersionId?: string;
+		carVersionYearId?: string;
 		userId?: string;
 		query?: string;
 	}): Promise<ReviewEntity[]> {
 		let result = [...this.items];
 
-		if (filters?.carVersionId) {
-			result = result.filter((r) => r.carVersionId === filters.carVersionId);
+		if (filters?.carVersionYearId) {
+			result = result.filter((r) => r.carVersionYearId === filters.carVersionYearId);
 		}
 
 		if (filters?.userId) {

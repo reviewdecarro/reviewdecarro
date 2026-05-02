@@ -1,5 +1,6 @@
 "use client";
 
+import { LoaderCircle, Mail } from "lucide-react";
 import Link from "next/link";
 import { type FormEvent, useState } from "react";
 
@@ -103,27 +104,11 @@ export function ForgotPasswordForm() {
 							E-mail
 						</label>
 						<div className="relative">
-							<div
-								className="absolute left-3.5 top-1/2 -translate-y-1/2"
-								style={{ color: "var(--text-light)" }}
-							>
-								<svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-									<title>E-mail</title>
-									<rect
-										x="1"
-										y="3"
-										width="14"
-										height="10"
-										rx="2"
-										stroke="currentColor"
-										strokeWidth="1.4"
-									/>
-									<path
-										d="M1 5.5L8 9.5L15 5.5"
-										stroke="currentColor"
-										strokeWidth="1.4"
-									/>
-								</svg>
+						<div
+							className="absolute left-3.5 top-1/2 -translate-y-1/2"
+							style={{ color: "var(--text-light)" }}
+						>
+							<Mail size={16} strokeWidth={1.8} />
 							</div>
 							<input
 								id="forgot-password-email"
@@ -154,29 +139,7 @@ export function ForgotPasswordForm() {
 					>
 						{loading ? (
 							<>
-								<svg
-									className="animate-spin"
-									width="16"
-									height="16"
-									viewBox="0 0 16 16"
-									fill="none"
-								>
-									<title>Carregando</title>
-									<circle
-										cx="8"
-										cy="8"
-										r="6"
-										stroke="white"
-										strokeWidth="2"
-										strokeOpacity="0.3"
-									/>
-									<path
-										d="M8 2a6 6 0 0 1 6 6"
-										stroke="white"
-										strokeWidth="2"
-										strokeLinecap="round"
-									/>
-								</svg>
+								<LoaderCircle className="animate-spin" size={16} strokeWidth={2} />
 								Enviando link…
 							</>
 						) : (

@@ -1,5 +1,7 @@
 import { randomUUID } from "node:crypto";
 import { Injectable } from "@nestjs/common";
+import { UserEntity } from "src/application/users/entities/user.entity";
+import { UsersMapper } from "src/application/users/mappers/user.mapper";
 import { AuthService } from "src/infra/auth/auth.service";
 import { HashProviderProps } from "src/infra/providers/hash/types/hash-provider.props";
 import { BadRequestError } from "../../../shared/errors/types/bad-request-error";
@@ -57,6 +59,11 @@ export class LoginUseCase {
 			sessionId: session.id,
 		});
 
-		return { accessToken, refreshToken, sessionId: session.id };
+		return {
+			accessToken,
+			refreshToken,
+			sessionId: session.id,
+			user: UsersMapper.toUserResponseDto(new UserEntity(user)),
+		};
 	}
 }

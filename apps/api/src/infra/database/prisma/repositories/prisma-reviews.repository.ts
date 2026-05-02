@@ -16,10 +16,12 @@ export class PrismaReviewsRepository implements ReviewsRepositoryProps {
 		slug: string,
 		data: CreateReviewDto,
 	): Promise<ReviewEntity> {
+		const carVersionYearId = data.carVersionYearId ?? "";
+
 		const review = await this.prisma.review.create({
 			data: {
 				userId,
-				carVersionId: data.carVersionId,
+				carVersionYearId,
 				title: data.title,
 				slug,
 				content: data.content,
@@ -66,14 +68,14 @@ export class PrismaReviewsRepository implements ReviewsRepositoryProps {
 	}
 
 	async findAll(filters?: {
-		carVersionId?: string;
+		carVersionYearId?: string;
 		userId?: string;
 		query?: string;
 	}): Promise<ReviewEntity[]> {
 		const where: Record<string, unknown> = {};
 
-		if (filters?.carVersionId) {
-			where.carVersionId = filters.carVersionId;
+		if (filters?.carVersionYearId) {
+			where.carVersionYearId = filters.carVersionYearId;
 		}
 
 		if (filters?.userId) {

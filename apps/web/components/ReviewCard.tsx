@@ -3,7 +3,6 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import type { Car, Review } from '@/types';
-import { CarPlaceholder } from './CarPlaceholder';
 import { ScoreBadge } from './ScoreBadge';
 import { TagBadge } from './TagBadge';
 
@@ -29,12 +28,6 @@ export function ReviewCard({ review, car, compact }: ReviewCardProps) {
         transform:   hovered ? 'translateY(-2px)' : 'none',
       }}
     >
-      <CarPlaceholder
-        brand={car.brand}
-        model={car.model}
-        segment={car.segment}
-        className={`w-full ${compact ? 'h-[110px]' : 'h-[150px]'}`}
-      />
       <div className={compact ? 'p-3' : 'p-4'}>
         <div className="flex items-start justify-between gap-2 mb-2">
           <TagBadge label={car.segment} />
@@ -51,7 +44,7 @@ export function ReviewCard({ review, car, compact }: ReviewCardProps) {
           <span>·</span>
           <span>{review.date}</span>
           <span>·</span>
-          <span>{review.comments} comments</span>
+          <span>{review.comments} comentários</span>
         </div>
       </div>
     </Link>

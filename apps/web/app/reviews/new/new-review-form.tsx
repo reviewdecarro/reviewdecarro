@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { type FormEvent, useEffect, useMemo, useState } from "react";
+import Select, { type SingleValue, type StylesConfig } from "react-select";
 import { useAuthSession } from "@/hooks/use-auth-session";
 import { API_BASE_URL } from "@/lib/api";
 
@@ -41,16 +42,31 @@ type ModelOption = {
 type VersionOption = {
 	id: string;
 	modelId: string;
-	year: number;
 	versionName: string;
 	engine: string | null;
 	transmission: string | null;
 	slug: string;
 	createdAt: string;
+	years?: VersionYearOption[];
+};
+
+type VersionYearOption = {
+	year: number;
+	id: string;
 };
 
 type RatingOption = {
 	category: RatingCategory;
+	label: string;
+};
+
+type SelectOption = {
+	value: string;
+	label: string;
+};
+
+type VersionSelectOption = {
+	value: string;
 	label: string;
 };
 
@@ -66,7 +82,7 @@ const ratingOptions: RatingOption[] = [
 ];
 
 type CreateReviewPayload = {
-	carVersionId: string;
+	carVersionYearId: string;
 	title: string;
 	content: string;
 	pros?: string;
@@ -83,6 +99,69 @@ type SubmitState = {
 
 type ApiResponse<T> = {
 	[key: string]: T;
+};
+
+const selectStyles: StylesConfig<SelectOption, false> = {
+	control: (base, state) => ({
+		...base,
+		minHeight: "42px",
+		borderRadius: "0.5rem",
+		backgroundColor: "var(--bg)",
+		borderColor: state.isFocused ? "var(--accent)" : "var(--border)",
+		boxShadow: "none",
+		"&:hover": {
+			borderColor: state.isFocused ? "var(--accent)" : "var(--border)",
+		},
+	}),
+	menu: (base) => ({
+		...base,
+		backgroundColor: "var(--surface)",
+		border: "1px solid var(--border)",
+		boxShadow: "0 10px 25px rgba(0, 0, 0, 0.08)",
+		zIndex: 20,
+	}),
+	option: (base, state) => ({
+		...base,
+		backgroundColor: state.isSelected
+			? "var(--accent-light)"
+			: state.isFocused
+				? "var(--surface-2)"
+				: "var(--surface)",
+		color: "var(--text)",
+		"&:active": {
+			backgroundColor: "var(--surface-2)",
+		},
+	}),
+	singleValue: (base) => ({
+		...base,
+		color: "var(--text)",
+	}),
+	placeholder: (base) => ({
+		...base,
+		color: "var(--text-muted)",
+	}),
+	input: (base) => ({
+		...base,
+		color: "var(--text)",
+	}),
+	indicatorSeparator: (base) => ({
+		...base,
+		backgroundColor: "var(--border)",
+	}),
+	dropdownIndicator: (base) => ({
+		...base,
+		color: "var(--text-muted)",
+		"&:hover": {
+			color: "var(--text)",
+		},
+	}),
+	clearIndicator: (base) => ({
+		...base,
+		color: "var(--text-muted)",
+		"&:hover": {
+			color: "var(--text)",
+		},
+	}),
 };
 
 async function fetchJson<T>(path: string): Promise<T> {
@@ -109,19 +188,22 @@ export function NewReviewForm() {
 	const { authUser, isCheckingSession, isLoggedIn } = useAuthSession();
 	const [brands, setBrands] = useState<BrandOption[]>([]);
 	const [models, setModels] = useState<ModelOption[]>([]);
+	const [years, setYears] = useState<VersionYearOption[]>([]);
 	const [versions, setVersions] = useState<VersionOption[]>([]);
 	const [selectedBrandSlug, setSelectedBrandSlug] = useState("");
 	const [selectedModelSlug, setSelectedModelSlug] = useState("");
 	const [selectedYear, setSelectedYear] = useState("");
+	const [selectedVersionId, setSelectedVersionId] = useState("");
 	const [isLoadingBrands, setIsLoadingBrands] = useState(true);
 	const [isLoadingModels, setIsLoadingModels] = useState(false);
+	const [isLoadingYears, setIsLoadingYears] = useState(false);
 	const [isLoadingVersions, setIsLoadingVersions] = useState(false);
 	const [state, setState] = useState<SubmitState>({
 		status: "idle",
 		message: "",
 	});
 	const [payload, setPayload] = useState<CreateReviewPayload>({
-		carVersionId: "",
+		carVersionYearId: "",
 		title: "",
 		content: "",
 		pros: "",
@@ -130,6 +212,22 @@ export function NewReviewForm() {
 		kmDriven: undefined,
 		ratings: ratingOptions.map(({ category }) => ({ category, value: 0 })),
 	});
+	const brandOptions = useMemo(
+		() =>
+			brands.map((brand) => ({
+				value: brand.slug,
+				label: brand.name,
+			})),
+		[brands],
+	);
+	const modelOptions = useMemo(
+		() =>
+			models.map((model) => ({
+				value: model.slug,
+				label: model.name,
+			})),
+		[models],
+	);
 
 	useEffect(() => {
 		let active = true;
@@ -199,21 +297,73 @@ export function NewReviewForm() {
 	useEffect(() => {
 		let active = true;
 
-		async function loadModelDetails() {
+		async function loadAvailableYears() {
 			if (!selectedBrandSlug || !selectedModelSlug) {
+				setYears([]);
+				setSelectedYear("");
+				setSelectedVersionId("");
 				setVersions([]);
+				return;
+			}
+
+			setIsLoadingYears(true);
+
+			try {
+				const data = await fetchJson<VersionYearOption[]>(
+					`/brands/${selectedBrandSlug}/models/${selectedModelSlug}/years`,
+				);
+				if (active) {
+					setYears(data ?? []);
+				}
+			} catch {
+				if (active) {
+					setYears([]);
+				}
+			} finally {
+				if (active) {
+					setIsLoadingYears(false);
+				}
+			}
+		}
+
+		void loadAvailableYears();
+
+		return () => {
+			active = false;
+		};
+	}, [selectedBrandSlug, selectedModelSlug]);
+
+	const yearOptions = useMemo(() => {
+		return [...years].sort((a, b) => b.year - a.year);
+	}, [years]);
+	const yearSelectOptions = useMemo(
+		() =>
+			yearOptions.map((year) => ({
+				value: String(year.year),
+				label: String(year.year),
+			})),
+		[yearOptions],
+	);
+
+	useEffect(() => {
+		let active = true;
+
+		async function loadVersions() {
+			if (!selectedBrandSlug || !selectedModelSlug || !selectedYear) {
+				setVersions([]);
+				setSelectedVersionId("");
 				return;
 			}
 
 			setIsLoadingVersions(true);
 
 			try {
-				const model = await fetchJson<{ carVersions: VersionOption[] }>(
-					`/brands/${selectedBrandSlug}/models/${selectedModelSlug}`,
+				const data = await fetchJson<VersionOption[]>(
+					`/brands/${selectedBrandSlug}/models/${selectedModelSlug}/versions`,
 				);
 
 				if (active) {
-					setVersions(model.carVersions ?? []);
+					setVersions(data ?? []);
 				}
 			} catch {
 				if (active) {
@@ -226,29 +376,45 @@ export function NewReviewForm() {
 			}
 		}
 
-		void loadModelDetails();
+		void loadVersions();
 
 		return () => {
 			active = false;
 		};
-	}, [selectedBrandSlug, selectedModelSlug]);
+	}, [selectedBrandSlug, selectedModelSlug, selectedYear]);
 
-	const yearOptions = useMemo(() => {
-		return Array.from(new Set(versions.map((version) => version.year))).sort(
-			(a, b) => b - a,
-		);
-	}, [versions]);
+	const filteredVersions = useMemo(
+		() =>
+			versions.filter((version) =>
+				version.years?.some((item) => String(item.year) === selectedYear),
+			),
+		[versions, selectedYear],
+	);
+	const versionSelectOptions = useMemo(
+		(): VersionSelectOption[] =>
+			filteredVersions.flatMap(
+				(version) =>
+					version.years
+						?.filter((item) => String(item.year) === selectedYear)
+						.map((item) => ({
+							value: item.id,
+							label: `${version.versionName}`,
+						})) ?? [],
+			),
+		[filteredVersions, selectedYear],
+	);
 
-	const selectedVersion =
-		(selectedYear &&
-			versions.find((version) => String(version.year) === selectedYear)) ||
-		null;
-
-	const canSubmit =
-		selectedVersion !== null &&
-		payload.title.trim().length >= 3 &&
-		payload.content.trim().length >= 10 &&
-		payload.ratings.every((rating) => rating.value > 0);
+	const canSubmit = useMemo(
+		() =>
+			payload.carVersionYearId.length > 0 &&
+			payload.title.trim().length >= 3 &&
+			payload.content.trim().length >= 10,
+		[
+			payload.carVersionYearId,
+			payload.title,
+			payload.content,
+		],
+	);
 
 	const overallScore = useMemo(() => {
 		const total = payload.ratings.reduce(
@@ -284,10 +450,18 @@ export function NewReviewForm() {
 	async function handleSubmit(event: FormEvent<HTMLFormElement>) {
 		event.preventDefault();
 
-		if (!selectedVersion) {
+		if (!payload.carVersionYearId) {
 			setState({
 				status: "error",
-				message: "Selecione marca, modelo e ano para continuar.",
+				message: "Selecione marca, modelo, ano e versão para continuar.",
+			});
+			return;
+		}
+
+		if (!payload.ratings.every((rating) => rating.value > 0)) {
+			setState({
+				status: "error",
+				message: "Avalie todas as categorias para publicar a review.",
 			});
 			return;
 		}
@@ -303,7 +477,7 @@ export function NewReviewForm() {
 				},
 				body: JSON.stringify({
 					...payload,
-					carVersionId: selectedVersion.id,
+					carVersionYearId: payload.carVersionYearId,
 					score: overallScore,
 					ratings: payload.ratings,
 					pros: payload.pros?.trim() || undefined,
@@ -338,10 +512,12 @@ export function NewReviewForm() {
 		setSelectedBrandSlug("");
 		setSelectedModelSlug("");
 		setSelectedYear("");
+		setSelectedVersionId("");
 		setModels([]);
+		setYears([]);
 		setVersions([]);
 		setPayload({
-			carVersionId: "",
+			carVersionYearId: "",
 			title: "",
 			content: "",
 			pros: "",
@@ -505,34 +681,48 @@ export function NewReviewForm() {
 					>
 						Marca
 					</label>
-					<select
-						id="brand"
-						value={selectedBrandSlug}
-						onChange={(event) => {
-							setSelectedBrandSlug(event.target.value);
+					<Select
+						inputId="brand"
+						instanceId="brand"
+						isClearable
+						isLoading={isLoadingBrands}
+						placeholder="Digite ou selecione uma marca"
+						options={brandOptions}
+						value={
+							brandOptions.find(
+								(option) => option.value === selectedBrandSlug,
+							) ?? null
+						}
+						onChange={(option: SingleValue<SelectOption>) => {
+							const slug = option?.value ?? "";
+
+							setSelectedBrandSlug(slug);
 							setSelectedModelSlug("");
 							setSelectedYear("");
+							setSelectedVersionId("");
 							setModels([]);
+							setYears([]);
 							setVersions([]);
+							setPayload((current) => ({
+								...current,
+								carVersionYearId: "",
+							}));
 							setState({ status: "idle", message: "" });
 						}}
-						className="rounded-lg border px-3 py-2 text-[14px] outline-none"
-						style={{
-							background: "var(--bg)",
-							borderColor: "var(--border)",
-							color: "var(--text)",
-						}}
-						disabled={isLoadingBrands}
-					>
-						<option value="">
-							{isLoadingBrands ? "Carregando marcas..." : "Selecione uma marca"}
-						</option>
-						{brands.map((brand) => (
-							<option key={brand.id} value={brand.slug}>
-								{brand.name}
-							</option>
-						))}
-					</select>
+						styles={selectStyles}
+					/>
+					{/* {selectedBrand && (
+						<div
+							className="rounded-lg border px-3 py-2 text-[13px]"
+							style={{
+								background: "var(--surface-2)",
+								borderColor: "var(--border)",
+								color: "var(--text)",
+							}}
+						>
+							Marca selecionada: {selectedBrand.name}
+						</div>
+					)} */}
 				</div>
 
 				<div className="grid gap-2">
@@ -543,36 +733,51 @@ export function NewReviewForm() {
 					>
 						Modelo
 					</label>
-					<select
-						id="model"
-						value={selectedModelSlug}
-						onChange={(event) => {
-							setSelectedModelSlug(event.target.value);
+					<Select
+						inputId="model"
+						instanceId="model"
+						isClearable
+						isDisabled={!selectedBrandSlug || isLoadingModels}
+						isLoading={isLoadingModels}
+						placeholder={
+							!selectedBrandSlug
+								? "Selecione uma marca primeiro"
+								: "Digite ou selecione um modelo"
+						}
+						options={modelOptions}
+						value={
+							modelOptions.find(
+								(option) => option.value === selectedModelSlug,
+							) ?? null
+						}
+						onChange={(option: SingleValue<SelectOption>) => {
+							const slug = option?.value ?? "";
+
+							setSelectedModelSlug(slug);
 							setSelectedYear("");
+							setSelectedVersionId("");
+							setYears([]);
 							setVersions([]);
+							setPayload((current) => ({
+								...current,
+								carVersionYearId: "",
+							}));
 							setState({ status: "idle", message: "" });
 						}}
-						className="rounded-lg border px-3 py-2 text-[14px] outline-none"
-						style={{
-							background: "var(--bg)",
-							borderColor: "var(--border)",
-							color: "var(--text)",
-						}}
-						disabled={!selectedBrandSlug || isLoadingModels}
-					>
-						<option value="">
-							{!selectedBrandSlug
-								? "Selecione uma marca primeiro"
-								: isLoadingModels
-									? "Carregando modelos..."
-									: "Selecione um modelo"}
-						</option>
-						{models.map((model) => (
-							<option key={model.id} value={model.slug}>
-								{model.name}
-							</option>
-						))}
-					</select>
+						styles={selectStyles}
+					/>
+					{/* {selectedModel && (
+						<div
+							className="rounded-lg border px-3 py-2 text-[13px]"
+							style={{
+								background: "var(--surface-2)",
+								borderColor: "var(--border)",
+								color: "var(--text)",
+							}}
+						>
+							Modelo selecionado: {selectedModel.name}
+						</div>
+					)} */}
 				</div>
 
 				<div className="grid gap-2">
@@ -583,44 +788,73 @@ export function NewReviewForm() {
 					>
 						Ano
 					</label>
-					<select
-						id="year"
-						value={selectedYear}
-						onChange={(event) => {
-							const year = event.target.value;
-							setSelectedYear(year);
+					<Select
+						inputId="year"
+						instanceId="year"
+						isClearable
+						isDisabled={!selectedModelSlug || isLoadingYears}
+						isLoading={isLoadingYears}
+						placeholder={
+							!selectedModelSlug
+								? "Selecione um modelo primeiro"
+								: "Digite ou selecione um ano"
+						}
+						options={yearSelectOptions}
+						value={
+							yearSelectOptions.find(
+								(option) => option.value === selectedYear,
+							) ?? null
+						}
+						onChange={(option: SingleValue<SelectOption>) => {
+							setSelectedYear(option?.value ?? "");
+							setSelectedVersionId("");
+							setVersions([]);
+							setState({ status: "idle", message: "" });
+						}}
+						styles={selectStyles}
+					/>
+				</div>
+
+				<div className="grid gap-2">
+					<label
+						htmlFor="version"
+						className="text-[13px] font-medium"
+						style={{ color: "var(--text-muted)" }}
+					>
+						Versão
+					</label>
+					<Select
+						inputId="version"
+						instanceId="version"
+						isClearable
+						isDisabled={!selectedYear || isLoadingVersions}
+						isLoading={isLoadingVersions}
+						placeholder={
+							!selectedYear
+								? "Selecione um ano primeiro"
+								: "Digite ou selecione uma versão"
+						}
+						options={versionSelectOptions}
+						value={
+							versionSelectOptions.find(
+								(option) => option.value === selectedVersionId,
+							) ?? null
+						}
+						onChange={(option: SingleValue<VersionSelectOption>) => {
+							const versionYearId = option?.value ?? "";
+							console.log(versionYearId);
+							setSelectedVersionId(versionYearId);
 							setPayload((current) => ({
 								...current,
-								carVersionId:
-									versions.find((version) => String(version.year) === year)
-										?.id ?? "",
+								carVersionYearId: versionYearId,
 							}));
 							setState({ status: "idle", message: "" });
 						}}
-						className="rounded-lg border px-3 py-2 text-[14px] outline-none"
-						style={{
-							background: "var(--bg)",
-							borderColor: "var(--border)",
-							color: "var(--text)",
-						}}
-						disabled={!selectedModelSlug || isLoadingVersions}
-					>
-						<option value="">
-							{!selectedModelSlug
-								? "Selecione um modelo primeiro"
-								: isLoadingVersions
-									? "Carregando anos..."
-									: "Selecione um ano"}
-						</option>
-						{yearOptions.map((year) => (
-							<option key={year} value={year}>
-								{year}
-							</option>
-						))}
-					</select>
+						styles={selectStyles}
+					/>
 				</div>
 
-				{selectedVersion && (
+				{/* {payload.carVersionYearId && (
 					<div
 						className="rounded-xl border px-3 py-2 text-[13px]"
 						style={{
@@ -629,9 +863,9 @@ export function NewReviewForm() {
 							color: "var(--accent)",
 						}}
 					>
-						Versão selecionada: {selectedVersion.versionName}
+						Versão selecionada
 					</div>
-				)}
+				)} */}
 
 				<div className="grid gap-2">
 					<label

@@ -28,9 +28,10 @@ export class RatingDto {
 }
 
 export class CreateReviewDto {
-	@ApiProperty({ example: "uuid-car-version" })
+	@ApiPropertyOptional({ example: "uuid-car-version" })
 	@IsUUID()
-	readonly carVersionId: string;
+	@IsOptional()
+	readonly carVersionYearId?: string;
 
 	@ApiProperty({ example: "Excelente custo-benefício" })
 	@IsString()
@@ -139,7 +140,11 @@ export class ReviewResponseDto {
 
 	@ApiProperty()
 	@Expose()
-	carVersionId: string;
+	carVersionYearId: string;
+
+	@ApiPropertyOptional()
+	@Expose()
+	carVersionId?: string;
 
 	@ApiProperty()
 	@Expose()

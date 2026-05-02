@@ -8,7 +8,7 @@ export class ListReviewsUseCase {
 	constructor(private reviewsRepository: ReviewsRepositoryProps) {}
 
 	async execute(filters?: {
-		carVersionId?: string;
+		carVersionYearId?: string;
 		userId?: string;
 		query?: string;
 	}) {

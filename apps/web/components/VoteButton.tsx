@@ -1,5 +1,7 @@
 "use client";
 
+import { ArrowUp } from "lucide-react";
+
 type VoteButtonProps = {
 	count: number;
 	voted: boolean;
@@ -18,13 +20,7 @@ export function VoteButton({ count, voted, onVote }: VoteButtonProps) {
 				color: voted ? "var(--accent)" : "var(--text-muted)",
 			}}
 		>
-			<svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-				<path
-					d="M7 2L11.5 8H2.5L7 2Z"
-					fill="currentColor"
-					opacity="0.9"
-				/>
-			</svg>
+			<ArrowUp size={14} strokeWidth={2.2} />
 			{count}
 		</button>
 	);

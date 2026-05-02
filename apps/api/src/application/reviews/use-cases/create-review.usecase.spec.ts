@@ -35,7 +35,7 @@ describe("CreateReviewUseCase", () => {
 		const version = seedVersion();
 
 		const result = await sut.execute("user-1", {
-			carVersionId: version.id,
+			carVersionYearId: version.years?.[0]?.id ?? "",
 			title: "Ótimo carro",
 			content: "Conteúdo do review",
 			score: 4.5,
@@ -52,21 +52,21 @@ describe("CreateReviewUseCase", () => {
 		const version = seedVersion();
 
 		const first = await sut.execute("user-1", {
-			carVersionId: version.id,
+			carVersionYearId: version.years?.[0]?.id ?? "",
 			title: "Ótimo carro",
 			content: "Conteúdo do review",
 			score: 4.5,
 		});
 
 		const second = await sut.execute("user-2", {
-			carVersionId: version.id,
+			carVersionYearId: version.years?.[0]?.id ?? "",
 			title: "Ótimo carro",
 			content: "Outro review",
 			score: 4.0,
 		});
 
 		const third = await sut.execute("user-3", {
-			carVersionId: version.id,
+			carVersionYearId: version.years?.[0]?.id ?? "",
 			title: "Ótimo carro",
 			content: "Mais um review",
 			score: 3.5,
@@ -80,7 +80,7 @@ describe("CreateReviewUseCase", () => {
 	it("should throw BadRequestError when car version not found", async () => {
 		await expect(
 			sut.execute("user-1", {
-				carVersionId: "unknown",
+				carVersionYearId: "unknown",
 				title: "Ótimo",
 				content: "Conteúdo",
 				score: 4,
@@ -89,7 +89,7 @@ describe("CreateReviewUseCase", () => {
 
 		await expect(
 			sut.execute("user-1", {
-				carVersionId: "unknown",
+				carVersionYearId: "unknown",
 				title: "Ótimo",
 				content: "Conteúdo",
 				score: 4,

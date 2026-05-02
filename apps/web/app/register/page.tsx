@@ -11,7 +11,7 @@ export default function RegisterPage() {
 		<>
 			<Nav />
 			<main
-				className="min-h-[calc(100vh-56px)] flex items-center justify-center px-6 py-14"
+				className="min-h-[calc(100vh-56px)] flex items-start justify-center px-4 py-8 sm:items-center sm:px-6 sm:py-14"
 				style={{ background: "var(--bg)" }}
 			>
 				<RegisterForm />

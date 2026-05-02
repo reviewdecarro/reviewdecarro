@@ -3,14 +3,13 @@ import { Footer } from '@/components/Footer';
 import { SectionHeader } from '@/components/SectionHeader';
 import { FeaturedReviewCard } from '@/components/FeaturedReviewCard';
 import { ReviewCard } from '@/components/ReviewCard';
-import { BlogCard } from '@/components/BlogCard';
 import { ForumThreadRow } from '@/components/ForumThreadRow';
-import { reviews, blogPosts, threads, getCarById } from '@/lib/data';
+import { reviews, threads, getCarById } from '@/lib/data';
 
 export default function HomePage() {
   const featuredReview = reviews[0];
   const featuredCar = getCarById(featuredReview.carId)!;
-  const latestReviews = reviews.slice(1);
+  const latestReviews = reviews.slice(1, 5);
 
   return (
     <>
@@ -19,12 +18,12 @@ export default function HomePage() {
         <div className="max-w-[1100px] mx-auto px-6 py-10 flex flex-col gap-14">
 
           <section>
-            <SectionHeader title="Editor's Pick" />
+            <SectionHeader title="Escolha do editor" />
             <FeaturedReviewCard review={featuredReview} car={featuredCar} />
           </section>
 
           <section>
-            <SectionHeader title="Latest Reviews" action="See all" />
+            <SectionHeader title="Avaliações recentes" action="Ver todas" />
             <div className="grid grid-cols-2 gap-5 sm:grid-cols-4">
               {latestReviews.map(review => {
                 const car = getCarById(review.carId)!;
@@ -34,16 +33,7 @@ export default function HomePage() {
           </section>
 
           <section>
-            <SectionHeader title="From the Blog" action="Read more" />
-            <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-              {blogPosts.map(post => (
-                <BlogCard key={post.id} post={post} />
-              ))}
-            </div>
-          </section>
-
-          <section>
-            <SectionHeader title="Forum Highlights" action="Go to forum" />
+            <SectionHeader title="Destaques do fórum" action="Ir para o fórum" />
             <div className="flex flex-col">
               {threads.map(thread => (
                 <ForumThreadRow key={thread.id} thread={thread} />

@@ -1,27 +1,30 @@
 "use client";
 
+import { Eye, EyeOff, Lock, LoaderCircle, Mail } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { type FormEvent, useEffect, useRef, useState } from "react";
+import { type FormEvent, useState } from "react";
+import { API_BASE_URL } from "@/lib/api";
+import { useAuthSession } from "@/hooks/use-auth-session";
+
+type LoginResponse = {
+	message?: string;
+	user?: {
+		username: string;
+		email: string;
+	};
+};
 
 export function LoginForm() {
 	const router = useRouter();
+	const { storeAuthUser } = useAuthSession();
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [showPass, setShowPass] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState("");
-	const submitTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-	useEffect(() => {
-		return () => {
-			if (submitTimerRef.current !== null) {
-				clearTimeout(submitTimerRef.current);
-			}
-		};
-	}, []);
-
-	function handleSubmit(e: FormEvent<HTMLFormElement>) {
+	async function handleSubmit(e: FormEvent<HTMLFormElement>) {
 		e.preventDefault();
 
 		if (!email || !password) {
@@ -32,14 +35,44 @@ export function LoginForm() {
 		setError("");
 		setLoading(true);
 
-		if (submitTimerRef.current !== null) {
-			clearTimeout(submitTimerRef.current);
-		}
+		try {
+			const response = await fetch(
+				`${API_BASE_URL}/auth/login`,
+				{
+					method: "POST",
+					credentials: "include",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify({
+						email,
+						password,
+					}),
+				},
+			);
 
-		submitTimerRef.current = setTimeout(() => {
-			setLoading(false);
+			const data = (await response.json()) as LoginResponse;
+
+			if (!response.ok) {
+				throw new Error(data.message ?? "E-mail ou senha inválidos.");
+			}
+
+			if (!data.user) {
+				throw new Error("Resposta de autenticação incompleta.");
+			}
+
+			storeAuthUser(data.user);
+
 			router.push("/");
-		}, 1200);
+		} catch (submitError) {
+			setError(
+				submitError instanceof Error
+					? submitError.message
+					: "E-mail ou senha inválidos.",
+			);
+		} finally {
+			setLoading(false);
+		}
 	}
 
 	return (
@@ -83,23 +116,7 @@ export function LoginForm() {
 							className="absolute left-3.5 top-1/2 -translate-y-1/2"
 							style={{ color: "var(--text-light)" }}
 						>
-							<svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-								<title>E-mail</title>
-								<rect
-									x="1"
-									y="3"
-									width="14"
-									height="10"
-									rx="2"
-									stroke="currentColor"
-									strokeWidth="1.4"
-								/>
-								<path
-									d="M1 5.5L8 9.5L15 5.5"
-									stroke="currentColor"
-									strokeWidth="1.4"
-								/>
-							</svg>
+							<Mail size={16} strokeWidth={1.8} />
 						</div>
 						<input
 							id="email"
@@ -132,24 +149,7 @@ export function LoginForm() {
 							className="absolute left-3.5 top-1/2 -translate-y-1/2"
 							style={{ color: "var(--text-light)" }}
 						>
-							<svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-								<title>Senha</title>
-								<rect
-									x="3"
-									y="7"
-									width="10"
-									height="7"
-									rx="2"
-									stroke="currentColor"
-									strokeWidth="1.4"
-								/>
-								<path
-									d="M5 7V5a3 3 0 0 1 6 0v2"
-									stroke="currentColor"
-									strokeWidth="1.4"
-									strokeLinecap="round"
-								/>
-							</svg>
+							<Lock size={16} strokeWidth={1.8} />
 						</div>
 						<input
 							id="password"
@@ -173,43 +173,9 @@ export function LoginForm() {
 							style={{ color: "var(--text-light)" }}
 						>
 							{showPass ? (
-								<svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-									<title>Ocultar senha</title>
-									<path
-										d="M1 8s2.5-5 7-5 7 5 7 5-2.5 5-7 5-7-5-7-5z"
-										stroke="currentColor"
-										strokeWidth="1.4"
-									/>
-									<circle
-										cx="8"
-										cy="8"
-										r="2"
-										stroke="currentColor"
-										strokeWidth="1.4"
-									/>
-									<path
-										d="M2 2L14 14"
-										stroke="currentColor"
-										strokeWidth="1.4"
-										strokeLinecap="round"
-									/>
-								</svg>
+								<EyeOff size={16} strokeWidth={1.8} />
 							) : (
-								<svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-									<title>Mostrar senha</title>
-									<path
-										d="M1 8s2.5-5 7-5 7 5 7 5-2.5 5-7 5-7-5-7-5z"
-										stroke="currentColor"
-										strokeWidth="1.4"
-									/>
-									<circle
-										cx="8"
-										cy="8"
-										r="2"
-										stroke="currentColor"
-										strokeWidth="1.4"
-									/>
-								</svg>
+								<Eye size={16} strokeWidth={1.8} />
 							)}
 						</button>
 					</div>
@@ -231,31 +197,9 @@ export function LoginForm() {
 						background: loading ? "oklch(0.68 0.10 38)" : "var(--accent)",
 					}}
 				>
-					{loading ? (
-						<>
-							<svg
-								className="animate-spin"
-								width="16"
-								height="16"
-								viewBox="0 0 16 16"
-								fill="none"
-							>
-								<title>Carregando</title>
-								<circle
-									cx="8"
-									cy="8"
-									r="6"
-									stroke="white"
-									strokeWidth="2"
-									strokeOpacity="0.3"
-								/>
-								<path
-									d="M8 2a6 6 0 0 1 6 6"
-									stroke="white"
-									strokeWidth="2"
-									strokeLinecap="round"
-								/>
-							</svg>
+						{loading ? (
+							<>
+								<LoaderCircle className="animate-spin" size={16} strokeWidth={2} />
 							Entrando…
 						</>
 					) : (

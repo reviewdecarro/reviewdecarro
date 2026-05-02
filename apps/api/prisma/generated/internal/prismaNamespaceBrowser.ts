@@ -58,6 +58,7 @@ export const ModelName = {
   Brand: 'Brand',
   Model: 'Model',
   CarVersion: 'CarVersion',
+  CarVersionYear: 'CarVersionYear',
   Review: 'Review',
   ReviewRating: 'ReviewRating',
   Comment: 'Comment',
@@ -153,7 +154,6 @@ export type ModelScalarFieldEnum = (typeof ModelScalarFieldEnum)[keyof typeof Mo
 export const CarVersionScalarFieldEnum = {
   id: 'id',
   modelId: 'modelId',
-  year: 'year',
   versionName: 'versionName',
   engine: 'engine',
   transmission: 'transmission',
@@ -164,10 +164,20 @@ export const CarVersionScalarFieldEnum = {
 export type CarVersionScalarFieldEnum = (typeof CarVersionScalarFieldEnum)[keyof typeof CarVersionScalarFieldEnum]
 
 
+export const CarVersionYearScalarFieldEnum = {
+  id: 'id',
+  carVersionId: 'carVersionId',
+  year: 'year',
+  createdAt: 'createdAt'
+} as const
+
+export type CarVersionYearScalarFieldEnum = (typeof CarVersionYearScalarFieldEnum)[keyof typeof CarVersionYearScalarFieldEnum]
+
+
 export const ReviewScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
-  carVersionId: 'carVersionId',
+  carVersionYearId: 'carVersionYearId',
   title: 'title',
   slug: 'slug',
   content: 'content',
@@ -176,6 +186,12 @@ export const ReviewScalarFieldEnum = {
   ownershipTimeMonths: 'ownershipTimeMonths',
   kmDriven: 'kmDriven',
   score: 'score',
+  averageRating: 'averageRating',
+  ratingsCount: 'ratingsCount',
+  votesCount: 'votesCount',
+  commentsCount: 'commentsCount',
+  status: 'status',
+  publishedAt: 'publishedAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
