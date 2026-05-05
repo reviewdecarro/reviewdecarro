@@ -103,7 +103,7 @@ export class PrismaReviewsRepository implements ReviewsRepositoryProps {
 
 	async findAll(filters?: {
 		carVersionYearId?: string;
-		userId?: string;
+		username?: string;
 		query?: string;
 	}): Promise<ReviewEntity[]> {
 		const where: Record<string, unknown> = {};
@@ -112,8 +112,8 @@ export class PrismaReviewsRepository implements ReviewsRepositoryProps {
 			where.carVersionYearId = filters.carVersionYearId;
 		}
 
-		if (filters?.userId) {
-			where.userId = filters.userId;
+		if (filters?.username) {
+			where.user = { username: filters.username };
 		}
 
 		if (filters?.query) {

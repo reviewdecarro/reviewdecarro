@@ -74,13 +74,13 @@ export class ReviewsController {
 	@ApiOkResponse({ description: "Lista de reviews" })
 	async list(
 		@Query("carVersionYearId") carVersionYearId: string,
-		@Query("username") userId: string,
+		@Query("username") username: string,
 		@Query("q") query: string,
 		@Res() res: Response,
 	) {
 		const reviews = await this.listReviewsService.execute({
 			carVersionYearId,
-			userId,
+			username,
 			query,
 		});
 
