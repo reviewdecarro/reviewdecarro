@@ -60,17 +60,19 @@ export class InMemoryReviewsRepository extends ReviewsRepositoryProps {
 
 	async findAll(filters?: {
 		carVersionYearId?: string;
-		userId?: string;
+		username?: string;
 		query?: string;
 	}): Promise<ReviewEntity[]> {
 		let result = [...this.items];
 
 		if (filters?.carVersionYearId) {
-			result = result.filter((r) => r.carVersionYearId === filters.carVersionYearId);
+			result = result.filter(
+				(r) => r.carVersionYearId === filters.carVersionYearId,
+			);
 		}
 
-		if (filters?.userId) {
-			result = result.filter((r) => r.userId === filters.userId);
+		if (filters?.username) {
+			result = result.filter((r) => r.user?.username === filters.username);
 		}
 
 		if (filters?.query) {

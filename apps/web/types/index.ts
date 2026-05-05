@@ -64,6 +64,7 @@ export type Thread = {
   comments: number;
   views: string;
   category: string;
+  body?: string;
 };
 
 export type ForumComment = {

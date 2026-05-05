@@ -56,8 +56,10 @@ describe("JwtStrategy", () => {
 				sessionId: "session-id",
 			});
 
-			expect(result).toEqual({
-				userId: "user-id",
+			expect(result).toMatchObject({
+				id: "user-id",
+				email: "john@email.com",
+				username: "johndoe",
 				sessionId: "session-id",
 				roles: [],
 			});

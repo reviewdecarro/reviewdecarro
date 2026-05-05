@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import type { CreateVersionDto } from "../../../../application/cars/dtos/create-version.dto";
-import { CarVersionYearEntity } from "../../../../application/cars/entities/car-version-year.entity";
 import { CarVersionEntity } from "../../../../application/cars/entities/car-version.entity";
+import { CarVersionYearEntity } from "../../../../application/cars/entities/car-version-year.entity";
 import type { VersionsRepositoryProps } from "../../../../application/cars/repositories/versions.repository";
 import { PrismaService } from "../prisma.service";
 

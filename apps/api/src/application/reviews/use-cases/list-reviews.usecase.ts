@@ -9,7 +9,7 @@ export class ListReviewsUseCase {
 
 	async execute(filters?: {
 		carVersionYearId?: string;
-		userId?: string;
+		username?: string;
 		query?: string;
 	}) {
 		const reviews = await this.reviewsRepository.findAll(filters);

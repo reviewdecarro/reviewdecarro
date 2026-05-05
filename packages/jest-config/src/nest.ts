@@ -1,17 +1,17 @@
-import type { Config } from 'jest';
-import { config as baseConfig } from './base';
+import type { Config } from "jest";
+import { config as baseConfig } from "./base";
 
 export const nestConfig = {
   ...baseConfig,
-  rootDir: 'src',
-  testRegex: '.*\\.spec\\.ts$',
+  rootDir: "src",
+  testRegex: ".*\\.spec\\.ts$",
   transform: {
-    '^.+\\.(t|j)s$': 'ts-jest',
+    "^.+\\.(t|j)s$": "ts-jest",
   },
   moduleNameMapper: {
-    '^src/(.*)$': '<rootDir>/$1',
+    "^src/(.*)$": "<rootDir>/$1",
   },
-  collectCoverageFrom: ['**/*.(t|j)s'],
-  coverageDirectory: '../coverage',
-  testEnvironment: 'node',
+  collectCoverageFrom: ["**/*.(t|j)s"],
+  coverageDirectory: "../coverage",
+  testEnvironment: "node",
 } as const satisfies Config;

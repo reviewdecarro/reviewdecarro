@@ -11,7 +11,7 @@ export abstract class ReviewsRepositoryProps {
 	abstract findBySlug(slug: string): Promise<ReviewEntity | null>;
 	abstract findAll(filters?: {
 		carVersionYearId?: string;
-		userId?: string;
+		username?: string;
 		query?: string;
 	}): Promise<ReviewEntity[]>;
 	abstract update(id: string, data: UpdateReviewDto): Promise<ReviewEntity>;

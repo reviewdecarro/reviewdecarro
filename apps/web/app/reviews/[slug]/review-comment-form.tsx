@@ -3,12 +3,15 @@
 import { LoaderCircle, MessageSquarePlus } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { type FormEvent, useState } from "react";
+import { MarkdownEditor } from "@/components/MarkdownEditor";
 import { useAuthSession } from "@/hooks/use-auth-session";
 import { API_BASE_URL } from "@/lib/api";
 
 type ReviewCommentFormProps = {
 	reviewId: string;
 };
+
+const MAX_MARKDOWN_LENGTH = 20_000;
 
 export function ReviewCommentForm({ reviewId }: ReviewCommentFormProps) {
 	const router = useRouter();
@@ -44,7 +47,9 @@ export function ReviewCommentForm({ reviewId }: ReviewCommentFormProps) {
 			const data = (await response.json()) as { message?: string };
 
 			if (!response.ok) {
-				throw new Error(data.message ?? "Não foi possível publicar o comentário.");
+				throw new Error(
+					data.message ?? "Não foi possível publicar o comentário.",
+				);
 			}
 
 			setContent("");
@@ -110,8 +115,15 @@ export function ReviewCommentForm({ reviewId }: ReviewCommentFormProps) {
 			}}
 		>
 			<div className="flex items-center gap-2 mb-4">
-				<MessageSquarePlus size={18} strokeWidth={2} style={{ color: "var(--accent)" }} />
-				<h3 className="font-display font-bold text-lg" style={{ color: "var(--text)" }}>
+				<MessageSquarePlus
+					size={18}
+					strokeWidth={2}
+					style={{ color: "var(--accent)" }}
+				/>
+				<h3
+					className="font-display font-bold text-lg"
+					style={{ color: "var(--text)" }}
+				>
 					Deixe seu comentário
 				</h3>
 			</div>
@@ -132,34 +144,36 @@ export function ReviewCommentForm({ reviewId }: ReviewCommentFormProps) {
 			<label
 				className="block text-[13px] font-medium mb-2"
 				style={{ color: "var(--text-muted)" }}
-				htmlFor="review-comment"
+				htmlFor="content"
 			>
 				Seu comentário
 			</label>
-			<textarea
-				id="review-comment"
+			<MarkdownEditor
 				value={content}
-				onChange={(event) => setContent(event.target.value)}
-				rows={5}
-				placeholder="Conte sua experiência com esse carro..."
-				className="w-full rounded-xl px-4 py-3 text-[14px] border outline-none transition-colors duration-150 resize-y"
-				style={{
-					background: "var(--bg)",
-					borderColor: "var(--border)",
-					color: "var(--text)",
-				}}
+				onChange={(value) => setContent(value.slice(0, MAX_MARKDOWN_LENGTH))}
+				placeholder="Escreva seu comentário"
+				maxLength={MAX_MARKDOWN_LENGTH}
 			/>
+			<p className="mt-2 text-[12px]" style={{ color: "var(--text-light)" }}>
+				{content.length}/{MAX_MARKDOWN_LENGTH} caracteres
+			</p>
 
 			<div className="mt-4 flex justify-end">
 				<button
 					type="submit"
 					disabled={submitting}
 					className="inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2 text-[14px] font-semibold text-white"
-					style={{ background: submitting ? "oklch(0.68 0.10 38)" : "var(--accent)" }}
+					style={{
+						background: submitting ? "oklch(0.68 0.10 38)" : "var(--accent)",
+					}}
 				>
 					{submitting ? (
 						<>
-							<LoaderCircle className="animate-spin" size={16} strokeWidth={2} />
+							<LoaderCircle
+								className="animate-spin"
+								size={16}
+								strokeWidth={2}
+							/>
 							Publicando...
 						</>
 					) : (

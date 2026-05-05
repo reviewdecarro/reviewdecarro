@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it } from "@jest/globals";
 import { BadRequestError } from "../../../shared/errors/types/bad-request-error";
 import { CarVersionEntity } from "../../cars/entities/car-version.entity";
+import { CarVersionYearEntity } from "../../cars/entities/car-version-year.entity";
 import { InMemoryVersionsRepository } from "../../cars/repositories/in-memory-versions.repository";
 import { InMemoryReviewsRepository } from "../repositories/in-memory-reviews.repository";
 import { CreateReviewUseCase } from "./create-review.usecase";
@@ -17,15 +18,22 @@ describe("CreateReviewUseCase", () => {
 	});
 
 	function seedVersion() {
+		const year = new CarVersionYearEntity({
+			id: "version-year-1",
+			carVersionId: "version-1",
+			year: 2024,
+			createdAt: new Date(),
+		});
+
 		const version = new CarVersionEntity({
 			id: "version-1",
 			modelId: "model-1",
-			year: 2024,
 			versionName: "Track",
 			engine: null,
 			transmission: null,
 			slug: "track-2024",
 			createdAt: new Date(),
+			years: [year],
 		});
 		versionsRepository.items.push(version);
 		return version;

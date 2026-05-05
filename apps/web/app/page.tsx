@@ -1,22 +1,21 @@
-import { Footer } from "@/components/Footer";
 import { FeaturedReviewCard } from "@/components/FeaturedReviewCard";
+import { Footer } from "@/components/Footer";
 import { ForumThreadRow } from "@/components/ForumThreadRow";
 import { Nav } from "@/components/Nav";
 import { ReviewCard } from "@/components/ReviewCard";
 import { SectionHeader } from "@/components/SectionHeader";
-import { fetchPublicReviews } from "@/lib/reviews";
 import { threads } from "@/lib/data";
+import { fetchPublicReviews } from "@/lib/reviews";
 
 export default async function HomePage() {
 	const reviews = await fetchPublicReviews();
-	const featuredReview =
-		[...reviews].sort((a, b) => {
-			if (b.score !== a.score) {
-				return b.score - a.score;
-			}
+	const featuredReview = [...reviews].sort((a, b) => {
+		if (b.score !== a.score) {
+			return b.score - a.score;
+		}
 
-			return (b.commentsCount ?? 0) - (a.commentsCount ?? 0);
-		})[0];
+		return (b.commentsCount ?? 0) - (a.commentsCount ?? 0);
+	})[0];
 	const latestReviews = reviews
 		.filter((review) => review.id !== featuredReview?.id)
 		.slice(0, 4);
@@ -75,7 +74,10 @@ export default async function HomePage() {
 					</section>
 
 					<section>
-						<SectionHeader title="Destaques do fórum" action="Ir para o fórum" />
+						<SectionHeader
+							title="Destaques do fórum"
+							action="Ir para o fórum"
+						/>
 						<div className="flex flex-col">
 							{threads.map((thread) => (
 								<ForumThreadRow key={thread.id} thread={thread} />

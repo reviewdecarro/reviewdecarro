@@ -63,25 +63,25 @@ The `JwtStrategy.validate()` currently returns a `UserEntity` without roles. For
 
 ### Existing Components to Leverage
 
-| Component | Location | How to Use |
-|-----------|----------|------------|
-| UserEntity pattern | `application/users/entities/user.entity.ts` | Same `Partial<T>` + `Object.assign` + class-transformer pattern |
-| UsersRepositoryProps pattern | `application/users/repositories/users.repository.ts` | Same abstract class pattern for 3 new repos |
-| PrismaUsersRepository pattern | `infra/database/prisma/repositories/prisma-users.repository.ts` | Same Prisma implementation pattern |
-| toUserResponseDto pattern | `application/users/mappers/user.mapper.ts` | Same `plainToInstance` mapper pattern |
-| CreateUserDto pattern | `application/users/dtos/create-user.dto.ts` | Same class-validator DTO pattern |
-| UsersController pattern | `infra/http/controllers/users/users.controller.ts` | Same controller + Swagger + @IsPublic pattern |
-| @IsPublic decorator | `shared/decorators/is-public.decorator.ts` | Reuse as-is for GET endpoints |
-| JwtAuthGuard | `infra/auth/guards/jwt-auth.guard.ts` | Reference pattern for RolesGuard |
-| BadRequestError | `shared/errors/types/bad-request-error.ts` | Reuse for business rule violations |
-| DatabaseModule | `infra/database/database.module.ts` | Add 3 new repo bindings |
-| HttpModule | `infra/http/http.module.ts` | Add 3 new controllers + use-case providers |
+| Component                     | Location                                                        | How to Use                                                      |
+| ----------------------------- | --------------------------------------------------------------- | --------------------------------------------------------------- |
+| UserEntity pattern            | `application/users/entities/user.entity.ts`                     | Same `Partial<T>` + `Object.assign` + class-transformer pattern |
+| UsersRepositoryProps pattern  | `application/users/repositories/users.repository.ts`            | Same abstract class pattern for 3 new repos                     |
+| PrismaUsersRepository pattern | `infra/database/prisma/repositories/prisma-users.repository.ts` | Same Prisma implementation pattern                              |
+| toUserResponseDto pattern     | `application/users/mappers/user.mapper.ts`                      | Same `plainToInstance` mapper pattern                           |
+| CreateUserDto pattern         | `application/users/dtos/create-user.dto.ts`                     | Same class-validator DTO pattern                                |
+| UsersController pattern       | `infra/http/controllers/users/users.controller.ts`              | Same controller + Swagger + @IsPublic pattern                   |
+| @IsPublic decorator           | `shared/decorators/is-public.decorator.ts`                      | Reuse as-is for GET endpoints                                   |
+| JwtAuthGuard                  | `infra/auth/guards/jwt-auth.guard.ts`                           | Reference pattern for RolesGuard                                |
+| BadRequestError               | `shared/errors/types/bad-request-error.ts`                      | Reuse for business rule violations                              |
+| DatabaseModule                | `infra/database/database.module.ts`                             | Add 3 new repo bindings                                         |
+| HttpModule                    | `infra/http/http.module.ts`                                     | Add 3 new controllers + use-case providers                      |
 
 ### New Error Type Needed
 
-| Error | HTTP Status | Use |
-|-------|-------------|-----|
-| NotFoundError | 404 | Entity not found by slug/id |
+| Error         | HTTP Status | Use                         |
+| ------------- | ----------- | --------------------------- |
+| NotFoundError | 404         | Entity not found by slug/id |
 
 `BadRequestError` (400) is wrong for "not found" — we need a `NotFoundError` with a corresponding `NotFoundInterceptor`, following the same pattern as `BadRequestError` + `BadRequestInterceptor`.
 
@@ -207,16 +207,19 @@ The `JwtStrategy.validate()` currently returns a `UserEntity` without roles. For
 ### DTOs
 
 **Brand:**
+
 - `CreateBrandDto` — `name: string` (@IsString, @IsNotEmpty)
 - `UpdateBrandDto` — `name?: string` (@IsString, @IsOptional)
 - `BrandResponseDto` — id, name, slug, createdAt (@Expose)
 
 **Model:**
+
 - `CreateModelDto` — `name: string`, `brandId: string` (@IsString, @IsNotEmpty, @IsUUID)
 - `UpdateModelDto` — `name?: string` (@IsString, @IsOptional)
 - `ModelResponseDto` — id, name, slug, brandId, createdAt (@Expose)
 
 **CarVersion:**
+
 - `CreateCarVersionDto` — `modelId: string`, `year: number`, `versionName: string`, `engine?: string`, `transmission?: string`
 - `UpdateCarVersionDto` — `year?: number`, `versionName?: string`, `engine?: string`, `transmission?: string` (all @IsOptional)
 - `CarVersionResponseDto` — all fields (@Expose)
@@ -228,6 +231,7 @@ The `JwtStrategy.validate()` currently returns a `UserEntity` without roles. For
 Each follows the `CreateUserUseCase` pattern: `@Injectable()`, single `execute()` method, throws application errors.
 
 **Brands (5):**
+
 - `CreateBrandUseCase` — validates no duplicate slug, calls `Slug.create()`, creates brand
 - `ListBrandsUseCase` — returns all brands
 - `FindBrandBySlugUseCase` — finds by slug with models, throws NotFoundError
@@ -235,6 +239,7 @@ Each follows the `CreateUserUseCase` pattern: `@Injectable()`, single `execute()
 - `DeleteBrandUseCase` — checks hasModels, throws BadRequestError if children exist, deletes
 
 **Models (5):**
+
 - `CreateModelUseCase` — validates brand exists, validates no duplicate slug within brand, creates
 - `ListModelsByBrandUseCase` — finds brand by slug, returns its models
 - `FindModelBySlugUseCase` — finds by brandSlug + modelSlug with carVersions, throws NotFoundError
@@ -242,6 +247,7 @@ Each follows the `CreateUserUseCase` pattern: `@Injectable()`, single `execute()
 - `DeleteModelUseCase` — checks hasCarVersions, throws BadRequestError if children exist, deletes
 
 **CarVersions (5):**
+
 - `CreateCarVersionUseCase` — validates model exists, calls `Slug.createForCarVersion()`, validates uniqueness, creates
 - `ListCarVersionsByModelUseCase` — finds model, returns its carVersions
 - `FindCarVersionBySlugUseCase` — finds by slug, throws NotFoundError
@@ -296,15 +302,18 @@ All follow the `toUserResponseDto` pattern with `plainToInstance`.
 ### Module Wiring
 
 **DatabaseModule** additions:
+
 - `{ provide: BrandsRepositoryProps, useClass: PrismaBrandsRepository }`
 - `{ provide: ModelsRepositoryProps, useClass: PrismaModelsRepository }`
 - `{ provide: CarVersionsRepositoryProps, useClass: PrismaCarVersionsRepository }`
 
 **HttpModule** additions:
+
 - Controllers: `BrandsController`, `ModelsController`, `CarVersionsController`
 - Providers: all 15 use cases
 
 **main.ts** addition:
+
 - Register `NotFoundInterceptor` globally (alongside `BadRequestInterceptor`)
 - Register `RolesGuard` globally (via `APP_GUARD` token in AuthModule, same as JwtAuthGuard)
 
@@ -312,24 +321,24 @@ All follow the `toUserResponseDto` pattern with `plainToInstance`.
 
 ## Error Handling Strategy
 
-| Error Scenario | Error Type | HTTP Status | Message |
-|----------------|-----------|-------------|---------|
-| Brand/Model/Version not found | NotFoundError | 404 | "Marca não encontrada" / "Modelo não encontrado" / "Versão não encontrada" |
-| Duplicate slug | BadRequestError | 400 | "Já existe uma marca com este nome" etc. |
-| Delete with children | BadRequestError | 400 | "Não é possível excluir: existem modelos vinculados" etc. |
-| Non-admin mutation | Forbidden (NestJS) | 403 | "Acesso restrito a administradores" |
-| Invalid input | ValidationPipe | 400 | Auto-generated from class-validator |
+| Error Scenario                | Error Type         | HTTP Status | Message                                                                    |
+| ----------------------------- | ------------------ | ----------- | -------------------------------------------------------------------------- |
+| Brand/Model/Version not found | NotFoundError      | 404         | "Marca não encontrada" / "Modelo não encontrado" / "Versão não encontrada" |
+| Duplicate slug                | BadRequestError    | 400         | "Já existe uma marca com este nome" etc.                                   |
+| Delete with children          | BadRequestError    | 400         | "Não é possível excluir: existem modelos vinculados" etc.                  |
+| Non-admin mutation            | Forbidden (NestJS) | 403         | "Acesso restrito a administradores"                                        |
+| Invalid input                 | ValidationPipe     | 400         | Auto-generated from class-validator                                        |
 
 ---
 
 ## Tech Decisions
 
-| Decision | Choice | Rationale |
-|----------|--------|-----------|
-| Slug generation | Native `normalize('NFD')` + regex | No extra dependency needed for accent handling |
-| Slug as value object class | Static methods on `Slug` class | Consistent with spec requirement, reusable, testable |
-| Admin guard as global + decorator | `RolesGuard` as global guard with `@AdminOnly()` metadata | Mirrors `JwtAuthGuard` + `@IsPublic()` pattern — consistent |
-| Read routes nested, write routes flat | `/brands/:slug/models` vs `POST /models` | SEO-friendly reads, simple writes |
-| Always include roles in findById | Modify existing query | Roles are tiny (1-2 records), needed for every authenticated request |
-| One controller per entity | 3 controllers | Clear separation, each stays small |
-| NotFoundError as new error type | New class + interceptor | `BadRequestError` is semantically wrong for 404 |
+| Decision                              | Choice                                                    | Rationale                                                            |
+| ------------------------------------- | --------------------------------------------------------- | -------------------------------------------------------------------- |
+| Slug generation                       | Native `normalize('NFD')` + regex                         | No extra dependency needed for accent handling                       |
+| Slug as value object class            | Static methods on `Slug` class                            | Consistent with spec requirement, reusable, testable                 |
+| Admin guard as global + decorator     | `RolesGuard` as global guard with `@AdminOnly()` metadata | Mirrors `JwtAuthGuard` + `@IsPublic()` pattern — consistent          |
+| Read routes nested, write routes flat | `/brands/:slug/models` vs `POST /models`                  | SEO-friendly reads, simple writes                                    |
+| Always include roles in findById      | Modify existing query                                     | Roles are tiny (1-2 records), needed for every authenticated request |
+| One controller per entity             | 3 controllers                                             | Clear separation, each stays small                                   |
+| NotFoundError as new error type       | New class + interceptor                                   | `BadRequestError` is semantically wrong for 404                      |
