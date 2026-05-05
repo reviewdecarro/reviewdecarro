@@ -1,8 +1,8 @@
 import { beforeEach, describe, expect, it } from "@jest/globals";
 import { BadRequestError } from "../../../shared/errors/types/bad-request-error";
-import { RoleEntity } from "../../roles/entities/role.entity";
 import { ReviewEntity } from "../../reviews/entities/review.entity";
 import { InMemoryReviewsRepository } from "../../reviews/repositories/in-memory-reviews.repository";
+import { RoleEntity } from "../../roles/entities/role.entity";
 import { UserEntity } from "../../users/entities/user.entity";
 import { CommentEntity } from "../entities/comment.entity";
 import { InMemoryCommentsRepository } from "../repositories/in-memory-comments.repository";

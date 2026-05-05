@@ -55,8 +55,16 @@ describe("ListReviewsUseCase", () => {
 
 	it("should filter by username", async () => {
 		reviewsRepository.items.push(
-			makeReview({ id: "a", userId: "u1", user: { id: "u1", username: "alice" } }),
-			makeReview({ id: "b", userId: "u2", user: { id: "u2", username: "bob" } }),
+			makeReview({
+				id: "a",
+				userId: "u1",
+				user: { id: "u1", username: "alice" },
+			}),
+			makeReview({
+				id: "b",
+				userId: "u2",
+				user: { id: "u2", username: "bob" },
+			}),
 		);
 
 		const result = await sut.execute({ username: "alice" });

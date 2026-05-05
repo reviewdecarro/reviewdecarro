@@ -1,7 +1,7 @@
 import { randomUUID } from "node:crypto";
 import type { CreateVersionDto } from "../dtos/create-version.dto";
-import { CarVersionYearEntity } from "../entities/car-version-year.entity";
 import { CarVersionEntity } from "../entities/car-version.entity";
+import { CarVersionYearEntity } from "../entities/car-version-year.entity";
 import { VersionsRepositoryProps } from "./versions.repository";
 
 export class InMemoryVersionsRepository extends VersionsRepositoryProps {

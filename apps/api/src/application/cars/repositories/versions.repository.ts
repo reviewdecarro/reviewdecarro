@@ -1,6 +1,6 @@
 import type { CreateVersionDto } from "../dtos/create-version.dto";
-import type { CarVersionYearEntity } from "../entities/car-version-year.entity";
 import type { CarVersionEntity } from "../entities/car-version.entity";
+import type { CarVersionYearEntity } from "../entities/car-version-year.entity";
 
 export abstract class VersionsRepositoryProps {
 	abstract create(
