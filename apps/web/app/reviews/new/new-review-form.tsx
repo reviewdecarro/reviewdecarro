@@ -11,6 +11,7 @@ import {
 import Link from "next/link";
 import { type FormEvent, useEffect, useMemo, useState } from "react";
 import Select, { type SingleValue, type StylesConfig } from "react-select";
+import { MarkdownEditor } from "@/components/MarkdownEditor";
 import { useAuthSession } from "@/hooks/use-auth-session";
 import { API_BASE_URL } from "@/lib/api";
 
@@ -88,7 +89,7 @@ type CreateReviewPayload = {
 	pros?: string;
 	cons?: string;
 	ownershipTimeMonths?: number;
-	kmDriven?: number;
+	kmDriven?: string;
 	ratings: { category: RatingCategory; value: number }[];
 };
 
@@ -100,6 +101,24 @@ type SubmitState = {
 type ApiResponse<T> = {
 	[key: string]: T;
 };
+
+const MAX_MARKDOWN_LENGTH = 20_000;
+
+function parseMileage(value: string): number | undefined {
+	const normalized = value
+		.trim()
+		.toLowerCase()
+		.replace(/km$/, "")
+		.replace(/[^\d]/g, "");
+
+	if (!normalized) {
+		return undefined;
+	}
+
+	const parsed = Number(normalized);
+
+	return Number.isFinite(parsed) ? parsed : undefined;
+}
 
 const selectStyles: StylesConfig<SelectOption, false> = {
 	control: (base, state) => ({
@@ -209,7 +228,7 @@ export function NewReviewForm() {
 		pros: "",
 		cons: "",
 		ownershipTimeMonths: undefined,
-		kmDriven: undefined,
+		kmDriven: "",
 		ratings: ratingOptions.map(({ category }) => ({ category, value: 0 })),
 	});
 	const brandOptions = useMemo(
@@ -409,11 +428,7 @@ export function NewReviewForm() {
 			payload.carVersionYearId.length > 0 &&
 			payload.title.trim().length >= 3 &&
 			payload.content.trim().length >= 10,
-		[
-			payload.carVersionYearId,
-			payload.title,
-			payload.content,
-		],
+		[payload.carVersionYearId, payload.title, payload.content],
 	);
 
 	const overallScore = useMemo(() => {
@@ -482,6 +497,7 @@ export function NewReviewForm() {
 					ratings: payload.ratings,
 					pros: payload.pros?.trim() || undefined,
 					cons: payload.cons?.trim() || undefined,
+					kmDriven: parseMileage(payload.kmDriven ?? ""),
 				}),
 			});
 
@@ -523,7 +539,7 @@ export function NewReviewForm() {
 			pros: "",
 			cons: "",
 			ownershipTimeMonths: undefined,
-			kmDriven: undefined,
+			kmDriven: "",
 			ratings: ratingOptions.map(({ category }) => ({ category, value: 0 })),
 		});
 		setState({ status: "idle", message: "" });
@@ -711,18 +727,6 @@ export function NewReviewForm() {
 						}}
 						styles={selectStyles}
 					/>
-					{/* {selectedBrand && (
-						<div
-							className="rounded-lg border px-3 py-2 text-[13px]"
-							style={{
-								background: "var(--surface-2)",
-								borderColor: "var(--border)",
-								color: "var(--text)",
-							}}
-						>
-							Marca selecionada: {selectedBrand.name}
-						</div>
-					)} */}
 				</div>
 
 				<div className="grid gap-2">
@@ -892,25 +896,23 @@ export function NewReviewForm() {
 
 				<div className="grid gap-2">
 					<label
-						htmlFor="content"
 						className="text-[13px] font-medium"
 						style={{ color: "var(--text-muted)" }}
+						htmlFor="content"
 					>
 						Conteúdo
 					</label>
-					<textarea
-						id="content"
+					<MarkdownEditor
 						value={payload.content}
-						onChange={(event) => updateField("content", event.target.value)}
-						className="min-h-36 rounded-lg border px-3 py-2 text-[14px] outline-none"
-						style={{
-							background: "var(--bg)",
-							borderColor: "var(--border)",
-							color: "var(--text)",
-						}}
-						required
-						minLength={10}
+						onChange={(value) =>
+							updateField("content", value.slice(0, MAX_MARKDOWN_LENGTH))
+						}
+						placeholder="Descreva sua experiência com o carro em markdown..."
+						maxLength={MAX_MARKDOWN_LENGTH}
 					/>
+					<p className="text-[12px]" style={{ color: "var(--text-light)" }}>
+						{payload.content.length}/{MAX_MARKDOWN_LENGTH} caracteres
+					</p>
 				</div>
 
 				<div
@@ -1099,15 +1101,11 @@ export function NewReviewForm() {
 						</label>
 						<input
 							id="kmDriven"
-							type="number"
-							min="0"
+							type="text"
+							inputMode="numeric"
+							placeholder="Ex.: 74.490km"
 							value={payload.kmDriven ?? ""}
-							onChange={(event) =>
-								updateField(
-									"kmDriven",
-									event.target.value ? Number(event.target.value) : undefined,
-								)
-							}
+							onChange={(event) => updateField("kmDriven", event.target.value)}
 							className="rounded-lg border px-3 py-2 text-[14px] outline-none"
 							style={{
 								background: "var(--bg)",
