@@ -26,6 +26,8 @@ export class CreateCommentUseCase {
 			data,
 		);
 
+		await this.reviewsRepository.incrementCommentsCount(reviewId);
+
 		return CommentsMapper.toCommentResponseDto(new CommentEntity(comment));
 	}
 }

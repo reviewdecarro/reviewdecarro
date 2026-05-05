@@ -1,9 +1,12 @@
 import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { PassportStrategy } from "@nestjs/passport";
+import type { Request } from "express";
 import { ExtractJwt, Strategy } from "passport-jwt";
 import { SessionsRepositoryProps } from "src/application/sessions/repositories/sessions.repository";
+import { UserEntity } from "src/application/users/entities/user.entity";
 import { UsersRepositoryProps } from "src/application/users/repositories/users.repository";
 import { jwtConstants } from "../constants/jwt.constants";
+import { authCookieNames, parseCookieHeader } from "../cookies";
 import { JwtPayload } from "../types/jwt-payload";
 
 @Injectable()
@@ -13,7 +16,13 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 		private usersRepository: UsersRepositoryProps,
 	) {
 		super({
-			jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+			jwtFromRequest: ExtractJwt.fromExtractors([
+				ExtractJwt.fromAuthHeaderAsBearerToken(),
+				(request: Request | null) => {
+					const cookies = parseCookieHeader(request?.headers.cookie);
+					return cookies[authCookieNames.accessToken] ?? null;
+				},
+			]),
 			ignoreExpiration: false,
 			secretOrKey: jwtConstants.secret,
 		});
@@ -32,10 +41,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 			throw new UnauthorizedException();
 		}
 
-		return {
-			userId: payload.sub,
+		return Object.assign(new UserEntity(user), {
 			sessionId: payload.sessionId,
-			roles: user.roles,
-		};
+		});
 	}
 }

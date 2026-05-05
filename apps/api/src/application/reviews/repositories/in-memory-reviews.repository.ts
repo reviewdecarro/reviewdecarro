@@ -15,13 +15,15 @@ export class InMemoryReviewsRepository extends ReviewsRepositoryProps {
 		slug: string,
 		data: CreateReviewDto,
 	): Promise<ReviewEntity> {
+		const carVersionYearId = data.carVersionYearId ?? "";
 		const now = new Date();
 		const reviewId = randomUUID();
 
 		const review = new ReviewEntity({
 			id: reviewId,
 			userId,
-			carVersionId: data.carVersionId,
+			carVersionYearId,
+			commentsCount: 0,
 			title: data.title,
 			slug,
 			content: data.content,
@@ -57,18 +59,20 @@ export class InMemoryReviewsRepository extends ReviewsRepositoryProps {
 	}
 
 	async findAll(filters?: {
-		carVersionId?: string;
-		userId?: string;
+		carVersionYearId?: string;
+		username?: string;
 		query?: string;
 	}): Promise<ReviewEntity[]> {
 		let result = [...this.items];
 
-		if (filters?.carVersionId) {
-			result = result.filter((r) => r.carVersionId === filters.carVersionId);
+		if (filters?.carVersionYearId) {
+			result = result.filter(
+				(r) => r.carVersionYearId === filters.carVersionYearId,
+			);
 		}
 
-		if (filters?.userId) {
-			result = result.filter((r) => r.userId === filters.userId);
+		if (filters?.username) {
+			result = result.filter((r) => r.user?.username === filters.username);
 		}
 
 		if (filters?.query) {
@@ -100,6 +104,7 @@ export class InMemoryReviewsRepository extends ReviewsRepositoryProps {
 				data.ownershipTimeMonths ?? current.ownershipTimeMonths,
 			kmDriven: data.kmDriven ?? current.kmDriven,
 			score: data.score ?? current.score,
+			commentsCount: current.commentsCount ?? 0,
 			updatedAt: new Date(),
 			ratings: data.ratings
 				? data.ratings.map(
@@ -117,6 +122,22 @@ export class InMemoryReviewsRepository extends ReviewsRepositoryProps {
 		this.items = this.items.map((r) => (r.id === id ? updated : r));
 
 		return updated;
+	}
+
+	async incrementCommentsCount(reviewId: string): Promise<void> {
+		const review = this.items.find((item) => item.id === reviewId);
+
+		if (review) {
+			review.commentsCount = (review.commentsCount ?? 0) + 1;
+		}
+	}
+
+	async decrementCommentsCount(reviewId: string): Promise<void> {
+		const review = this.items.find((item) => item.id === reviewId);
+
+		if (review) {
+			review.commentsCount = Math.max((review.commentsCount ?? 0) - 1, 0);
+		}
 	}
 
 	async delete(id: string): Promise<void> {

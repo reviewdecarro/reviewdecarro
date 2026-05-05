@@ -23,16 +23,17 @@ pnpm test:e2e                                # E2E tests
 
 ## Current Coverage
 
-| File | Has Tests |
-|------|-----------|
-| application/users/use-cases/create-user.usecase.ts | ✅ |
-| application/users/use-cases/authenticate-user.usecase.ts | ✅ |
-| application/users/use-cases/find-user-by-username.usecase.ts | ✅ |
-| application/users/mappers/user.mapper.ts | ✅ |
-| infra/auth/auth.service.ts | ✅ |
-| infra/auth/strategies/jwt.strategy.ts | ✅ |
+| File                                                         | Has Tests |
+| ------------------------------------------------------------ | --------- |
+| application/users/use-cases/create-user.usecase.ts           | ✅        |
+| application/users/use-cases/authenticate-user.usecase.ts     | ✅        |
+| application/users/use-cases/find-user-by-username.usecase.ts | ✅        |
+| application/users/mappers/user.mapper.ts                     | ✅        |
+| infra/auth/auth.service.ts                                   | ✅        |
+| infra/auth/strategies/jwt.strategy.ts                        | ✅        |
 
 ### Not Tested
+
 - Controllers (no unit tests)
 - Guards, interceptors, decorators
 - Prisma repository implementations

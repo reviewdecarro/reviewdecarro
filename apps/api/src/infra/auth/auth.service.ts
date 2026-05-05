@@ -11,4 +11,12 @@ export class AuthService {
 			accessToken: await this.jwtService.signAsync(payload),
 		};
 	}
+
+	async verifyToken(token: string): Promise<JwtPayload | null> {
+		try {
+			return await this.jwtService.verifyAsync<JwtPayload>(token);
+		} catch {
+			return null;
+		}
+	}
 }

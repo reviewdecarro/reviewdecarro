@@ -1,27 +1,24 @@
-import type { Metadata } from 'next';
-import { DM_Sans, Syne } from 'next/font/google';
-import './globals.css';
-
-const dmSans = DM_Sans({
-  subsets: ['latin'],
-  variable: '--font-dm-sans',
-});
-
-const syne = Syne({
-  subsets: ['latin'],
-  variable: '--font-syne',
-  weight: ['400', '600', '700', '800'],
-});
+import type { Metadata } from "next";
+import "./globals.css";
+import { AuthSessionProvider } from "@/hooks/use-auth-session";
+import { TopLoader } from "@/components/TopLoader";
 
 export const metadata: Metadata = {
-  title: 'PapoAuto — Car Reviews & Community',
-  description: 'Comunidade automotiva para todos.',
+  title: "PapoAuto — Avaliações de Carros e Comunidade",
+  description: "Comunidade automotiva para todos.",
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <html lang="en" className={`${dmSans.variable} ${syne.variable}`}>
-      <body className="min-h-screen flex flex-col">{children}</body>
+    <html lang="pt-BR">
+      <body className="min-h-screen flex flex-col font-sans">
+        <TopLoader />
+        <AuthSessionProvider>{children}</AuthSessionProvider>
+      </body>
     </html>
   );
 }

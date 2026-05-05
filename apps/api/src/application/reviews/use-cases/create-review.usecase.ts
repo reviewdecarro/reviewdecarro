@@ -15,9 +15,10 @@ export class CreateReviewUseCase {
 	) {}
 
 	async execute(userId: string, data: CreateReviewDto) {
-		const version = await this.versionsRepository.findById(data.carVersionId);
+		const carVersionYearId = data.carVersionYearId ?? "";
+		const year = await this.versionsRepository.findYearById(carVersionYearId);
 
-		if (!version) {
+		if (!year) {
 			throw new BadRequestError("Car version not found");
 		}
 

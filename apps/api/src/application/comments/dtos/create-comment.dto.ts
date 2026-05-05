@@ -1,4 +1,4 @@
-import { ApiProperty } from "@nestjs/swagger";
+import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 import { Expose } from "class-transformer";
 import { IsString, MinLength } from "class-validator";
 
@@ -7,6 +7,16 @@ export class CreateCommentDto {
 	@IsString()
 	@MinLength(1)
 	readonly content: string;
+}
+
+export class CommentAuthorResponseDto {
+	@ApiProperty()
+	@Expose()
+	id: string;
+
+	@ApiProperty()
+	@Expose()
+	username: string;
 }
 
 export class CommentResponseDto {
@@ -29,4 +39,8 @@ export class CommentResponseDto {
 	@ApiProperty()
 	@Expose()
 	createdAt: Date;
+
+	@ApiPropertyOptional()
+	@Expose()
+	user?: CommentAuthorResponseDto;
 }

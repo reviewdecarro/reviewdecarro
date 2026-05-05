@@ -29,11 +29,30 @@ export type Review = {
   author: string;
   date: string;
   comments: number;
+  commentsCount?: number;
   votes: number;
   excerpt: string;
   pros: string[];
   cons: string[];
   verdict: string;
+};
+
+export type ReviewVehicle = {
+  brand: string;
+  model: string;
+  year: number;
+};
+
+export type PublicReview = {
+  id: string;
+  slug?: string;
+  title: string;
+  score: number;
+  author: string;
+  date: string;
+  commentsCount: number;
+  excerpt?: string;
+  vehicle?: ReviewVehicle;
 };
 
 export type Thread = {
@@ -45,6 +64,26 @@ export type Thread = {
   comments: number;
   views: string;
   category: string;
+  body?: string;
+};
+
+export type ForumComment = {
+  id: number;
+  author: string;
+  date: string;
+  body: string;
+  contextType: "review" | "thread";
+  contextTitle: string;
+};
+
+export type ReviewComment = {
+  id: string;
+  reviewId: string;
+  userId: string;
+  content: string;
+  createdAt: string;
+  author: string;
+  date: string;
 };
 
 export type BlogPost = {

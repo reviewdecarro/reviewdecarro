@@ -1,8 +1,7 @@
 import { Expose } from "class-transformer";
-import { ReviewModel } from "../../../../prisma/generated/models/Review";
 import { ReviewRatingEntity } from "./review-rating.entity";
 
-export class ReviewEntity implements ReviewModel {
+export class ReviewEntity {
 	@Expose()
 	id: string;
 
@@ -10,7 +9,13 @@ export class ReviewEntity implements ReviewModel {
 	userId: string;
 
 	@Expose()
-	carVersionId: string;
+	carVersionYearId: string;
+
+	@Expose()
+	carVersionId?: string;
+
+	@Expose()
+	commentsCount: number;
 
 	@Expose()
 	title: string;
@@ -45,8 +50,47 @@ export class ReviewEntity implements ReviewModel {
 	@Expose()
 	ratings?: ReviewRatingEntity[];
 
+	@Expose()
+	user?: {
+		id: string;
+		username: string;
+	};
+
+	@Expose()
+	carVersionYear?: {
+		id: string;
+		year: number;
+		carVersion?: {
+			id: string;
+			versionName: string;
+			slug: string;
+			model?: {
+				id: string;
+				name: string;
+				slug: string;
+				brand?: {
+					id: string;
+					name: string;
+					slug: string;
+				};
+			};
+		};
+	};
+
 	constructor({ ratings, ...partial }: Partial<ReviewEntity>) {
 		Object.assign(this, partial);
+
+		if (!this.carVersionYearId && this.carVersionId) {
+			this.carVersionYearId = this.carVersionId;
+		}
+
+		if (!this.carVersionId) {
+			this.carVersionId = this.carVersionYearId;
+		}
+
+		if (this.commentsCount === undefined) {
+			this.commentsCount = 0;
+		}
 
 		if (ratings) {
 			this.ratings = ratings.map((r) => new ReviewRatingEntity(r));

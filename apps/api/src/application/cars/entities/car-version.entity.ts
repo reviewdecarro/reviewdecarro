@@ -1,5 +1,6 @@
 import { Expose } from "class-transformer";
 import { CarVersionModel } from "../../../../prisma/generated/models/CarVersion";
+import { CarVersionYearEntity } from "./car-version-year.entity";
 
 export class CarVersionEntity implements CarVersionModel {
 	@Expose()
@@ -7,9 +8,6 @@ export class CarVersionEntity implements CarVersionModel {
 
 	@Expose()
 	modelId: string;
-
-	@Expose()
-	year: number;
 
 	@Expose()
 	versionName: string;
@@ -26,7 +24,17 @@ export class CarVersionEntity implements CarVersionModel {
 	@Expose()
 	createdAt: Date;
 
+	@Expose()
+	years?: CarVersionYearEntity[];
+
+	@Expose()
+	year?: number;
+
 	constructor(partial: Partial<CarVersionEntity>) {
 		Object.assign(this, partial);
+
+		if (!this.year) {
+			this.year = this.years?.[0]?.year;
+		}
 	}
 }

@@ -13,13 +13,13 @@ The platform needs a structured car catalog (Brand → Model → CarVersion) so 
 
 ## Out of Scope
 
-| Feature | Reason |
-|---------|--------|
-| Image uploads for brands/models | Deferred to later milestone |
-| Search and filtering | Deferred — simple list-by-parent is enough for now |
-| Pagination | Deferred to F8 (API Hardening milestone) |
-| Car version specs/details beyond schema fields | Current schema fields are sufficient |
-| Bulk import of cars | Not needed yet |
+| Feature                                        | Reason                                             |
+| ---------------------------------------------- | -------------------------------------------------- |
+| Image uploads for brands/models                | Deferred to later milestone                        |
+| Search and filtering                           | Deferred — simple list-by-parent is enough for now |
+| Pagination                                     | Deferred to F8 (API Hardening milestone)           |
+| Car version specs/details beyond schema fields | Current schema fields are sufficient               |
+| Bulk import of cars                            | Not needed yet                                     |
 
 ---
 
@@ -153,33 +153,33 @@ The platform needs a structured car catalog (Brand → Model → CarVersion) so 
 
 ## Requirement Traceability
 
-| Requirement ID | Story | Phase | Status |
-|----------------|-------|-------|--------|
-| CAR-01 | P1: Browse — List brands | Design | Pending |
-| CAR-02 | P1: Browse — Get brand by slug with models | Design | Pending |
-| CAR-03 | P1: Browse — List models by brand | Design | Pending |
-| CAR-04 | P1: Browse — Get model by slugs with versions | Design | Pending |
-| CAR-05 | P1: Browse — List car versions by model | Design | Pending |
-| CAR-06 | P1: Browse — Get car version by slug | Design | Pending |
-| CAR-07 | P1: Browse — 404 on not found | Design | Pending |
-| CAR-08 | P1: Create — Brand with auto-slug | Design | Pending |
-| CAR-09 | P1: Create — Model with auto-slug | Design | Pending |
-| CAR-10 | P1: Create — CarVersion with auto-slug | Design | Pending |
-| CAR-11 | P1: Create — 403 for non-admin | Design | Pending |
-| CAR-12 | P1: Create — 400 on duplicate slug | Design | Pending |
-| CAR-13 | P1: Update — Brand with slug regen | Design | Pending |
-| CAR-14 | P1: Update — Model with slug regen | Design | Pending |
-| CAR-15 | P1: Update — CarVersion with conditional slug regen | Design | Pending |
-| CAR-16 | P1: Update — 400 on duplicate slug | Design | Pending |
-| CAR-17 | P1: Update — 404 on not found | Design | Pending |
-| CAR-18 | P1: Delete — Brand (no children) | Design | Pending |
-| CAR-19 | P1: Delete — Model (no children) | Design | Pending |
-| CAR-20 | P1: Delete — CarVersion (no reviews) | Design | Pending |
-| CAR-21 | P1: Delete — 400 on has children | Design | Pending |
-| CAR-22 | P1: Slug — Value object with transliteration | Design | Pending |
-| CAR-23 | P1: Slug — CarVersion composite slug | Design | Pending |
-| CAR-24 | P1: Admin guard — Role check decorator + guard | Design | Pending |
-| CAR-25 | P1: Admin guard — 403 for non-admin | Design | Pending |
+| Requirement ID | Story                                               | Phase  | Status  |
+| -------------- | --------------------------------------------------- | ------ | ------- |
+| CAR-01         | P1: Browse — List brands                            | Design | Pending |
+| CAR-02         | P1: Browse — Get brand by slug with models          | Design | Pending |
+| CAR-03         | P1: Browse — List models by brand                   | Design | Pending |
+| CAR-04         | P1: Browse — Get model by slugs with versions       | Design | Pending |
+| CAR-05         | P1: Browse — List car versions by model             | Design | Pending |
+| CAR-06         | P1: Browse — Get car version by slug                | Design | Pending |
+| CAR-07         | P1: Browse — 404 on not found                       | Design | Pending |
+| CAR-08         | P1: Create — Brand with auto-slug                   | Design | Pending |
+| CAR-09         | P1: Create — Model with auto-slug                   | Design | Pending |
+| CAR-10         | P1: Create — CarVersion with auto-slug              | Design | Pending |
+| CAR-11         | P1: Create — 403 for non-admin                      | Design | Pending |
+| CAR-12         | P1: Create — 400 on duplicate slug                  | Design | Pending |
+| CAR-13         | P1: Update — Brand with slug regen                  | Design | Pending |
+| CAR-14         | P1: Update — Model with slug regen                  | Design | Pending |
+| CAR-15         | P1: Update — CarVersion with conditional slug regen | Design | Pending |
+| CAR-16         | P1: Update — 400 on duplicate slug                  | Design | Pending |
+| CAR-17         | P1: Update — 404 on not found                       | Design | Pending |
+| CAR-18         | P1: Delete — Brand (no children)                    | Design | Pending |
+| CAR-19         | P1: Delete — Model (no children)                    | Design | Pending |
+| CAR-20         | P1: Delete — CarVersion (no reviews)                | Design | Pending |
+| CAR-21         | P1: Delete — 400 on has children                    | Design | Pending |
+| CAR-22         | P1: Slug — Value object with transliteration        | Design | Pending |
+| CAR-23         | P1: Slug — CarVersion composite slug                | Design | Pending |
+| CAR-24         | P1: Admin guard — Role check decorator + guard      | Design | Pending |
+| CAR-25         | P1: Admin guard — 403 for non-admin                 | Design | Pending |
 
 **Coverage:** 25 total, 0 mapped to tasks, 25 unmapped ⚠️
 

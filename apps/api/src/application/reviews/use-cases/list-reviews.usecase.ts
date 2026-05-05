@@ -8,8 +8,8 @@ export class ListReviewsUseCase {
 	constructor(private reviewsRepository: ReviewsRepositoryProps) {}
 
 	async execute(filters?: {
-		carVersionId?: string;
-		userId?: string;
+		carVersionYearId?: string;
+		username?: string;
 		query?: string;
 	}) {
 		const reviews = await this.reviewsRepository.findAll(filters);

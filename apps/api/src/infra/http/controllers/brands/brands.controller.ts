@@ -29,6 +29,7 @@ import { GetModelUseCase } from "src/application/cars/use-cases/get-model.usecas
 import { GetVersionUseCase } from "src/application/cars/use-cases/get-version.usecase";
 import { ListBrandsUseCase } from "src/application/cars/use-cases/list-brands.usecase";
 import { ListModelsUseCase } from "src/application/cars/use-cases/list-models.usecase";
+import { ListVersionYearsUseCase } from "src/application/cars/use-cases/list-version-years.usecase";
 import { ListVersionsUseCase } from "src/application/cars/use-cases/list-versions.usecase";
 import { Roles } from "src/infra/auth/decorators/roles.decorator";
 import { IsPublic } from "src/shared/decorators/is-public.decorator";
@@ -45,6 +46,7 @@ export class BrandsController {
 		private getModelService: GetModelUseCase,
 		private createVersionService: CreateVersionUseCase,
 		private listVersionsService: ListVersionsUseCase,
+		private listVersionYearsService: ListVersionYearsUseCase,
 		private getVersionService: GetVersionUseCase,
 	) {}
 
@@ -181,6 +183,25 @@ export class BrandsController {
 		);
 
 		return res.status(HttpStatus.OK).json({ versions });
+	}
+
+	@Get(":brandSlug/models/:modelSlug/years")
+	@IsPublic()
+	@ApiOperation({ description: "Listar anos disponíveis de um modelo" })
+	@ApiParam({ name: "brandSlug", example: "volkswagen" })
+	@ApiParam({ name: "modelSlug", example: "polo" })
+	@ApiOkResponse({ description: "Lista de anos disponíveis" })
+	async listYears(
+		@Param("brandSlug") brandSlug: string,
+		@Param("modelSlug") modelSlug: string,
+		@Res() res: Response,
+	) {
+		const years = await this.listVersionYearsService.execute(
+			brandSlug,
+			modelSlug,
+		);
+
+		return res.status(HttpStatus.OK).json(years);
 	}
 
 	@Get(":brandSlug/models/:modelSlug/versions/:versionSlug")

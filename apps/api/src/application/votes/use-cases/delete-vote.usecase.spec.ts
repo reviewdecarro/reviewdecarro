@@ -34,7 +34,7 @@ describe("DeleteVoteUseCase", () => {
 		await sut.execute("user-1", "review-1");
 
 		expect(votesRepository.items).toHaveLength(1);
-		expect(votesRepository.items[0].userId).toBe("user-2");
+		expect(votesRepository.items[0]?.userId).toBe("user-2");
 	});
 
 	it("should be a no-op when no matching vote exists", async () => {

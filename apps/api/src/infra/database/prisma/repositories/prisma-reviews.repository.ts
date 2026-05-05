@@ -7,6 +7,34 @@ import { ReviewEntity } from "../../../../application/reviews/entities/review.en
 import { ReviewsRepositoryProps } from "../../../../application/reviews/repositories/reviews.repository";
 import { PrismaService } from "../prisma.service";
 
+const reviewInclude = {
+	ratings: true,
+	user: {
+		select: {
+			id: true,
+			username: true,
+		},
+	},
+	carVersionYear: {
+		include: {
+			carVersion: {
+				include: {
+					model: {
+						include: {
+							brand: true,
+						},
+					},
+				},
+			},
+		},
+	},
+	_count: {
+		select: {
+			comments: true,
+		},
+	},
+} as const;
+
 @Injectable()
 export class PrismaReviewsRepository implements ReviewsRepositoryProps {
 	constructor(private prisma: PrismaService) {}
@@ -16,10 +44,12 @@ export class PrismaReviewsRepository implements ReviewsRepositoryProps {
 		slug: string,
 		data: CreateReviewDto,
 	): Promise<ReviewEntity> {
+		const carVersionYearId = data.carVersionYearId ?? "";
+
 		const review = await this.prisma.review.create({
 			data: {
 				userId,
-				carVersionId: data.carVersionId,
+				carVersionYearId,
 				title: data.title,
 				slug,
 				content: data.content,
@@ -37,27 +67,33 @@ export class PrismaReviewsRepository implements ReviewsRepositoryProps {
 						}
 					: undefined,
 			},
-			include: { ratings: true },
+			include: reviewInclude,
 		});
 
-		return new ReviewEntity(review);
+		return new ReviewEntity({
+			...review,
+			commentsCount: review._count.comments,
+		});
 	}
 
 	async findById(id: string): Promise<ReviewEntity | null> {
 		const review = await this.prisma.review.findUnique({
 			where: { id },
-			include: { ratings: true },
+			include: reviewInclude,
 		});
 
 		if (!review) return null;
 
-		return new ReviewEntity(review);
+		return new ReviewEntity({
+			...review,
+			commentsCount: review._count.comments,
+		});
 	}
 
 	async findBySlug(slug: string): Promise<ReviewEntity | null> {
 		const review = await this.prisma.review.findUnique({
 			where: { slug },
-			include: { ratings: true },
+			include: reviewInclude,
 		});
 
 		if (!review) return null;
@@ -66,18 +102,18 @@ export class PrismaReviewsRepository implements ReviewsRepositoryProps {
 	}
 
 	async findAll(filters?: {
-		carVersionId?: string;
-		userId?: string;
+		carVersionYearId?: string;
+		username?: string;
 		query?: string;
 	}): Promise<ReviewEntity[]> {
 		const where: Record<string, unknown> = {};
 
-		if (filters?.carVersionId) {
-			where.carVersionId = filters.carVersionId;
+		if (filters?.carVersionYearId) {
+			where.carVersionYearId = filters.carVersionYearId;
 		}
 
-		if (filters?.userId) {
-			where.userId = filters.userId;
+		if (filters?.username) {
+			where.user = { username: filters.username };
 		}
 
 		if (filters?.query) {
@@ -89,11 +125,17 @@ export class PrismaReviewsRepository implements ReviewsRepositoryProps {
 
 		const reviews = await this.prisma.review.findMany({
 			where,
-			include: { ratings: true },
+			include: reviewInclude,
 			orderBy: { createdAt: "desc" },
 		});
 
-		return reviews.map((review) => new ReviewEntity(review));
+		return reviews.map(
+			(review) =>
+				new ReviewEntity({
+					...review,
+					commentsCount: review._count.comments,
+				}),
+		);
 	}
 
 	async update(id: string, data: UpdateReviewDto): Promise<ReviewEntity> {
@@ -121,10 +163,35 @@ export class PrismaReviewsRepository implements ReviewsRepositoryProps {
 		const review = await this.prisma.review.update({
 			where: { id },
 			data: updateData,
-			include: { ratings: true },
+			include: reviewInclude,
 		});
 
-		return new ReviewEntity(review);
+		return new ReviewEntity({
+			...review,
+			commentsCount: review._count.comments,
+		});
+	}
+
+	async incrementCommentsCount(reviewId: string): Promise<void> {
+		await this.prisma.review.update({
+			where: { id: reviewId },
+			data: {
+				commentsCount: {
+					increment: 1,
+				},
+			},
+		});
+	}
+
+	async decrementCommentsCount(reviewId: string): Promise<void> {
+		await this.prisma.review.update({
+			where: { id: reviewId },
+			data: {
+				commentsCount: {
+					decrement: 1,
+				},
+			},
+		});
 	}
 
 	async delete(id: string): Promise<void> {

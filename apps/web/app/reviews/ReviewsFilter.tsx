@@ -1,35 +1,52 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import type { Car, Review } from '@/types';
-import { ReviewCard } from '@/components/ReviewCard';
+import { useState } from "react";
+import type { Car, PublicReview, Review } from "@/types";
+import { ReviewCard } from "@/components/ReviewCard";
 
-type ReviewWithCar = { review: Review; car: Car };
+type ReviewWithCar = {
+  review: Review | PublicReview;
+  car?: Car;
+};
 
 type ReviewsFilterProps = {
   items: ReviewWithCar[];
-  segments: string[];
 };
 
-export function ReviewsFilter({ items, segments }: ReviewsFilterProps) {
-  const [active, setActive] = useState('All');
+function getItemLabel(item: ReviewWithCar) {
+  if (item.car) {
+    return item.car.segment;
+  }
 
-  const filtered = active === 'All'
-    ? items
-    : items.filter(({ car }) => car.segment === active);
+  if ("vehicle" in item.review && item.review.vehicle) {
+    return item.review.vehicle.brand;
+  }
+
+  return "Sem categoria";
+}
+
+export function ReviewsFilter({ items }: ReviewsFilterProps) {
+  const [active, setActive] = useState("Todos");
+  const segments = [...new Set(items.map(getItemLabel))].filter(Boolean);
+
+  const filtered =
+    active === "Todos"
+      ? items
+      : items.filter((item) => getItemLabel(item) === active);
 
   return (
     <>
       <div className="flex flex-wrap gap-2 mb-8">
-        {['All', ...segments].map(seg => (
+        {["Todos", ...segments].map((seg) => (
           <button
             key={seg}
             onClick={() => setActive(seg)}
             className="px-3.5 py-1.5 rounded-lg border text-[13px] font-medium cursor-pointer transition-all duration-150"
             style={{
-              background:  active === seg ? 'var(--accent-light)' : 'var(--surface-2)',
-              borderColor: active === seg ? 'var(--accent)'       : 'var(--border)',
-              color:       active === seg ? 'var(--accent)'       : 'var(--text-muted)',
+              background:
+                active === seg ? "var(--accent-light)" : "var(--surface-2)",
+              borderColor: active === seg ? "var(--accent)" : "var(--border)",
+              color: active === seg ? "var(--accent)" : "var(--text-muted)",
             }}
           >
             {seg}

@@ -68,19 +68,19 @@ export class ReviewsController {
 	@Get()
 	@IsPublic()
 	@ApiOperation({ description: "Listar reviews com filtros" })
-	@ApiQuery({ name: "carVersionId", required: false })
+	@ApiQuery({ name: "carVersionYearId", required: false })
 	@ApiQuery({ name: "username", required: false })
 	@ApiQuery({ name: "q", required: false })
 	@ApiOkResponse({ description: "Lista de reviews" })
 	async list(
-		@Query("carVersionId") carVersionId: string,
-		@Query("username") userId: string,
+		@Query("carVersionYearId") carVersionYearId: string,
+		@Query("username") username: string,
 		@Query("q") query: string,
 		@Res() res: Response,
 	) {
 		const reviews = await this.listReviewsService.execute({
-			carVersionId,
-			userId,
+			carVersionYearId,
+			username,
 			query,
 		});
 

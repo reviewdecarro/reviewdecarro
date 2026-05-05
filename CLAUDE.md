@@ -31,6 +31,7 @@ pnpm dlx prisma generate
 ```
 
 Start the database before running the API:
+
 ```bash
 docker compose up -d
 ```
@@ -51,9 +52,11 @@ This is a **Turborepo monorepo** with two apps and shared packages:
 The API follows **Clean Architecture** with three layers:
 
 ### `application/`
+
 application logic, organized per application: `users`, `cars`, `reviews`, `comments`, `votes`.
 
 Each application contains:
+
 - `entities/` — application entity classes implementing the Prisma model type
 - `repositories/` — Abstract repository classes (interfaces for data access)
 - `use-cases/` — Business logic classes, one per operation
@@ -61,12 +64,16 @@ Each application contains:
 - `mappers/` — Functions that convert entities to response DTOs using `plainToInstance`
 
 ### `infra/`
+
 Adapters and infrastructure:
+
 - `http/` — NestJS HTTP adapter. `http.module.ts` imports all use cases as providers and registers all controllers. Controllers live in `http/controllers/<application>/`.
 - `auth/` — Authentication: guards, Passport strategies, types, `auth.module.ts`, `auth.service.ts`.
 
 ### `shared/`
+
 Cross-cutting concerns:
+
 - `errors/types/` — Custom error classes (e.g. `BadRequestError extends Error`)
 - `errors/interceptors/` — `BadRequestInterceptor` catches `BadRequestError` and converts it to NestJS `BadRequestException`. Registered globally in `main.ts`.
 
