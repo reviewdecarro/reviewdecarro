@@ -12,39 +12,41 @@
 
 ## File Map
 
-| Action | Path |
-|---|---|
-| Modify | `apps/api/prisma/schema.prisma` |
-| Modify | `apps/api/src/application/roles/entities/role.entity.ts` |
-| Modify | `apps/api/src/application/roles/repositories/roles.repository.ts` |
-| Modify | `apps/api/src/application/roles/repositories/in-memory-roles.repository.ts` |
+| Action | Path                                                                         |
+| ------ | ---------------------------------------------------------------------------- |
+| Modify | `apps/api/prisma/schema.prisma`                                              |
+| Modify | `apps/api/src/application/roles/entities/role.entity.ts`                     |
+| Modify | `apps/api/src/application/roles/repositories/roles.repository.ts`            |
+| Modify | `apps/api/src/application/roles/repositories/in-memory-roles.repository.ts`  |
 | Modify | `apps/api/src/infra/database/prisma/repositories/prisma-roles.repository.ts` |
-| Create | `apps/api/src/application/roles/dtos/role.dto.ts` |
-| Create | `apps/api/src/application/roles/mappers/role.mapper.ts` |
-| Create | `apps/api/src/application/roles/use-cases/create-role.usecase.ts` |
-| Create | `apps/api/src/application/roles/use-cases/create-role.usecase.spec.ts` |
-| Create | `apps/api/src/application/roles/use-cases/find-role-by-id.usecase.ts` |
-| Create | `apps/api/src/application/roles/use-cases/find-role-by-id.usecase.spec.ts` |
-| Create | `apps/api/src/application/roles/use-cases/find-roles.usecase.ts` |
-| Create | `apps/api/src/application/roles/use-cases/find-roles.usecase.spec.ts` |
-| Modify | `apps/api/src/application/roles/use-cases/assign-role.usecase.ts` |
-| Modify | `apps/api/src/application/roles/use-cases/assign-role.usecase.spec.ts` |
-| Modify | `apps/api/src/application/users/use-cases/confirm-email.usecase.ts` |
-| Modify | `apps/api/src/infra/auth/guards/roles.guard.ts` |
-| Modify | `apps/api/src/infra/auth/decorators/roles.decorator.ts` |
-| Delete | `apps/api/src/infra/auth/constants/roles.ts` |
-| Create | `apps/api/prisma/seed.ts` |
+| Create | `apps/api/src/application/roles/dtos/role.dto.ts`                            |
+| Create | `apps/api/src/application/roles/mappers/role.mapper.ts`                      |
+| Create | `apps/api/src/application/roles/use-cases/create-role.usecase.ts`            |
+| Create | `apps/api/src/application/roles/use-cases/create-role.usecase.spec.ts`       |
+| Create | `apps/api/src/application/roles/use-cases/find-role-by-id.usecase.ts`        |
+| Create | `apps/api/src/application/roles/use-cases/find-role-by-id.usecase.spec.ts`   |
+| Create | `apps/api/src/application/roles/use-cases/find-roles.usecase.ts`             |
+| Create | `apps/api/src/application/roles/use-cases/find-roles.usecase.spec.ts`        |
+| Modify | `apps/api/src/application/roles/use-cases/assign-role.usecase.ts`            |
+| Modify | `apps/api/src/application/roles/use-cases/assign-role.usecase.spec.ts`       |
+| Modify | `apps/api/src/application/users/use-cases/confirm-email.usecase.ts`          |
+| Modify | `apps/api/src/infra/auth/guards/roles.guard.ts`                              |
+| Modify | `apps/api/src/infra/auth/decorators/roles.decorator.ts`                      |
+| Delete | `apps/api/src/infra/auth/constants/roles.ts`                                 |
+| Create | `apps/api/prisma/seed.ts`                                                    |
 
 ---
 
 ## Task 1: Update Prisma schema
 
 **Files:**
+
 - Modify: `apps/api/prisma/schema.prisma`
 
 - [ ] **Step 1: Replace the `Role` model and delete `RoleType` enum**
 
 Find and replace the existing `Role` model block:
+
 ```prisma
 model Role {
   id     String   @id @default(uuid())
@@ -58,7 +60,9 @@ model Role {
   @@map("roles")
 }
 ```
+
 With:
+
 ```prisma
 model Role {
   id        String   @id @default(uuid())
@@ -72,6 +76,7 @@ model Role {
 ```
 
 Also remove the `RoleType` enum entirely:
+
 ```prisma
 enum RoleType {
   ADMIN
@@ -109,11 +114,13 @@ git commit -m "feat(db): refactor Role to standalone entity with M2M user relati
 ## Task 2: Update RoleEntity
 
 **Files:**
+
 - Modify: `apps/api/src/application/roles/entities/role.entity.ts`
 
 - [ ] **Step 1: Rewrite the entity to match the new schema**
 
 Replace the entire file content:
+
 ```typescript
 import { Expose } from "class-transformer";
 import { RoleModel } from "../../../../prisma/generated/models/Role";
@@ -149,12 +156,14 @@ git commit -m "refactor(roles): update RoleEntity to match new schema"
 ## Task 3: Update RolesRepositoryProps and InMemoryRolesRepository
 
 **Files:**
+
 - Modify: `apps/api/src/application/roles/repositories/roles.repository.ts`
 - Modify: `apps/api/src/application/roles/repositories/in-memory-roles.repository.ts`
 
 - [ ] **Step 1: Rewrite the repository contract**
 
 Replace the entire content of `roles.repository.ts`:
+
 ```typescript
 import type { RoleEntity } from "../entities/role.entity";
 
@@ -179,10 +188,15 @@ export abstract class RolesRepositoryProps {
 - [ ] **Step 2: Rewrite the in-memory repository**
 
 Replace the entire content of `in-memory-roles.repository.ts`:
+
 ```typescript
 import { randomUUID } from "node:crypto";
 import { RoleEntity } from "../entities/role.entity";
-import { AssignRoleData, CreateRoleData, RolesRepositoryProps } from "./roles.repository";
+import {
+  AssignRoleData,
+  CreateRoleData,
+  RolesRepositoryProps,
+} from "./roles.repository";
 
 export class InMemoryRolesRepository extends RolesRepositoryProps {
   public items: RoleEntity[] = [];
@@ -229,6 +243,7 @@ git commit -m "refactor(roles): update repository contract and in-memory impleme
 ## Task 4: Add DTOs and Mapper
 
 **Files:**
+
 - Create: `apps/api/src/application/roles/dtos/role.dto.ts`
 - Create: `apps/api/src/application/roles/mappers/role.mapper.ts`
 
@@ -293,12 +308,14 @@ git commit -m "feat(roles): add RoleResponseDto, CreateRoleDto and RolesMapper"
 ## Task 5: CreateRoleUseCase (TDD)
 
 **Files:**
+
 - Create: `apps/api/src/application/roles/use-cases/create-role.usecase.spec.ts`
 - Create: `apps/api/src/application/roles/use-cases/create-role.usecase.ts`
 
 - [ ] **Step 1: Write the failing spec**
 
 Create `create-role.usecase.spec.ts`:
+
 ```typescript
 import { beforeEach, describe, expect, it, jest } from "@jest/globals";
 import { BadRequestError } from "../../../shared/errors/types/bad-request-error";
@@ -325,7 +342,12 @@ describe("CreateRoleUseCase", () => {
   it("should create and return a RoleResponseDto", async () => {
     mockRolesRepository.findByName.mockResolvedValue(null);
     mockRolesRepository.create.mockResolvedValue(
-      new RoleEntity({ id: "r-1", name: "admin", createdAt: new Date(), updatedAt: new Date() }),
+      new RoleEntity({
+        id: "r-1",
+        name: "admin",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      }),
     );
 
     const result = await sut.execute({ name: "admin" });
@@ -338,11 +360,20 @@ describe("CreateRoleUseCase", () => {
 
   it("should throw BadRequestError if role name already exists", async () => {
     mockRolesRepository.findByName.mockResolvedValue(
-      new RoleEntity({ id: "r-1", name: "admin", createdAt: new Date(), updatedAt: new Date() }),
+      new RoleEntity({
+        id: "r-1",
+        name: "admin",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      }),
     );
 
-    await expect(sut.execute({ name: "admin" })).rejects.toThrow(BadRequestError);
-    await expect(sut.execute({ name: "admin" })).rejects.toThrow("Role already exists");
+    await expect(sut.execute({ name: "admin" })).rejects.toThrow(
+      BadRequestError,
+    );
+    await expect(sut.execute({ name: "admin" })).rejects.toThrow(
+      "Role already exists",
+    );
   });
 });
 ```
@@ -403,12 +434,14 @@ git commit -m "feat(roles): add CreateRoleUseCase"
 ## Task 6: FindRoleByIdUseCase (TDD)
 
 **Files:**
+
 - Create: `apps/api/src/application/roles/use-cases/find-role-by-id.usecase.spec.ts`
 - Create: `apps/api/src/application/roles/use-cases/find-role-by-id.usecase.ts`
 
 - [ ] **Step 1: Write the failing spec**
 
 Create `find-role-by-id.usecase.spec.ts`:
+
 ```typescript
 import { beforeEach, describe, expect, it, jest } from "@jest/globals";
 import { NotFoundError } from "../../../shared/errors/types/not-found-error";
@@ -434,7 +467,12 @@ describe("FindRoleByIdUseCase", () => {
 
   it("should return a RoleResponseDto when role exists", async () => {
     mockRolesRepository.findById.mockResolvedValue(
-      new RoleEntity({ id: "r-1", name: "admin", createdAt: new Date(), updatedAt: new Date() }),
+      new RoleEntity({
+        id: "r-1",
+        name: "admin",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      }),
     );
 
     const result = await sut.execute("r-1");
@@ -507,12 +545,14 @@ git commit -m "feat(roles): add FindRoleByIdUseCase"
 ## Task 7: FindRolesUseCase (TDD)
 
 **Files:**
+
 - Create: `apps/api/src/application/roles/use-cases/find-roles.usecase.spec.ts`
 - Create: `apps/api/src/application/roles/use-cases/find-roles.usecase.ts`
 
 - [ ] **Step 1: Write the failing spec**
 
 Create `find-roles.usecase.spec.ts`:
+
 ```typescript
 import { beforeEach, describe, expect, it, jest } from "@jest/globals";
 import { RoleEntity } from "../entities/role.entity";
@@ -537,8 +577,18 @@ describe("FindRolesUseCase", () => {
 
   it("should return a list of RoleResponseDtos", async () => {
     mockRolesRepository.findAll.mockResolvedValue([
-      new RoleEntity({ id: "r-1", name: "admin", createdAt: new Date(), updatedAt: new Date() }),
-      new RoleEntity({ id: "r-2", name: "user", createdAt: new Date(), updatedAt: new Date() }),
+      new RoleEntity({
+        id: "r-1",
+        name: "admin",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      }),
+      new RoleEntity({
+        id: "r-2",
+        name: "user",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      }),
     ]);
 
     const result = await sut.execute();
@@ -581,7 +631,9 @@ export class FindRolesUseCase {
   async execute() {
     const roles = await this.rolesRepository.findAll();
 
-    return roles.map((role) => RolesMapper.toRoleResponseDto(new RoleEntity(role)));
+    return roles.map((role) =>
+      RolesMapper.toRoleResponseDto(new RoleEntity(role)),
+    );
   }
 }
 ```
@@ -606,6 +658,7 @@ git commit -m "feat(roles): add FindRolesUseCase"
 ## Task 8: Update AssignRoleUseCase and its spec
 
 **Files:**
+
 - Modify: `apps/api/src/application/roles/use-cases/assign-role.usecase.ts`
 - Modify: `apps/api/src/application/roles/use-cases/assign-role.usecase.spec.ts`
 
@@ -613,7 +666,10 @@ git commit -m "feat(roles): add FindRolesUseCase"
 
 ```typescript
 import { Injectable } from "@nestjs/common";
-import { AssignRoleData, RolesRepositoryProps } from "../repositories/roles.repository";
+import {
+  AssignRoleData,
+  RolesRepositoryProps,
+} from "../repositories/roles.repository";
 
 @Injectable()
 export class AssignRoleUseCase {
@@ -645,7 +701,10 @@ describe("AssignRoleUseCase", () => {
     await sut.execute({ userId: "user-1", roleId: "role-1" });
 
     expect(rolesRepository.assignments).toHaveLength(1);
-    expect(rolesRepository.assignments[0]).toEqual({ userId: "user-1", roleId: "role-1" });
+    expect(rolesRepository.assignments[0]).toEqual({
+      userId: "user-1",
+      roleId: "role-1",
+    });
   });
 });
 ```
@@ -670,6 +729,7 @@ git commit -m "refactor(roles): update AssignRoleUseCase to use roleId instead o
 ## Task 9: Update PrismaRolesRepository
 
 **Files:**
+
 - Modify: `apps/api/src/infra/database/prisma/repositories/prisma-roles.repository.ts`
 
 - [ ] **Step 1: Rewrite the Prisma repository**
@@ -677,7 +737,11 @@ git commit -m "refactor(roles): update AssignRoleUseCase to use roleId instead o
 ```typescript
 import { Injectable } from "@nestjs/common";
 import { RoleEntity } from "../../../../application/roles/entities/role.entity";
-import { AssignRoleData, CreateRoleData, RolesRepositoryProps } from "../../../../application/roles/repositories/roles.repository";
+import {
+  AssignRoleData,
+  CreateRoleData,
+  RolesRepositoryProps,
+} from "../../../../application/roles/repositories/roles.repository";
 import { PrismaService } from "../prisma.service";
 
 @Injectable()
@@ -727,6 +791,7 @@ git commit -m "refactor(roles): update PrismaRolesRepository to implement new co
 `ConfirmEmailUseCase` previously assigned `type: "USER"` (a RoleType) to the user on email confirmation. It now needs to look up the role by name and assign it by ID.
 
 **Files:**
+
 - Modify: `apps/api/src/application/users/use-cases/confirm-email.usecase.ts`
 
 - [ ] **Step 1: Rewrite `confirm-email.usecase.ts`**
@@ -770,7 +835,10 @@ export class ConfirmEmailUseCase {
     }
 
     await this.usersRepository.confirmEmail(userToken.userId);
-    await this.assignRoleUseCase.execute({ userId: userToken.userId, roleId: userRole.id });
+    await this.assignRoleUseCase.execute({
+      userId: userToken.userId,
+      roleId: userRole.id,
+    });
     await this.userTokensRepository.deleteById(userToken.id);
   }
 }
@@ -790,6 +858,7 @@ git commit -m "refactor(users): update ConfirmEmailUseCase to assign role by nam
 `RolesGuard` currently checks `role.type` against a `RoleType[]`. Since `RoleType` is deleted, it must now compare `role.name` against `string[]`.
 
 **Files:**
+
 - Modify: `apps/api/src/infra/auth/guards/roles.guard.ts`
 - Modify: `apps/api/src/infra/auth/decorators/roles.decorator.ts`
 - Delete: `apps/api/src/infra/auth/constants/roles.ts`
@@ -845,6 +914,7 @@ rm apps/api/src/infra/auth/constants/roles.ts
 ```
 
 Check that nothing else imports from `constants/roles.ts`:
+
 ```bash
 grep -rn "auth/constants/roles" apps/api/src --include="*.ts"
 ```
@@ -866,6 +936,7 @@ git commit -m "refactor(auth): update RolesGuard and decorator to use role name 
 `ConfirmEmailUseCase` looks up the role named `"user"` at runtime. This role must exist in the database. Create a Prisma seed file that inserts the default roles.
 
 **Files:**
+
 - Create: `apps/api/prisma/seed.ts`
 - Modify: `apps/api/package.json` (add prisma.seed config)
 
@@ -901,6 +972,7 @@ main()
 - [ ] **Step 2: Register seed script in `apps/api/package.json`**
 
 Add inside the top-level `"prisma"` key (create it if it doesn't exist):
+
 ```json
 "prisma": {
   "seed": "ts-node prisma/seed.ts"

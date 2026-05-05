@@ -14,6 +14,7 @@ A platform for Brazilian car owners to share honest reviews, ratings, and discus
 ## Current State
 
 The project is in **early development**. The foundation is solid:
+
 - Monorepo structure with Turborepo
 - NestJS API with Clean Architecture
 - Full Prisma schema covering all 5 applications (9 models)
