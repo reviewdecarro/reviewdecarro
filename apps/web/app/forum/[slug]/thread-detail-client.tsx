@@ -7,7 +7,7 @@ import {
   MessageSquarePlus,
   Reply,
 } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { type FormEvent, useOptimistic, useState } from "react";
 import { MarkdownEditor } from "@/components/MarkdownEditor";
 import { MarkdownViewer } from "@/components/MarkdownViewer";
@@ -56,6 +56,7 @@ type ForumReplyCardProps = {
   onOptimisticReply(parentPostId: string, content: string): string;
   onRollbackReply(replyId: string): void;
   onVote(post: LocalForumPost): Promise<void>;
+  onRequireLogin(): void;
   depth?: number;
 };
 
@@ -160,11 +161,13 @@ function ForumReplyComposer({
   postId,
   onOptimisticReply,
   onRollbackReply,
+  onRequireLogin,
 }: {
   topicId: string;
   postId: string;
   onOptimisticReply(parentPostId: string, content: string): string;
   onRollbackReply(replyId: string): void;
+  onRequireLogin(): void;
 }) {
   const router = useRouter();
   const { isCheckingSession, isLoggedIn } = useAuthSession();
@@ -242,8 +245,9 @@ function ForumReplyComposer({
         Responder
       </button>
     ) : (
-      <Link
-        href="/login"
+      <button
+        type="button"
+        onClick={onRequireLogin}
         className="mt-3 inline-flex items-center gap-2 rounded-lg px-3 py-2 text-[12px] font-semibold transition-colors duration-150"
         style={{
           background: "var(--surface-2)",
@@ -253,7 +257,7 @@ function ForumReplyComposer({
       >
         <Reply size={14} strokeWidth={2} />
         Entrar para responder
-      </Link>
+      </button>
     );
   }
 
@@ -346,6 +350,7 @@ function ForumReplyCard({
   onOptimisticReply,
   onRollbackReply,
   onVote,
+  onRequireLogin,
   depth = 0,
 }: ForumReplyCardProps) {
   return (
@@ -400,6 +405,7 @@ function ForumReplyCard({
               postId={post.id}
               onOptimisticReply={onOptimisticReply}
               onRollbackReply={onRollbackReply}
+              onRequireLogin={onRequireLogin}
             />
           </div>
         </div>
@@ -413,6 +419,7 @@ function ForumReplyCard({
           onOptimisticReply={onOptimisticReply}
           onRollbackReply={onRollbackReply}
           onVote={onVote}
+          onRequireLogin={onRequireLogin}
           depth={depth + 1}
         />
       ))}
@@ -422,6 +429,7 @@ function ForumReplyCard({
 
 export function ThreadDetailClient({ thread }: ThreadDetailClientProps) {
   const router = useRouter();
+  const pathname = usePathname();
   const { authUser, isCheckingSession, isLoggedIn } = useAuthSession();
   const [voted, setVoted] = useState(false);
   const [votes, setVotes] = useState(thread.votes);
@@ -457,6 +465,11 @@ export function ThreadDetailClient({ thread }: ThreadDetailClientProps) {
   );
   const replyCount = countPostsInTree(posts);
 
+  function redirectToLogin() {
+    const next = encodeURIComponent(pathname);
+    router.push(`/login?next=${next}`);
+  }
+
   function handleOptimisticReply(parentPostId: string, replyContent: string) {
     const optimisticReplyId = `optimistic-${crypto.randomUUID()}`;
     const optimisticReply = buildOptimisticReply({
@@ -484,6 +497,11 @@ export function ThreadDetailClient({ thread }: ThreadDetailClientProps) {
   }
 
   async function handlePostVote(post: LocalForumPost) {
+    if (!isLoggedIn) {
+      redirectToLogin();
+      return;
+    }
+
     const currentVoted = post.voted ?? false;
     const currentVoteCount = post.voteCount ?? post.upvotes - post.downvotes;
     const nextVoted = !currentVoted;
@@ -539,6 +557,11 @@ export function ThreadDetailClient({ thread }: ThreadDetailClientProps) {
   }
 
   async function handleVote() {
+    if (!isLoggedIn) {
+      redirectToLogin();
+      return;
+    }
+
     if (isVoting) {
       return;
     }
@@ -625,7 +648,7 @@ export function ThreadDetailClient({ thread }: ThreadDetailClientProps) {
             style={{ color: "var(--accent)" }}
           >
             <ChevronLeft size={15} strokeWidth={2.2} />
-            Back to forum
+            Voltar para o fórum
           </Link>
 
           <article
@@ -654,7 +677,7 @@ export function ThreadDetailClient({ thread }: ThreadDetailClientProps) {
                   <span>•</span>
                   <span>{thread.date}</span>
                   <span>•</span>
-                  <span>{replyCount} replies</span>
+                  <span>{replyCount} respostas</span>
                 </div>
               </div>
             </div>
@@ -672,10 +695,10 @@ export function ThreadDetailClient({ thread }: ThreadDetailClientProps) {
               className="font-display font-extrabold text-[22px]"
               style={{ color: "var(--text)" }}
             >
-              Replies
+              Respostas
             </h2>
             <span className="text-[13px]" style={{ color: "var(--text-muted)" }}>
-              {replyCount} total
+              {replyCount} no total
             </span>
           </div>
 
@@ -689,6 +712,7 @@ export function ThreadDetailClient({ thread }: ThreadDetailClientProps) {
                   onOptimisticReply={handleOptimisticReply}
                   onRollbackReply={handleRollbackReply}
                   onVote={handlePostVote}
+                  onRequireLogin={redirectToLogin}
                 />
               ))
             ) : (
@@ -717,7 +741,7 @@ export function ThreadDetailClient({ thread }: ThreadDetailClientProps) {
               }}
             >
               <p className="text-[14px]" style={{ color: "var(--text-muted)" }}>
-                Loading session...
+                Carregando sessão...
               </p>
             </div>
           ) : !isLoggedIn ? (
@@ -738,19 +762,20 @@ export function ThreadDetailClient({ thread }: ThreadDetailClientProps) {
                   className="font-display font-extrabold text-[20px]"
                   style={{ color: "var(--text)" }}
                 >
-                  Join the discussion
+                  Entre na conversa
                 </h2>
               </div>
               <p className="text-[14px] mb-5" style={{ color: "var(--text-muted)" }}>
-                Sign in to publish your own reply in markdown.
+                Faça login para publicar sua própria resposta em markdown.
               </p>
-              <Link
-                href="/login"
+              <button
+                type="button"
+                onClick={redirectToLogin}
                 className="inline-flex items-center justify-center rounded-lg px-4 py-2 text-[13px] font-semibold text-white"
                 style={{ background: "var(--accent)" }}
               >
-                Log in
-              </Link>
+                Fazer login
+              </button>
             </div>
           ) : (
             <form
@@ -771,7 +796,7 @@ export function ThreadDetailClient({ thread }: ThreadDetailClientProps) {
                   className="font-display font-extrabold text-[20px]"
                   style={{ color: "var(--text)" }}
                 >
-                  Your reply
+                  Sua resposta
                 </h2>
               </div>
 
@@ -817,10 +842,10 @@ export function ThreadDetailClient({ thread }: ThreadDetailClientProps) {
                         size={16}
                         strokeWidth={2}
                       />
-                      Publishing...
+                      Publicando...
                     </>
                   ) : (
-                    "Publish reply"
+                    "Publicar resposta"
                   )}
                 </button>
               </div>

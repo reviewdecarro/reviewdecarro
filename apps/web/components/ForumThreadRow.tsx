@@ -2,7 +2,9 @@
 
 import { MessageSquareMore } from "lucide-react";
 import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
+import { useAuthSession } from "@/hooks/use-auth-session";
 import { API_BASE_URL } from "@/lib/api";
 import type { ForumTopicSummary } from "@/types";
 import { VoteButton } from "./VoteButton";
@@ -12,6 +14,9 @@ type ForumThreadRowProps = {
 };
 
 export function ForumThreadRow({ thread }: ForumThreadRowProps) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const { isLoggedIn } = useAuthSession();
   const [voted, setVoted] = useState(false);
   const [votes, setVotes] = useState(thread.votes);
   const [isVoting, setIsVoting] = useState(false);
@@ -19,6 +24,12 @@ export function ForumThreadRow({ thread }: ForumThreadRowProps) {
   async function handleVote(e: React.MouseEvent) {
     e.preventDefault();
     e.stopPropagation();
+
+    if (!isLoggedIn) {
+      const next = encodeURIComponent(pathname);
+      router.push(`/login?next=${next}`);
+      return;
+    }
 
     if (isVoting) {
       return;

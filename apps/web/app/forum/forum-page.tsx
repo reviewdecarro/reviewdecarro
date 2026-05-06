@@ -32,10 +32,10 @@ export function ForumPage({ data }: ForumPageProps) {
               className="font-display font-extrabold text-[28px] mb-1.5"
               style={{ color: "var(--text)" }}
             >
-              Community Forum
+              Fórum da Comunidade
             </h1>
             <p className="text-[14px]" style={{ color: "var(--text-muted)" }}>
-              Questions, discussions, and stories from the PapoAuto community.
+              Dúvidas, discussões e relatos da comunidade PapoAuto.
             </p>
           </div>
 
@@ -48,8 +48,8 @@ export function ForumPage({ data }: ForumPageProps) {
               }}
             >
               {[
-                { value: "recent", label: "Recent" },
-                { value: "top", label: "Top" },
+                { value: "recent", label: "Recentes" },
+                { value: "top", label: "Em alta" },
               ].map((option) => (
                 <button
                   key={option.value}
@@ -77,7 +77,7 @@ export function ForumPage({ data }: ForumPageProps) {
             <input
               value={search}
               onChange={(event) => setSearch(event.target.value)}
-              placeholder="Search threads..."
+              placeholder="Buscar tópicos..."
               className="flex-1 min-w-[220px] rounded-lg px-3.5 py-2 text-[13px] border outline-none"
               style={{
                 background: "var(--surface)",
@@ -91,7 +91,7 @@ export function ForumPage({ data }: ForumPageProps) {
               className="px-4 py-2 rounded-lg border-none text-[13px] font-semibold text-white whitespace-nowrap"
               style={{ background: "var(--accent)" }}
             >
-              + Ask question
+              + Criar um tópico
             </Link>
           </div>
 
@@ -111,7 +111,7 @@ export function ForumPage({ data }: ForumPageProps) {
                 className="py-10 text-center text-[14px]"
                 style={{ color: "var(--text-muted)" }}
               >
-                No threads found.
+                Nenhum tópico encontrado.
               </div>
             ) : null}
           </div>
@@ -129,20 +129,20 @@ export function ForumPage({ data }: ForumPageProps) {
               className="text-[11px] font-semibold uppercase tracking-[0.18em] mb-2"
               style={{ color: "var(--accent)" }}
             >
-              Community Pulse
+              Panorama da comunidade
             </p>
             <h2
               className="font-display font-extrabold text-[24px] leading-tight mb-3"
               style={{ color: "var(--text)" }}
             >
-              Where buying doubts turn into practical answers.
+              Onde dúvidas de compra viram respostas práticas.
             </h2>
             <p
               className="text-[14px] leading-6 mb-5"
               style={{ color: "var(--text-muted)" }}
             >
-              Browse owner stories, compare opinions, and surface the most useful
-              threads before making the next garage decision.
+              Navegue por relatos de proprietários, compare opiniões e encontre
+              os tópicos mais úteis antes da próxima decisão de garagem.
             </p>
 
             <div className="grid grid-cols-2 gap-3">
@@ -157,7 +157,7 @@ export function ForumPage({ data }: ForumPageProps) {
                   className="text-[11px] uppercase tracking-[0.12em]"
                   style={{ color: "var(--text-light)" }}
                 >
-                  Threads
+                  Tópicos
                 </div>
                 <div
                   className="mt-1 font-display font-extrabold text-[22px]"
@@ -177,7 +177,7 @@ export function ForumPage({ data }: ForumPageProps) {
                   className="text-[11px] uppercase tracking-[0.12em]"
                   style={{ color: "var(--text-light)" }}
                 >
-                  Replies
+                  Respostas
                 </div>
                 <div
                   className="mt-1 font-display font-extrabold text-[22px]"

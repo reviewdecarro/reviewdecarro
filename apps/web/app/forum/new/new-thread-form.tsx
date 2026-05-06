@@ -1,9 +1,8 @@
 "use client";
 
-import { LoaderCircle, LockKeyhole, MessageSquarePlus } from "lucide-react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { type FormEvent, useState } from "react";
+import { LoaderCircle, MessageSquarePlus } from "lucide-react";
+import { usePathname, useRouter } from "next/navigation";
+import { type FormEvent, useEffect, useState } from "react";
 import { MarkdownEditor } from "@/components/MarkdownEditor";
 import { useAuthSession } from "@/hooks/use-auth-session";
 import { API_BASE_URL } from "@/lib/api";
@@ -12,11 +11,19 @@ const MAX_MARKDOWN_LENGTH = 20_000;
 
 export function NewThreadForm() {
   const router = useRouter();
+  const pathname = usePathname();
   const { isLoggedIn, isCheckingSession } = useAuthSession();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
+
+  useEffect(() => {
+    if (!isCheckingSession && !isLoggedIn) {
+      const next = encodeURIComponent(pathname);
+      router.replace(`/login?next=${next}`);
+    }
+  }, [isCheckingSession, isLoggedIn, pathname, router]);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -94,25 +101,9 @@ export function NewThreadForm() {
           borderColor: "var(--border)",
         }}
       >
-        <div className="flex items-center gap-2 mb-3">
-          <LockKeyhole size={18} strokeWidth={2} style={{ color: "var(--accent)" }} />
-          <h2
-            className="font-display font-extrabold text-[20px]"
-            style={{ color: "var(--text)" }}
-          >
-            Entre para publicar
-          </h2>
-        </div>
-        <p className="text-[14px] mb-5" style={{ color: "var(--text-muted)" }}>
-          O fórum exige autenticação para criar novos tópicos.
+        <p className="text-[14px]" style={{ color: "var(--text-muted)" }}>
+          Redirecionando para o login...
         </p>
-        <Link
-          href="/login"
-          className="inline-flex items-center justify-center rounded-lg px-4 py-2 text-[13px] font-semibold text-white"
-          style={{ background: "var(--accent)" }}
-        >
-          Fazer login
-        </Link>
       </div>
     );
   }

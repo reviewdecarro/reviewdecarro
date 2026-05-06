@@ -2,7 +2,7 @@
 
 import { Eye, EyeOff, Lock, LoaderCircle, Mail } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { type FormEvent, useState } from "react";
 import { API_BASE_URL } from "@/lib/api";
 import { useAuthSession } from "@/hooks/use-auth-session";
@@ -17,6 +17,7 @@ type LoginResponse = {
 
 export function LoginForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { storeAuthUser } = useAuthSession();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -59,8 +60,8 @@ export function LoginForm() {
       }
 
       storeAuthUser(data.user);
-
-      router.push("/");
+      const next = searchParams.get("next");
+      router.push(next || "/");
     } catch (submitError) {
       setError(
         submitError instanceof Error

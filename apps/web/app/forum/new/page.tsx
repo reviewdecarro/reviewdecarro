@@ -13,7 +13,7 @@ export default function NewForumThreadPage() {
               className="font-display font-extrabold text-[28px] mb-2"
               style={{ color: "var(--text)" }}
             >
-              Ask a question
+              Criar um tópico
             </h1>
             <p className="text-[14px]" style={{ color: "var(--text-muted)" }}>
               Abra um novo tópico no fórum usando sua sessão autenticada.
