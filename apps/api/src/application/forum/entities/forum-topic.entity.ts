@@ -22,9 +22,6 @@ export class ForumTopicEntity {
 	status: ForumTopicStatus;
 
 	@Expose()
-	viewsCount: number;
-
-	@Expose()
 	postsCount: number;
 
 	@Expose()

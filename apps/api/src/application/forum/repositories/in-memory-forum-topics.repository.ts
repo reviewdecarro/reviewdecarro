@@ -19,7 +19,6 @@ export class InMemoryForumTopicsRepository extends ForumTopicsRepositoryProps {
 			slug: data.slug,
 			content: data.content,
 			status: ForumTopicStatus.PUBLISHED,
-			viewsCount: 0,
 			postsCount: 0,
 			upvotes: 0,
 			downvotes: 0,
@@ -45,14 +44,6 @@ export class InMemoryForumTopicsRepository extends ForumTopicsRepositoryProps {
 
 	async findBySlug(slug: string): Promise<ForumTopicEntity | null> {
 		return this.items.find((topic) => topic.slug === slug) ?? null;
-	}
-
-	async incrementViewsCount(topicId: string): Promise<void> {
-		const topic = this.items.find((item) => item.id === topicId);
-
-		if (topic) {
-			topic.viewsCount += 1;
-		}
 	}
 
 	async incrementPostsCount(topicId: string): Promise<void> {

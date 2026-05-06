@@ -109,10 +109,6 @@ export class ForumTopicResponseDto {
 
 	@ApiProperty()
 	@Expose()
-	viewsCount: number;
-
-	@ApiProperty()
-	@Expose()
 	postsCount: number;
 
 	@ApiProperty()

@@ -79,17 +79,6 @@ export class PrismaForumTopicsRepository extends ForumTopicsRepositoryProps {
 		return new ForumTopicEntity(topic);
 	}
 
-	async incrementViewsCount(topicId: string): Promise<void> {
-		await this.prisma.forumTopic.update({
-			where: { id: topicId },
-			data: {
-				viewsCount: {
-					increment: 1,
-				},
-			},
-		});
-	}
-
 	async incrementPostsCount(topicId: string): Promise<void> {
 		await this.prisma.forumTopic.update({
 			where: { id: topicId },

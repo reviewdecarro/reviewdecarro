@@ -26,7 +26,6 @@ describe("GetForumTopicBySlugUseCase", () => {
 			slug: "suv-para-familia",
 			content: "Conteúdo do tópico",
 			status: ForumTopicStatus.PUBLISHED,
-			viewsCount: 2,
 			postsCount: 2,
 			upvotes: 4,
 			downvotes: 1,
@@ -72,13 +71,12 @@ describe("GetForumTopicBySlugUseCase", () => {
 		return topic;
 	}
 
-	it("should return topic with nested replies and increment views", async () => {
+	it("should return topic with nested replies", async () => {
 		const topic = seedTopic();
 
 		const result = await sut.execute(topic.slug);
 
 		expect(result).toHaveProperty("slug", topic.slug);
-		expect(result).toHaveProperty("viewsCount", 3);
 		expect(result).toHaveProperty("postsCount", 2);
 		expect(result.posts).toHaveLength(1);
 		expect(result.posts?.[0]).toHaveProperty("id", "post-1");
