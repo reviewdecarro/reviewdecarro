@@ -6,6 +6,7 @@ import { RolesGuard } from "../auth/guards/roles.guard";
 import { AuthHttpModule } from "./controllers/auth/auth-http.module";
 import { CarsHttpModule } from "./controllers/cars/cars-http.module";
 import { CommentsHttpModule } from "./controllers/comments/comments-http.module";
+import { ForumHttpModule } from "./controllers/forum/forum-http.module";
 import { ReviewsHttpModule } from "./controllers/reviews/reviews-http.module";
 import { UsersHttpModule } from "./controllers/users/users-http.module";
 import { VotesHttpModule } from "./controllers/votes/votes-http.module";
@@ -19,6 +20,7 @@ import { VotesHttpModule } from "./controllers/votes/votes-http.module";
 		ReviewsHttpModule,
 		CommentsHttpModule,
 		VotesHttpModule,
+		ForumHttpModule,
 	],
 	providers: [
 		{ provide: APP_GUARD, useClass: JwtAuthGuard },

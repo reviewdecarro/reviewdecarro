@@ -3,6 +3,9 @@ import { BrandsRepositoryProps } from "../../application/cars/repositories/brand
 import { ModelsRepositoryProps } from "../../application/cars/repositories/models.repository";
 import { VersionsRepositoryProps } from "../../application/cars/repositories/versions.repository";
 import { CommentsRepositoryProps } from "../../application/comments/repositories/comments.repository";
+import { ForumPostsRepositoryProps } from "../../application/forum/repositories/forum-posts.repository";
+import { ForumTopicsRepositoryProps } from "../../application/forum/repositories/forum-topics.repository";
+import { ForumVotesRepositoryProps } from "../../application/forum/repositories/forum-votes.repository";
 import { ReviewsRepositoryProps } from "../../application/reviews/repositories/reviews.repository";
 import { RolesRepositoryProps } from "../../application/roles/repositories/roles.repository";
 import { SessionsRepositoryProps } from "../../application/sessions/repositories/sessions.repository";
@@ -12,6 +15,9 @@ import { VotesRepositoryProps } from "../../application/votes/repositories/votes
 import { PrismaService } from "./prisma/prisma.service";
 import { PrismaBrandsRepository } from "./prisma/repositories/prisma-brands.repository";
 import { PrismaCommentsRepository } from "./prisma/repositories/prisma-comments.repository";
+import { PrismaForumPostsRepository } from "./prisma/repositories/prisma-forum-posts.repository";
+import { PrismaForumTopicsRepository } from "./prisma/repositories/prisma-forum-topics.repository";
+import { PrismaForumVotesRepository } from "./prisma/repositories/prisma-forum-votes.repository";
 import { PrismaModelsRepository } from "./prisma/repositories/prisma-models.repository";
 import { PrismaReviewsRepository } from "./prisma/repositories/prisma-reviews.repository";
 import { PrismaRolesRepository } from "./prisma/repositories/prisma-roles.repository";
@@ -49,6 +55,18 @@ import { PrismaVotesRepository } from "./prisma/repositories/prisma-votes.reposi
 			useClass: PrismaCommentsRepository,
 		},
 		{
+			provide: ForumTopicsRepositoryProps,
+			useClass: PrismaForumTopicsRepository,
+		},
+		{
+			provide: ForumPostsRepositoryProps,
+			useClass: PrismaForumPostsRepository,
+		},
+		{
+			provide: ForumVotesRepositoryProps,
+			useClass: PrismaForumVotesRepository,
+		},
+		{
 			provide: VotesRepositoryProps,
 			useClass: PrismaVotesRepository,
 		},
@@ -73,6 +91,9 @@ import { PrismaVotesRepository } from "./prisma/repositories/prisma-votes.reposi
 		VersionsRepositoryProps,
 		ReviewsRepositoryProps,
 		CommentsRepositoryProps,
+		ForumTopicsRepositoryProps,
+		ForumPostsRepositoryProps,
+		ForumVotesRepositoryProps,
 		VotesRepositoryProps,
 		UserTokensRepositoryProps,
 		RolesRepositoryProps,

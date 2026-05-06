@@ -11,7 +11,5 @@ export abstract class VersionsRepositoryProps {
 	abstract findByModelId(modelId: string): Promise<CarVersionEntity[]>;
 	abstract findBySlug(slug: string): Promise<CarVersionEntity | null>;
 	abstract findYearsByModelId(modelId: string): Promise<number[]>;
-	findYearById(_id: string): Promise<CarVersionYearEntity | null> {
-		return Promise.resolve(null);
-	}
+	abstract findYearById(id: string): Promise<CarVersionYearEntity | null>;
 }
