@@ -4,11 +4,12 @@ import { ForumThreadRow } from "@/components/ForumThreadRow";
 import { Nav } from "@/components/Nav";
 import { ReviewCard } from "@/components/ReviewCard";
 import { SectionHeader } from "@/components/SectionHeader";
-import { threads } from "@/lib/data";
+import { fetchForumTopics } from "@/lib/forum";
 import { fetchPublicReviews } from "@/lib/reviews";
 
 export default async function HomePage() {
 	const reviews = await fetchPublicReviews();
+	const threads = await fetchForumTopics();
 	const featuredReview = [...reviews].sort((a, b) => {
 		if (b.score !== a.score) {
 			return b.score - a.score;

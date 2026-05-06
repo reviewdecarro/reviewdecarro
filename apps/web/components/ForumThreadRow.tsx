@@ -3,35 +3,58 @@
 import { MessageSquareMore } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
-import type { Thread } from "@/types";
+import { API_BASE_URL } from "@/lib/api";
+import type { ForumTopicSummary } from "@/types";
 import { VoteButton } from "./VoteButton";
 
 type ForumThreadRowProps = {
-  thread: Thread;
-};
-
-const catColors: Record<string, string> = {
-  "Dicas de compra": "oklch(0.60 0.16 250)",
-  Discussão: "oklch(0.55 0.16 170)",
-  História: "oklch(0.57 0.17 148)",
+  thread: ForumTopicSummary;
 };
 
 export function ForumThreadRow({ thread }: ForumThreadRowProps) {
   const [voted, setVoted] = useState(false);
   const [votes, setVotes] = useState(thread.votes);
+  const [isVoting, setIsVoting] = useState(false);
 
-  function handleVote(e: React.MouseEvent) {
+  async function handleVote(e: React.MouseEvent) {
     e.preventDefault();
     e.stopPropagation();
-    setVotes((v) => (voted ? v - 1 : v + 1));
-    setVoted((v) => !v);
-  }
 
-  const catColor = catColors[thread.category] ?? "var(--text-muted)";
+    if (isVoting) {
+      return;
+    }
+
+    const nextVoted = !voted;
+    const nextVotes = votes + (nextVoted ? 1 : -1);
+
+    setIsVoting(true);
+    setVotes(nextVotes);
+    setVoted(nextVoted);
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/forum/topics/${thread.id}/vote`, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ value: "UP" }),
+      });
+
+      if (!response.ok) {
+        throw new Error();
+      }
+    } catch {
+      setVotes(votes);
+      setVoted(voted);
+    } finally {
+      setIsVoting(false);
+    }
+  }
 
   return (
     <Link
-      href={`/forum/${thread.id}`}
+      href={`/forum/${thread.slug}`}
       className="flex items-center gap-3.5 py-3.5 border-b rounded-lg px-2.5 transition-colors duration-100"
       style={{ borderColor: "var(--border)" }}
       onMouseEnter={(e) =>
@@ -63,8 +86,6 @@ export function ForumThreadRow({ thread }: ForumThreadRowProps) {
           </span>
           <span>·</span>
           <span>{thread.date}</span>
-          <span>·</span>
-          <span>{thread.views} visualizações</span>
         </div>
       </div>
 
