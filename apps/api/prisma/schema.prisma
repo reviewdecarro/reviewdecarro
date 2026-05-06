@@ -299,7 +299,6 @@ model ForumTopic {
   slug       String           @unique
   content    String
   status     ForumTopicStatus @default(PUBLISHED)
-  viewsCount Int              @default(0)
   postsCount Int              @default(0)
   upvotes    Int              @default(0)
   downvotes  Int              @default(0)

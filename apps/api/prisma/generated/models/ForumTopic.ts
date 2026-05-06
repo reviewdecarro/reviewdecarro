@@ -27,14 +27,12 @@ export type AggregateForumTopic = {
 }
 
 export type ForumTopicAvgAggregateOutputType = {
-  viewsCount: number | null
   postsCount: number | null
   upvotes: number | null
   downvotes: number | null
 }
 
 export type ForumTopicSumAggregateOutputType = {
-  viewsCount: number | null
   postsCount: number | null
   upvotes: number | null
   downvotes: number | null
@@ -47,7 +45,6 @@ export type ForumTopicMinAggregateOutputType = {
   slug: string | null
   content: string | null
   status: $Enums.ForumTopicStatus | null
-  viewsCount: number | null
   postsCount: number | null
   upvotes: number | null
   downvotes: number | null
@@ -63,7 +60,6 @@ export type ForumTopicMaxAggregateOutputType = {
   slug: string | null
   content: string | null
   status: $Enums.ForumTopicStatus | null
-  viewsCount: number | null
   postsCount: number | null
   upvotes: number | null
   downvotes: number | null
@@ -79,7 +75,6 @@ export type ForumTopicCountAggregateOutputType = {
   slug: number
   content: number
   status: number
-  viewsCount: number
   postsCount: number
   upvotes: number
   downvotes: number
@@ -91,14 +86,12 @@ export type ForumTopicCountAggregateOutputType = {
 
 
 export type ForumTopicAvgAggregateInputType = {
-  viewsCount?: true
   postsCount?: true
   upvotes?: true
   downvotes?: true
 }
 
 export type ForumTopicSumAggregateInputType = {
-  viewsCount?: true
   postsCount?: true
   upvotes?: true
   downvotes?: true
@@ -111,7 +104,6 @@ export type ForumTopicMinAggregateInputType = {
   slug?: true
   content?: true
   status?: true
-  viewsCount?: true
   postsCount?: true
   upvotes?: true
   downvotes?: true
@@ -127,7 +119,6 @@ export type ForumTopicMaxAggregateInputType = {
   slug?: true
   content?: true
   status?: true
-  viewsCount?: true
   postsCount?: true
   upvotes?: true
   downvotes?: true
@@ -143,7 +134,6 @@ export type ForumTopicCountAggregateInputType = {
   slug?: true
   content?: true
   status?: true
-  viewsCount?: true
   postsCount?: true
   upvotes?: true
   downvotes?: true
@@ -246,7 +236,6 @@ export type ForumTopicGroupByOutputType = {
   slug: string
   content: string
   status: $Enums.ForumTopicStatus
-  viewsCount: number
   postsCount: number
   upvotes: number
   downvotes: number
@@ -285,7 +274,6 @@ export type ForumTopicWhereInput = {
   slug?: Prisma.StringFilter<"ForumTopic"> | string
   content?: Prisma.StringFilter<"ForumTopic"> | string
   status?: Prisma.EnumForumTopicStatusFilter<"ForumTopic"> | $Enums.ForumTopicStatus
-  viewsCount?: Prisma.IntFilter<"ForumTopic"> | number
   postsCount?: Prisma.IntFilter<"ForumTopic"> | number
   upvotes?: Prisma.IntFilter<"ForumTopic"> | number
   downvotes?: Prisma.IntFilter<"ForumTopic"> | number
@@ -303,7 +291,6 @@ export type ForumTopicOrderByWithRelationInput = {
   slug?: Prisma.SortOrder
   content?: Prisma.SortOrder
   status?: Prisma.SortOrder
-  viewsCount?: Prisma.SortOrder
   postsCount?: Prisma.SortOrder
   upvotes?: Prisma.SortOrder
   downvotes?: Prisma.SortOrder
@@ -324,7 +311,6 @@ export type ForumTopicWhereUniqueInput = Prisma.AtLeast<{
   title?: Prisma.StringFilter<"ForumTopic"> | string
   content?: Prisma.StringFilter<"ForumTopic"> | string
   status?: Prisma.EnumForumTopicStatusFilter<"ForumTopic"> | $Enums.ForumTopicStatus
-  viewsCount?: Prisma.IntFilter<"ForumTopic"> | number
   postsCount?: Prisma.IntFilter<"ForumTopic"> | number
   upvotes?: Prisma.IntFilter<"ForumTopic"> | number
   downvotes?: Prisma.IntFilter<"ForumTopic"> | number
@@ -342,7 +328,6 @@ export type ForumTopicOrderByWithAggregationInput = {
   slug?: Prisma.SortOrder
   content?: Prisma.SortOrder
   status?: Prisma.SortOrder
-  viewsCount?: Prisma.SortOrder
   postsCount?: Prisma.SortOrder
   upvotes?: Prisma.SortOrder
   downvotes?: Prisma.SortOrder
@@ -366,7 +351,6 @@ export type ForumTopicScalarWhereWithAggregatesInput = {
   slug?: Prisma.StringWithAggregatesFilter<"ForumTopic"> | string
   content?: Prisma.StringWithAggregatesFilter<"ForumTopic"> | string
   status?: Prisma.EnumForumTopicStatusWithAggregatesFilter<"ForumTopic"> | $Enums.ForumTopicStatus
-  viewsCount?: Prisma.IntWithAggregatesFilter<"ForumTopic"> | number
   postsCount?: Prisma.IntWithAggregatesFilter<"ForumTopic"> | number
   upvotes?: Prisma.IntWithAggregatesFilter<"ForumTopic"> | number
   downvotes?: Prisma.IntWithAggregatesFilter<"ForumTopic"> | number
@@ -381,7 +365,6 @@ export type ForumTopicCreateInput = {
   slug: string
   content: string
   status?: $Enums.ForumTopicStatus
-  viewsCount?: number
   postsCount?: number
   upvotes?: number
   downvotes?: number
@@ -399,7 +382,6 @@ export type ForumTopicUncheckedCreateInput = {
   slug: string
   content: string
   status?: $Enums.ForumTopicStatus
-  viewsCount?: number
   postsCount?: number
   upvotes?: number
   downvotes?: number
@@ -415,7 +397,6 @@ export type ForumTopicUpdateInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumForumTopicStatusFieldUpdateOperationsInput | $Enums.ForumTopicStatus
-  viewsCount?: Prisma.IntFieldUpdateOperationsInput | number
   postsCount?: Prisma.IntFieldUpdateOperationsInput | number
   upvotes?: Prisma.IntFieldUpdateOperationsInput | number
   downvotes?: Prisma.IntFieldUpdateOperationsInput | number
@@ -433,7 +414,6 @@ export type ForumTopicUncheckedUpdateInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumForumTopicStatusFieldUpdateOperationsInput | $Enums.ForumTopicStatus
-  viewsCount?: Prisma.IntFieldUpdateOperationsInput | number
   postsCount?: Prisma.IntFieldUpdateOperationsInput | number
   upvotes?: Prisma.IntFieldUpdateOperationsInput | number
   downvotes?: Prisma.IntFieldUpdateOperationsInput | number
@@ -450,7 +430,6 @@ export type ForumTopicCreateManyInput = {
   slug: string
   content: string
   status?: $Enums.ForumTopicStatus
-  viewsCount?: number
   postsCount?: number
   upvotes?: number
   downvotes?: number
@@ -465,7 +444,6 @@ export type ForumTopicUpdateManyMutationInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumForumTopicStatusFieldUpdateOperationsInput | $Enums.ForumTopicStatus
-  viewsCount?: Prisma.IntFieldUpdateOperationsInput | number
   postsCount?: Prisma.IntFieldUpdateOperationsInput | number
   upvotes?: Prisma.IntFieldUpdateOperationsInput | number
   downvotes?: Prisma.IntFieldUpdateOperationsInput | number
@@ -481,7 +459,6 @@ export type ForumTopicUncheckedUpdateManyInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumForumTopicStatusFieldUpdateOperationsInput | $Enums.ForumTopicStatus
-  viewsCount?: Prisma.IntFieldUpdateOperationsInput | number
   postsCount?: Prisma.IntFieldUpdateOperationsInput | number
   upvotes?: Prisma.IntFieldUpdateOperationsInput | number
   downvotes?: Prisma.IntFieldUpdateOperationsInput | number
@@ -507,7 +484,6 @@ export type ForumTopicCountOrderByAggregateInput = {
   slug?: Prisma.SortOrder
   content?: Prisma.SortOrder
   status?: Prisma.SortOrder
-  viewsCount?: Prisma.SortOrder
   postsCount?: Prisma.SortOrder
   upvotes?: Prisma.SortOrder
   downvotes?: Prisma.SortOrder
@@ -517,7 +493,6 @@ export type ForumTopicCountOrderByAggregateInput = {
 }
 
 export type ForumTopicAvgOrderByAggregateInput = {
-  viewsCount?: Prisma.SortOrder
   postsCount?: Prisma.SortOrder
   upvotes?: Prisma.SortOrder
   downvotes?: Prisma.SortOrder
@@ -530,7 +505,6 @@ export type ForumTopicMaxOrderByAggregateInput = {
   slug?: Prisma.SortOrder
   content?: Prisma.SortOrder
   status?: Prisma.SortOrder
-  viewsCount?: Prisma.SortOrder
   postsCount?: Prisma.SortOrder
   upvotes?: Prisma.SortOrder
   downvotes?: Prisma.SortOrder
@@ -546,7 +520,6 @@ export type ForumTopicMinOrderByAggregateInput = {
   slug?: Prisma.SortOrder
   content?: Prisma.SortOrder
   status?: Prisma.SortOrder
-  viewsCount?: Prisma.SortOrder
   postsCount?: Prisma.SortOrder
   upvotes?: Prisma.SortOrder
   downvotes?: Prisma.SortOrder
@@ -556,7 +529,6 @@ export type ForumTopicMinOrderByAggregateInput = {
 }
 
 export type ForumTopicSumOrderByAggregateInput = {
-  viewsCount?: Prisma.SortOrder
   postsCount?: Prisma.SortOrder
   upvotes?: Prisma.SortOrder
   downvotes?: Prisma.SortOrder
@@ -633,7 +605,6 @@ export type ForumTopicCreateWithoutAuthorInput = {
   slug: string
   content: string
   status?: $Enums.ForumTopicStatus
-  viewsCount?: number
   postsCount?: number
   upvotes?: number
   downvotes?: number
@@ -649,7 +620,6 @@ export type ForumTopicUncheckedCreateWithoutAuthorInput = {
   slug: string
   content: string
   status?: $Enums.ForumTopicStatus
-  viewsCount?: number
   postsCount?: number
   upvotes?: number
   downvotes?: number
@@ -695,7 +665,6 @@ export type ForumTopicScalarWhereInput = {
   slug?: Prisma.StringFilter<"ForumTopic"> | string
   content?: Prisma.StringFilter<"ForumTopic"> | string
   status?: Prisma.EnumForumTopicStatusFilter<"ForumTopic"> | $Enums.ForumTopicStatus
-  viewsCount?: Prisma.IntFilter<"ForumTopic"> | number
   postsCount?: Prisma.IntFilter<"ForumTopic"> | number
   upvotes?: Prisma.IntFilter<"ForumTopic"> | number
   downvotes?: Prisma.IntFilter<"ForumTopic"> | number
@@ -710,7 +679,6 @@ export type ForumTopicCreateWithoutPostsInput = {
   slug: string
   content: string
   status?: $Enums.ForumTopicStatus
-  viewsCount?: number
   postsCount?: number
   upvotes?: number
   downvotes?: number
@@ -727,7 +695,6 @@ export type ForumTopicUncheckedCreateWithoutPostsInput = {
   slug: string
   content: string
   status?: $Enums.ForumTopicStatus
-  viewsCount?: number
   postsCount?: number
   upvotes?: number
   downvotes?: number
@@ -758,7 +725,6 @@ export type ForumTopicUpdateWithoutPostsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumForumTopicStatusFieldUpdateOperationsInput | $Enums.ForumTopicStatus
-  viewsCount?: Prisma.IntFieldUpdateOperationsInput | number
   postsCount?: Prisma.IntFieldUpdateOperationsInput | number
   upvotes?: Prisma.IntFieldUpdateOperationsInput | number
   downvotes?: Prisma.IntFieldUpdateOperationsInput | number
@@ -775,7 +741,6 @@ export type ForumTopicUncheckedUpdateWithoutPostsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumForumTopicStatusFieldUpdateOperationsInput | $Enums.ForumTopicStatus
-  viewsCount?: Prisma.IntFieldUpdateOperationsInput | number
   postsCount?: Prisma.IntFieldUpdateOperationsInput | number
   upvotes?: Prisma.IntFieldUpdateOperationsInput | number
   downvotes?: Prisma.IntFieldUpdateOperationsInput | number
@@ -790,7 +755,6 @@ export type ForumTopicCreateManyAuthorInput = {
   slug: string
   content: string
   status?: $Enums.ForumTopicStatus
-  viewsCount?: number
   postsCount?: number
   upvotes?: number
   downvotes?: number
@@ -805,7 +769,6 @@ export type ForumTopicUpdateWithoutAuthorInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumForumTopicStatusFieldUpdateOperationsInput | $Enums.ForumTopicStatus
-  viewsCount?: Prisma.IntFieldUpdateOperationsInput | number
   postsCount?: Prisma.IntFieldUpdateOperationsInput | number
   upvotes?: Prisma.IntFieldUpdateOperationsInput | number
   downvotes?: Prisma.IntFieldUpdateOperationsInput | number
@@ -821,7 +784,6 @@ export type ForumTopicUncheckedUpdateWithoutAuthorInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumForumTopicStatusFieldUpdateOperationsInput | $Enums.ForumTopicStatus
-  viewsCount?: Prisma.IntFieldUpdateOperationsInput | number
   postsCount?: Prisma.IntFieldUpdateOperationsInput | number
   upvotes?: Prisma.IntFieldUpdateOperationsInput | number
   downvotes?: Prisma.IntFieldUpdateOperationsInput | number
@@ -837,7 +799,6 @@ export type ForumTopicUncheckedUpdateManyWithoutAuthorInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumForumTopicStatusFieldUpdateOperationsInput | $Enums.ForumTopicStatus
-  viewsCount?: Prisma.IntFieldUpdateOperationsInput | number
   postsCount?: Prisma.IntFieldUpdateOperationsInput | number
   upvotes?: Prisma.IntFieldUpdateOperationsInput | number
   downvotes?: Prisma.IntFieldUpdateOperationsInput | number
@@ -884,7 +845,6 @@ export type ForumTopicSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
   slug?: boolean
   content?: boolean
   status?: boolean
-  viewsCount?: boolean
   postsCount?: boolean
   upvotes?: boolean
   downvotes?: boolean
@@ -903,7 +863,6 @@ export type ForumTopicSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ex
   slug?: boolean
   content?: boolean
   status?: boolean
-  viewsCount?: boolean
   postsCount?: boolean
   upvotes?: boolean
   downvotes?: boolean
@@ -920,7 +879,6 @@ export type ForumTopicSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ex
   slug?: boolean
   content?: boolean
   status?: boolean
-  viewsCount?: boolean
   postsCount?: boolean
   upvotes?: boolean
   downvotes?: boolean
@@ -937,7 +895,6 @@ export type ForumTopicSelectScalar = {
   slug?: boolean
   content?: boolean
   status?: boolean
-  viewsCount?: boolean
   postsCount?: boolean
   upvotes?: boolean
   downvotes?: boolean
@@ -946,7 +903,7 @@ export type ForumTopicSelectScalar = {
   deletedAt?: boolean
 }
 
-export type ForumTopicOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "authorId" | "title" | "slug" | "content" | "status" | "viewsCount" | "postsCount" | "upvotes" | "downvotes" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["forumTopic"]>
+export type ForumTopicOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "authorId" | "title" | "slug" | "content" | "status" | "postsCount" | "upvotes" | "downvotes" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["forumTopic"]>
 export type ForumTopicInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   author?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   posts?: boolean | Prisma.ForumTopic$postsArgs<ExtArgs>
@@ -972,7 +929,6 @@ export type $ForumTopicPayload<ExtArgs extends runtime.Types.Extensions.Internal
     slug: string
     content: string
     status: $Enums.ForumTopicStatus
-    viewsCount: number
     postsCount: number
     upvotes: number
     downvotes: number
@@ -1410,7 +1366,6 @@ export interface ForumTopicFieldRefs {
   readonly slug: Prisma.FieldRef<"ForumTopic", 'String'>
   readonly content: Prisma.FieldRef<"ForumTopic", 'String'>
   readonly status: Prisma.FieldRef<"ForumTopic", 'ForumTopicStatus'>
-  readonly viewsCount: Prisma.FieldRef<"ForumTopic", 'Int'>
   readonly postsCount: Prisma.FieldRef<"ForumTopic", 'Int'>
   readonly upvotes: Prisma.FieldRef<"ForumTopic", 'Int'>
   readonly downvotes: Prisma.FieldRef<"ForumTopic", 'Int'>

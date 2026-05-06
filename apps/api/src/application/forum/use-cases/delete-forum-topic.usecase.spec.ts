@@ -22,7 +22,6 @@ describe("DeleteForumTopicUseCase", () => {
 			slug: "titulo",
 			content: "Conteúdo",
 			status: ForumTopicStatus.PUBLISHED,
-			viewsCount: 0,
 			postsCount: 0,
 			upvotes: 0,
 			downvotes: 0,

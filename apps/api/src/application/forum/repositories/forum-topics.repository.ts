@@ -10,7 +10,6 @@ export abstract class ForumTopicsRepositoryProps {
 	abstract findAll(): Promise<ForumTopicEntity[]>;
 	abstract findById(id: string): Promise<ForumTopicEntity | null>;
 	abstract findBySlug(slug: string): Promise<ForumTopicEntity | null>;
-	abstract incrementViewsCount(topicId: string): Promise<void>;
 	abstract incrementPostsCount(topicId: string): Promise<void>;
 	abstract incrementUpvotes(topicId: string): Promise<void>;
 	abstract decrementUpvotes(topicId: string): Promise<void>;

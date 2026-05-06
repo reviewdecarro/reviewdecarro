@@ -241,7 +241,6 @@ export const ForumTopicScalarFieldEnum = {
   slug: 'slug',
   content: 'content',
   status: 'status',
-  viewsCount: 'viewsCount',
   postsCount: 'postsCount',
   upvotes: 'upvotes',
   downvotes: 'downvotes',

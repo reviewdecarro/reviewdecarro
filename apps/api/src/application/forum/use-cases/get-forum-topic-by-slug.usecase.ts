@@ -48,12 +48,9 @@ export class GetForumTopicBySlugUseCase {
 		}
 
 		const posts = await this.forumPostsRepository.findByTopicId(topic.id);
-		const viewsCount = topic.viewsCount + 1;
-		await this.forumTopicsRepository.incrementViewsCount(topic.id);
 
 		const forumTopic = new ForumTopicEntity({
 			...topic,
-			viewsCount,
 			posts: buildForumPostTree(posts),
 		});
 
