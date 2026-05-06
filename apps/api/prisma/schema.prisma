@@ -52,6 +52,9 @@ model User {
   votes      ReviewVote[]
   userTokens UserToken[]
   sessions   Session[]
+  forumTopics ForumTopic[]
+  forumPosts  ForumPost[]
+  forumVotes  ForumVote[]
 
   @@map("users")
 }
@@ -265,4 +268,91 @@ model ReviewVote {
   @@unique([userId, reviewId])
   @@index([reviewId])
   @@map("review_votes")
+}
+
+// ─── FORUM ───────────────────────────────────────────────────────────────────
+
+enum ForumTopicStatus {
+  PUBLISHED
+  DELETED
+}
+
+enum ForumPostStatus {
+  PUBLISHED
+  DELETED
+}
+
+enum ForumVoteValue {
+  UP
+  DOWN
+}
+
+enum ForumVoteTargetType {
+  TOPIC
+  POST
+}
+
+model ForumTopic {
+  id         String           @id @default(uuid())
+  authorId   String
+  title      String
+  slug       String           @unique
+  content    String
+  status     ForumTopicStatus @default(PUBLISHED)
+  viewsCount Int              @default(0)
+  postsCount Int              @default(0)
+  upvotes    Int              @default(0)
+  downvotes  Int              @default(0)
+  author     User             @relation(fields: [authorId], references: [id])
+  posts      ForumPost[]
+  createdAt  DateTime         @default(now())
+  updatedAt  DateTime         @updatedAt
+  deletedAt  DateTime?
+
+  @@index([authorId])
+  @@index([status])
+  @@index([createdAt])
+  @@index([slug])
+  @@map("forum_topics")
+}
+
+model ForumPost {
+  id           String          @id @default(uuid())
+  topicId      String
+  authorId     String
+  parentPostId String?
+  content      String
+  status       ForumPostStatus @default(PUBLISHED)
+  upvotes      Int             @default(0)
+  downvotes    Int             @default(0)
+  topic        ForumTopic      @relation(fields: [topicId], references: [id])
+  author       User            @relation(fields: [authorId], references: [id])
+  parentPost   ForumPost?      @relation("ForumPostReplies", fields: [parentPostId], references: [id])
+  replies      ForumPost[]     @relation("ForumPostReplies")
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+  deletedAt    DateTime?
+
+  @@index([topicId])
+  @@index([authorId])
+  @@index([parentPostId])
+  @@index([status])
+  @@index([createdAt])
+  @@map("forum_posts")
+}
+
+model ForumVote {
+  id         String              @id @default(uuid())
+  userId     String
+  targetId   String
+  targetType ForumVoteTargetType
+  value      ForumVoteValue
+  user       User                @relation(fields: [userId], references: [id])
+  createdAt  DateTime            @default(now())
+  updatedAt  DateTime            @updatedAt
+
+  @@unique([userId, targetId, targetType])
+  @@index([targetId, targetType])
+  @@index([userId])
+  @@map("forum_votes")
 }

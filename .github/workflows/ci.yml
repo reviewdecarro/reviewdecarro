@@ -56,6 +56,10 @@ jobs:
         run: pnpm dlx prisma migrate deploy
         working-directory: apps/api
 
+      - name: Seed database
+        run: pnpm seed
+        working-directory: apps/api
+
       - name: Lint
         run: pnpm turbo lint
 
