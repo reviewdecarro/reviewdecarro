@@ -90,6 +90,7 @@ export type ForumTopicSummary = {
   author: string;
   date: string;
   createdAt: string;
+  upvotes: number;
   votes: number;
   comments: number;
   body?: string;
