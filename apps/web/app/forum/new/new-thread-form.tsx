@@ -79,7 +79,7 @@ export function NewThreadForm() {
   if (isCheckingSession) {
     return (
       <div
-        className="rounded-2xl border px-6 py-8"
+        className="rounded-2xl border px-8 py-9"
         style={{
           background: "var(--surface)",
           borderColor: "var(--border)",
@@ -95,7 +95,7 @@ export function NewThreadForm() {
   if (!isLoggedIn) {
     return (
       <div
-        className="rounded-2xl border px-6 py-8"
+        className="rounded-2xl border px-8 py-9"
         style={{
           background: "var(--surface)",
           borderColor: "var(--border)",
@@ -111,7 +111,7 @@ export function NewThreadForm() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="rounded-2xl border px-6 py-8"
+      className="rounded-2xl border px-8 py-9"
       style={{
         background: "var(--surface)",
         borderColor: "var(--border)",
@@ -176,7 +176,7 @@ export function NewThreadForm() {
         onChange={(value) => setContent(value.slice(0, MAX_MARKDOWN_LENGTH))}
         placeholder="Descreva sua dúvida, contexto e critérios da decisão..."
         maxLength={MAX_MARKDOWN_LENGTH}
-        height={420}
+        height={520}
       />
       <p className="mt-2 text-[12px]" style={{ color: "var(--text-light)" }}>
         {content.length}/{MAX_MARKDOWN_LENGTH} caracteres

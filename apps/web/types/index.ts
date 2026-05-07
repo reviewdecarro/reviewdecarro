@@ -89,6 +89,7 @@ export type ForumTopicSummary = {
   title: string;
   author: string;
   date: string;
+  createdAt: string;
   votes: number;
   comments: number;
   body?: string;

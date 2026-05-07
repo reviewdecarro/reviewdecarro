@@ -113,6 +113,7 @@ function toForumTopicSummary(topic: ApiForumTopic): ForumTopicSummary {
     title: topic.title,
     author: topic.author?.username ?? "Anônimo",
     date: formatRelativeDate(topic.createdAt),
+    createdAt: topic.createdAt,
     votes: topic.upvotes - topic.downvotes,
     comments: topic.postsCount,
     body: truncate(topic.content, 220),

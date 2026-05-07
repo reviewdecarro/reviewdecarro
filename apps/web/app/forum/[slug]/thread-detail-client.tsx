@@ -640,7 +640,7 @@ export function ThreadDetailClient({ thread }: ThreadDetailClientProps) {
 
   return (
     <div className="max-w-[1100px] mx-auto px-6 py-10">
-      <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_320px]">
+      <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_400px]">
         <section className="min-w-0">
           <Link
             href="/forum"
@@ -734,7 +734,7 @@ export function ThreadDetailClient({ thread }: ThreadDetailClientProps) {
         <aside className="h-fit">
           {isCheckingSession ? (
             <div
-              className="rounded-2xl border px-5 py-6"
+              className="rounded-2xl border px-6 py-7"
               style={{
                 background: "var(--surface)",
                 borderColor: "var(--border)",
@@ -746,7 +746,7 @@ export function ThreadDetailClient({ thread }: ThreadDetailClientProps) {
             </div>
           ) : !isLoggedIn ? (
             <div
-              className="rounded-2xl border px-5 py-6"
+              className="rounded-2xl border px-6 py-7"
               style={{
                 background: "var(--surface)",
                 borderColor: "var(--border)",
@@ -780,7 +780,7 @@ export function ThreadDetailClient({ thread }: ThreadDetailClientProps) {
           ) : (
             <form
               onSubmit={handleSubmit}
-              className="rounded-2xl border px-5 py-6"
+              className="rounded-2xl border px-6 py-7"
               style={{
                 background: "var(--surface)",
                 borderColor: "var(--border)",
@@ -816,9 +816,9 @@ export function ThreadDetailClient({ thread }: ThreadDetailClientProps) {
               <MarkdownEditor
                 value={content}
                 onChange={(value) => setContent(value.slice(0, MAX_MARKDOWN_LENGTH))}
-                placeholder="Share your experience, recommendation, or counterpoint..."
+                placeholder="Compartilhe sua experiência, recomendação ou contraponto..."
                 maxLength={MAX_MARKDOWN_LENGTH}
-                height={360}
+                height={420}
               />
               <p className="mt-2 text-[12px]" style={{ color: "var(--text-light)" }}>
                 {content.length}/{MAX_MARKDOWN_LENGTH} characters
