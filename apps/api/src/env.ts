@@ -48,7 +48,10 @@ if (!parsedEnv.success) {
 		JSON.stringify(parsedEnv.error.flatten().fieldErrors),
 	);
 
-	process.exit(1);
+	// Only exit in non-test environments
+	if (process.env.NODE_ENV !== "test") {
+		process.exit(1);
+	}
 }
 
-export const env = parsedEnv.data;
+export const env = parsedEnv.data || ({} as any);
