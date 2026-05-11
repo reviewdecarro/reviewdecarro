@@ -1,5 +1,8 @@
 import { beforeEach, describe, expect, it } from "@jest/globals";
-import { ForumPostStatus, ForumTopicStatus } from "../../../../prisma/generated/enums";
+import {
+	ForumPostStatus,
+	ForumTopicStatus,
+} from "../../../../prisma/generated/enums";
 import { BadRequestError } from "../../../shared/errors/types/bad-request-error";
 import { ForumPostEntity } from "../entities/forum-post.entity";
 import { ForumTopicEntity } from "../entities/forum-topic.entity";

@@ -1,7 +1,16 @@
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 import { Expose, Type } from "class-transformer";
-import { IsNotEmpty, IsOptional, IsString, IsUUID, MinLength } from "class-validator";
-import { ForumTopicPostResponseDto, ForumUserResponseDto } from "./create-forum-topic.dto";
+import {
+	IsNotEmpty,
+	IsOptional,
+	IsString,
+	IsUUID,
+	MinLength,
+} from "class-validator";
+import {
+	ForumTopicPostResponseDto,
+	ForumUserResponseDto,
+} from "./create-forum-topic.dto";
 
 export class CreateForumPostDto {
 	@ApiProperty({ example: "Concordo com o post anterior..." })
