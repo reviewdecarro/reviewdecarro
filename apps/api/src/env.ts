@@ -5,7 +5,7 @@ import { z } from "zod";
 const envSchema = z.object({
 	API_PORT: z.string().min(1, { message: "Porta da API é obrigatória" }),
 	NODE_ENV: z
-		.enum(["development", "production"], {
+		.enum(["development", "production", "test"], {
 			error: "Ambiente de desenvolvimento inválido",
 		})
 		.default("development"),

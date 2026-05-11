@@ -9,9 +9,21 @@ import {
 import { env } from "src/env";
 import { GenerateMailTemplateFromHTMLService } from "./generate-template-from-html";
 import {
+	MailContactProps,
 	MailProviderProps,
 	SendMailServiceDataProps,
 } from "./types/mail-provider.props";
+
+export class FakeEmailProvider implements MailProviderProps {
+	public items: Array<{ to: string; html: string }> = [];
+
+	async execute({ to, templateVariables }: SendMailServiceDataProps) {
+		const recipient: MailContactProps = Array.isArray(to) ? to[0]! : to;
+		const html = Object.values(templateVariables).filter(Boolean).join(" ");
+
+		this.items.push({ to: recipient.email, html });
+	}
+}
 
 @Injectable()
 export class FakeMailProvider implements MailProviderProps, OnModuleInit {
