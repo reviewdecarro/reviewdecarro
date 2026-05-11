@@ -1,8 +1,8 @@
 import { Footer } from "@/components/Footer";
 import { Nav } from "@/components/Nav";
-import { NewReviewForm } from "./new-review-form";
+import { NewThreadForm } from "./new-thread-form";
 
-export default function NewReviewPage() {
+export default function NewForumThreadPage() {
   return (
     <>
       <Nav />
@@ -16,17 +16,16 @@ export default function NewReviewPage() {
               className="font-display text-3xl font-extrabold"
               style={{ color: "var(--text)" }}
             >
-              Nova avaliação
+              Criar um tópico
             </h1>
             <p
               className="mt-1 text-[14px]"
               style={{ color: "var(--text-muted)" }}
             >
-              Envie uma nova review usando sua sessão autenticada.
+              Abra um novo tópico no fórum usando sua sessão autenticada.
             </p>
           </div>
-
-          <NewReviewForm />
+          <NewThreadForm />
         </div>
       </main>
       <Footer />

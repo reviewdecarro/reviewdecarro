@@ -1,7 +1,5 @@
 import { beforeEach, describe, expect, it } from "@jest/globals";
-import {
-	ForumTopicStatus,
-} from "../../../../prisma/generated/enums";
+import { ForumTopicStatus } from "../../../../prisma/generated/enums";
 import { BadRequestError } from "../../../shared/errors/types/bad-request-error";
 import { ForumPostEntity } from "../entities/forum-post.entity";
 import { ForumTopicEntity } from "../entities/forum-topic.entity";
@@ -69,7 +67,12 @@ describe("UpsertForumVoteUseCase", () => {
 	it("should create a topic vote", async () => {
 		const topic = seedTopic();
 
-		const result = await sut.execute("user-1", "TOPIC" as never, topic.id, "UP" as never);
+		const result = await sut.execute(
+			"user-1",
+			"TOPIC" as never,
+			topic.id,
+			"UP" as never,
+		);
 
 		expect(result.action).toBe("created");
 		expect(result.vote).toHaveProperty("targetId", topic.id);
@@ -81,7 +84,12 @@ describe("UpsertForumVoteUseCase", () => {
 		const topic = seedTopic();
 
 		await sut.execute("user-1", "TOPIC" as never, topic.id, "UP" as never);
-		const result = await sut.execute("user-1", "TOPIC" as never, topic.id, "UP" as never);
+		const result = await sut.execute(
+			"user-1",
+			"TOPIC" as never,
+			topic.id,
+			"UP" as never,
+		);
 
 		expect(result.action).toBe("removed");
 		expect(result.vote).toBeNull();
@@ -93,7 +101,12 @@ describe("UpsertForumVoteUseCase", () => {
 		const topic = seedTopic();
 
 		await sut.execute("user-1", "TOPIC" as never, topic.id, "UP" as never);
-		const result = await sut.execute("user-1", "TOPIC" as never, topic.id, "DOWN" as never);
+		const result = await sut.execute(
+			"user-1",
+			"TOPIC" as never,
+			topic.id,
+			"DOWN" as never,
+		);
 
 		expect(result.action).toBe("updated");
 		expect(result.vote).toHaveProperty("value", "DOWN");
@@ -105,7 +118,12 @@ describe("UpsertForumVoteUseCase", () => {
 		const topic = seedTopic();
 		const post = seedPost(topic.id);
 
-		const result = await sut.execute("user-1", "POST" as never, post.id, "DOWN" as never);
+		const result = await sut.execute(
+			"user-1",
+			"POST" as never,
+			post.id,
+			"DOWN" as never,
+		);
 
 		expect(result.action).toBe("created");
 		expect(result.vote).toHaveProperty("targetId", post.id);

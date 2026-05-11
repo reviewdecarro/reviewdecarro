@@ -4,11 +4,23 @@ import { ForumThreadRow } from "@/components/ForumThreadRow";
 import { Nav } from "@/components/Nav";
 import { ReviewCard } from "@/components/ReviewCard";
 import { SectionHeader } from "@/components/SectionHeader";
-import { threads } from "@/lib/data";
+import { fetchForumTopics } from "@/lib/forum";
 import { fetchPublicReviews } from "@/lib/reviews";
 
 export default async function HomePage() {
 	const reviews = await fetchPublicReviews();
+	const threads = await fetchForumTopics();
+	const featuredThreads = [...threads].sort((a, b) => {
+		if (b.upvotes !== a.upvotes) {
+			return b.upvotes - a.upvotes;
+		}
+
+		if (b.comments !== a.comments) {
+			return b.comments - a.comments;
+		}
+
+		return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+	});
 	const featuredReview = [...reviews].sort((a, b) => {
 		if (b.score !== a.score) {
 			return b.score - a.score;
@@ -79,7 +91,7 @@ export default async function HomePage() {
 							action="Ir para o fórum"
 						/>
 						<div className="flex flex-col">
-							{threads.map((thread) => (
+							{featuredThreads.map((thread) => (
 								<ForumThreadRow key={thread.id} thread={thread} />
 							))}
 						</div>

@@ -39,7 +39,8 @@ export class InMemoryForumPostsRepository extends ForumPostsRepositoryProps {
 	async findByTopicId(topicId: string): Promise<ForumPostEntity[]> {
 		return this.items
 			.filter(
-				(post) => post.topicId === topicId && post.status === ForumPostStatus.PUBLISHED,
+				(post) =>
+					post.topicId === topicId && post.status === ForumPostStatus.PUBLISHED,
 			)
 			.sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
 	}

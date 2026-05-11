@@ -29,9 +29,9 @@ import { GetForumTopicBySlugUseCase } from "src/application/forum/use-cases/get-
 import { ListForumTopicsUseCase } from "src/application/forum/use-cases/list-forum-topics.usecase";
 import { UpsertForumVoteUseCase } from "src/application/forum/use-cases/upsert-forum-vote.usecase";
 import { UserEntity } from "src/application/users/entities/user.entity";
-import { ForumVoteTargetType } from "../../../../../prisma/generated/enums";
 import { IsPublic } from "src/shared/decorators/is-public.decorator";
 import { LoggedInUser } from "src/shared/decorators/logged-in.decorator";
+import { ForumVoteTargetType } from "../../../../../prisma/generated/enums";
 
 @ApiTags("Forum")
 @Controller("forum")

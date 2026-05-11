@@ -1,20 +1,21 @@
 "use client";
 
 import { LoaderCircle } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 import { useAuthSession } from "@/hooks/use-auth-session";
 import { LoginForm } from "./login-form";
 
 export function LoginPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { isLoggedIn, isCheckingSession } = useAuthSession();
 
   useEffect(() => {
     if (isLoggedIn) {
-      router.replace("/");
+      router.replace(searchParams.get("next") || "/");
     }
-  }, [isLoggedIn, router]);
+  }, [isLoggedIn, router, searchParams]);
 
   if (isCheckingSession || isLoggedIn) {
     return (

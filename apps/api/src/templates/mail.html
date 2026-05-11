@@ -1,0 +1,123 @@
+<html lang="pt">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>{title}</title>
+    <style>
+      *,
+      *::after,
+      *::before {
+        margin: 0;
+        padding: 0;
+        outline: 0;
+        border: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        background-color: #fafafa;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      style="
+        padding: 40px;
+        background: #f4f4f4;
+        max-width: 700px;
+        position: relative;
+        margin: auto;
+        -webkit-font-smoothing: antialiased !important;
+        font-size: 16px;
+        font-family: Arial, sans-serif;
+      "
+    >
+      <div
+        style="
+          background: #fff;
+          max-width: 544px;
+          margin: auto;
+          border-radius: 8px;
+          overflow: hidden;
+        "
+      >
+        <header
+          style="
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            max-height: 128px;
+          "
+        >
+          <div
+            style="
+              height: 128px;
+              background-size: cover;
+              width: 100%;
+              min-height: 128px;
+              background-size: cover;
+              background-position: center center;
+            "
+          ></div>
+        </header>
+
+        <div
+          style="
+            padding: 40px 0;
+            position: relative;
+            z-index: 1;
+            @media screen and (max-width: 400px) {
+              padding: 24px;
+            }
+          "
+        >
+          <div style="max-width: 396px; margin: auto">
+            <h1
+              style="
+                font-size: 20px;
+                line-height: 135%;
+                margin-bottom: 24px;
+                margin-top: 40px;
+                color: #000000;
+              "
+            >
+              {title}
+            </h1>
+
+            <p style="margin-bottom: 32px; color: #6b7280; line-height: 1.75">
+              {message}
+            </p>
+
+            <a
+              href="{link}"
+              target="_blank"
+              rel="noreferrer"
+              style="
+                text-decoration: none;
+                cursor: pointer;
+                display: block;
+                text-align: center;
+                background-color: #a86127;
+                color: #fff !important;
+                padding: 12px 16px;
+                border-radius: 999px;
+                margin-bottom: 40px;
+              "
+              >{label}</a
+            >
+          </div>
+        </div>
+      </div>
+      <p
+        style="
+          font-size: 14px;
+          text-align: center;
+          width: 100%;
+          color: #708b84 !important;
+          margin: 40px auto 0;
+        "
+      >
+        Enviado por suporte@papoauto.com.br
+      </p>
+    </div>
+  </body>
+</html>

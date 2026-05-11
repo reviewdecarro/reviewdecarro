@@ -1,10 +1,10 @@
 "use client";
 
 import gfm from "@bytemd/plugin-gfm";
-import { Editor as ByteMdEditor } from "@bytemd/react";
-import { useEffect, useMemo, useRef, useState } from "react";
-import bytemdLocale from "bytemd/locales/pt_BR.json";
 import gfmLocale from "@bytemd/plugin-gfm/locales/pt_BR.json";
+import { Editor as ByteMdEditor } from "@bytemd/react";
+import bytemdLocale from "bytemd/locales/pt_BR.json";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 type MarkdownEditorProps = {
 	value: string;
@@ -17,7 +17,6 @@ type MarkdownEditorProps = {
 export function MarkdownEditor({
 	value,
 	onChange,
-	placeholder = "Escreva em markdown...",
 	maxLength = 20000,
 	height = 320,
 }: MarkdownEditorProps) {
@@ -90,7 +89,6 @@ export function MarkdownEditor({
 				mode="split"
 				locale={bytemdLocale}
 				maxLength={maxLength}
-				placeholder={placeholder}
 				onChange={onChange}
 			/>
 		</div>

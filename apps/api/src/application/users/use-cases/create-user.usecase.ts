@@ -1,6 +1,7 @@
 import { randomUUID } from "node:crypto";
+import { MailProviderProps } from "@infra/providers/email/types/mail-provider.props";
 import { Injectable } from "@nestjs/common";
-import { EmailProviderProps } from "src/infra/providers/email/types/email-provider.props";
+import { env } from "src/env";
 import { HashProviderProps } from "src/infra/providers/hash/types/hash-provider.props";
 import { BadRequestError } from "../../../shared/errors/types/bad-request-error";
 import { CreateUserDto } from "../dtos/create-user.dto";
@@ -17,8 +18,32 @@ export class CreateUserUseCase {
 		private usersRepository: UsersRepositoryProps,
 		private userTokensRepository: UserTokensRepositoryProps,
 		private hashProvider: HashProviderProps,
-		private emailProvider: EmailProviderProps,
+		private mailProvider: MailProviderProps,
 	) {}
+
+	private async sendConfirmationEmail(
+		name: string,
+		email: string,
+		token: string,
+	) {
+		await this.mailProvider.execute({
+			to: { name, email },
+			subject: "Confirmação de conta",
+			templateVariables: {
+				title: "Confirmação de conta!",
+				message: `Olá, ${name}!
+          <br/><br/>
+          Seja bem-vindo(a) ao PapoAuto!
+          <br/><br/>
+          Para confirmar sua conta, clique no botão abaixo. O link irá expirar em 8 horas.
+          <br/><br/>
+          Com atenção,
+          Equipe PapoAuto.`,
+				label: "Confirmar conta",
+				link: `${env.WEB_EMAIL_CONFIRMATION_BASE_URL}?token=${token}`,
+			},
+		});
+	}
 
 	async execute({ username, email, password }: CreateUserDto) {
 		const emailExists = await this.usersRepository.findByEmail(email);
@@ -50,14 +75,7 @@ export class CreateUserUseCase {
 			expiresDate,
 		});
 
-		const baseUrl = process.env.EMAIL_CONFIRMATION_BASE_URL ?? "";
-		const confirmationUrl = `${baseUrl}?token=${refreshToken}`;
-
-		await this.emailProvider.sendEmail({
-			to: user.email,
-			subject: "Confirme seu e-mail",
-			html: `<p>Olá ${user.username},</p><p>Clique <a href="${confirmationUrl}">aqui</a> para confirmar seu e-mail.</p>`,
-		});
+		await this.sendConfirmationEmail(user.username, user.email, refreshToken);
 
 		return UsersMapper.toUserResponseDto(new UserEntity(user));
 	}

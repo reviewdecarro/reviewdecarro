@@ -25,7 +25,11 @@ export class CreateForumPostUseCase {
 				data.parentPostId,
 			);
 
-			if (!parentPost || parentPost.deletedAt || parentPost.topicId !== topicId) {
+			if (
+				!parentPost ||
+				parentPost.deletedAt ||
+				parentPost.topicId !== topicId
+			) {
 				throw new BadRequestError("Parent post not found");
 			}
 		}

@@ -548,7 +548,7 @@ export function NewReviewForm() {
 	if (isCheckingSession) {
 		return (
 			<div
-				className="rounded-2xl border p-6 text-[14px]"
+				className="rounded-2xl border p-8 text-[14px]"
 				style={{
 					background: "var(--surface)",
 					borderColor: "var(--border)",
@@ -563,7 +563,7 @@ export function NewReviewForm() {
 	if (!isLoggedIn || !authUser) {
 		return (
 			<div
-				className="rounded-2xl border p-6"
+				className="rounded-2xl border p-8"
 				style={{
 					background: "var(--surface)",
 					borderColor: "var(--border)",
@@ -622,7 +622,7 @@ export function NewReviewForm() {
 	if (state.status === "success") {
 		return (
 			<div
-				className="rounded-2xl border p-6"
+				className="rounded-2xl border p-8"
 				style={{
 					background: "var(--surface)",
 					borderColor: "var(--border)",
@@ -682,7 +682,7 @@ export function NewReviewForm() {
 	return (
 		<form
 			onSubmit={handleSubmit}
-			className="rounded-2xl border p-6"
+			className="rounded-2xl border p-8"
 			style={{
 				background: "var(--surface)",
 				borderColor: "var(--border)",
@@ -909,6 +909,7 @@ export function NewReviewForm() {
 						}
 						placeholder="Descreva sua experiência com o carro em markdown..."
 						maxLength={MAX_MARKDOWN_LENGTH}
+						height={520}
 					/>
 					<p className="text-[12px]" style={{ color: "var(--text-light)" }}>
 						{payload.content.length}/{MAX_MARKDOWN_LENGTH} caracteres

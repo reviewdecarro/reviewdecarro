@@ -43,7 +43,11 @@ export class GetForumTopicBySlugUseCase {
 	async execute(slug: string) {
 		const topic = await this.forumTopicsRepository.findBySlug(slug);
 
-		if (!topic || topic.deletedAt || topic.status !== ForumTopicStatus.PUBLISHED) {
+		if (
+			!topic ||
+			topic.deletedAt ||
+			topic.status !== ForumTopicStatus.PUBLISHED
+		) {
 			throw new BadRequestError("Forum topic not found");
 		}
 
