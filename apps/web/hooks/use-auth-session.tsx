@@ -14,6 +14,7 @@ import type { AuthUser } from "@/lib/auth";
 type AuthSessionContextValue = {
   authUser: AuthUser | null;
   isLoggedIn: boolean;
+  isAdmin: boolean;
   isCheckingSession: boolean;
   storeAuthUser(user: AuthUser): void;
   removeAuthUser(): void;
@@ -36,9 +37,7 @@ export function AuthSessionProvider({ children }: { children: ReactNode }) {
         });
 
         if (response.status === 401) {
-          if (active) {
-            setAuthUser(null);
-          }
+          if (active) setAuthUser(null);
           return;
         }
 
@@ -47,20 +46,28 @@ export function AuthSessionProvider({ children }: { children: ReactNode }) {
         }
 
         const data = (await response.json()) as {
-          user?: { username: string; email: string } | null;
+          user?: {
+            username: string;
+            email: string;
+            roles?: { name: string }[];
+          } | null;
         };
 
         if (active) {
-          setAuthUser(data.user ?? null);
+          if (data.user) {
+            setAuthUser({
+              username: data.user.username,
+              email: data.user.email,
+              roles: data.user.roles?.map((r) => r.name) ?? [],
+            });
+          } else {
+            setAuthUser(null);
+          }
         }
       } catch {
-        if (active) {
-          setAuthUser(null);
-        }
+        if (active) setAuthUser(null);
       } finally {
-        if (active) {
-          setIsCheckingSession(false);
-        }
+        if (active) setIsCheckingSession(false);
       }
     }
 
@@ -75,6 +82,7 @@ export function AuthSessionProvider({ children }: { children: ReactNode }) {
     () => ({
       authUser,
       isLoggedIn: Boolean(authUser),
+      isAdmin: authUser?.roles?.includes("admin") ?? false,
       isCheckingSession,
       storeAuthUser(user: AuthUser) {
         setAuthUser(user);
