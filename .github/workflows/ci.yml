@@ -27,6 +27,18 @@ jobs:
     env:
       DATABASE_URL: postgresql://postgres:postgres@localhost:5432/reviewdecarro?schema=public
       PYTHON: /usr/bin/python3
+      NODE_ENV: test
+      API_PORT: "3000"
+      WHITELIST_REQUESTS: http://localhost:3001
+      JWT_SECRET: ci-test-jwt-secret
+      WEB_EMAIL_CONFIRMATION_BASE_URL: http://localhost:3001
+      WEB_FORGOT_PASSWORD_URL: http://localhost:3001/forgot-password
+      RESEND_MAIL_KEY: ci-test-resend-key
+      MAIL_SENDER_EMAIL: ci@reviewdecarro.com
+      MAIL_SENDER_NAME: ReviewDeCarro CI
+      SEED_ADMIN_EMAIL: admin@reviewdecarro.com
+      SEED_ADMIN_PASSWORD: Admin123456!
+      WEB_APP_URL: http://localhost:3001
 
     steps:
       - uses: actions/checkout@v4

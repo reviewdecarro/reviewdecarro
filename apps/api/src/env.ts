@@ -43,15 +43,8 @@ const envSchema = z.object({
 const parsedEnv = envSchema.safeParse(process.env);
 
 if (!parsedEnv.success) {
-	console.error(
-		"Environment variables",
-		JSON.stringify(parsedEnv.error.flatten().fieldErrors),
-	);
-
-	// Only exit in non-test environments
-	if (process.env.NODE_ENV !== "test") {
-		process.exit(1);
-	}
+	console.error("Environment variables", z.flattenError(parsedEnv.error));
+	process.exit(1);
 }
 
-export const env = parsedEnv.data || ({} as any);
+export const env = parsedEnv.data as z.infer<typeof envSchema>;

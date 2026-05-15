@@ -41,7 +41,7 @@ export class SendForgotPasswordEmailUseCase {
 		});
 	}
 
-	private async generateToken() {
+	private async generateToken(): Promise<string> {
 		const token = randomUUID();
 		const isExistToken =
 			await this.userTokensRepository.findByRefreshToken(token);
@@ -59,7 +59,7 @@ export class SendForgotPasswordEmailUseCase {
 			throw new NotFoundError("Usuário não encontrado");
 		}
 
-		const refreshToken = this.generateToken();
+		const refreshToken = await this.generateToken();
 		const expiresDate = new Date(
 			Date.now() + TOKEN_EXPIRY_HOURS * 60 * 60 * 1000,
 		);
