@@ -2,7 +2,7 @@ import { type NextRequest, NextResponse } from "next/server";
 
 const AUTH_COOKIE = "papoauto_access_token";
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const hasToken = request.cookies.has(AUTH_COOKIE);
 
