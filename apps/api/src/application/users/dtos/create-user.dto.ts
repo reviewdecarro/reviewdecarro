@@ -19,9 +19,11 @@ export class CreateUserDto {
 }
 
 class RoleDto {
+  @ApiProperty({ example: "uuid-123" })
   @Expose()
   id: string;
 
+  @ApiProperty({ example: "admin" })
   @Expose()
   name: string;
 }
