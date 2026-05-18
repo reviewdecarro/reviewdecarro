@@ -153,13 +153,13 @@ export function ForumPage({ data }: ForumPageProps) {
 							<div
 								className="rounded-xl border px-3 py-3"
 								style={{
-									background: "var(--surface)",
+									background: "var(--bg)",
 									borderColor: "var(--border)",
 								}}
 							>
 								<div
 									className="text-[11px] uppercase tracking-[0.12em]"
-									style={{ color: "var(--text-light)" }}
+									style={{ color: "var(--text-muted)" }}
 								>
 									Tópicos
 								</div>
@@ -173,13 +173,13 @@ export function ForumPage({ data }: ForumPageProps) {
 							<div
 								className="rounded-xl border px-3 py-3"
 								style={{
-									background: "var(--surface)",
+									background: "var(--bg)",
 									borderColor: "var(--border)",
 								}}
 							>
 								<div
 									className="text-[11px] uppercase tracking-[0.12em]"
-									style={{ color: "var(--text-light)" }}
+									style={{ color: "var(--text-muted)" }}
 								>
 									Respostas
 								</div>

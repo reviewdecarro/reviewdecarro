@@ -2,20 +2,141 @@
 @import "tailwindcss";
 
 :root {
+  /* =============================================
+     DESIGN KIT — Raw Palette
+     Source of truth for all color decisions.
+     Do not use these directly in components;
+     use the semantic tokens below instead.
+  ============================================= */
+
+  /* Primary */
+  --palette-primary:      #C8481B; /* Racing Red */
+  --palette-carbon:       #0A0A0A; /* Carbon Black */
+
+  /* Neutral */
+  --palette-white:        #FFFFFF;
+  --palette-neutral-100:  #F5F5F5;
+  --palette-neutral-300:  #D4D4D4;
+  --palette-neutral-500:  #737373;
+  --palette-neutral-700:  #404040;
+  --palette-neutral-900:  #171717;
+
+  /* Accent */
+  --palette-red-dark:     #A03815; /* Red Dark */
+  --palette-red-light:    #E55B2F; /* Red Light */
+  --palette-steel-gray:   #666666; /* Steel Gray */
+  --palette-night-black:  #1A1A1A; /* Night Black */
+
+  /* =============================================
+     SEMANTIC TOKENS — Backgrounds & Surfaces
+  ============================================= */
+  --bg:        var(--palette-white);        /* page background */
+  --surface:   var(--palette-neutral-100);  /* card / panel background */
+  --surface-2: #EBEBEB;                     /* secondary surface — slightly darker than surface */
+
+  /* =============================================
+     SEMANTIC TOKENS — Text
+  ============================================= */
+  --text:       var(--palette-neutral-900); /* primary text */
+  --text-muted: var(--palette-neutral-500); /* secondary / supporting text */
+  --text-light: var(--palette-neutral-300); /* tertiary labels, metadata — ⚠️ low contrast on white; prefer --text-muted for body copy */
+
+  /* =============================================
+     SEMANTIC TOKENS — Border
+  ============================================= */
+  --border: var(--palette-neutral-300);
+
+  /* =============================================
+     SEMANTIC TOKENS — Brand / Accent
+     --accent* kept for backward compat with existing components.
+     --primary* are the canonical new names.
+  ============================================= */
+  --accent:       var(--palette-primary);    /* = --primary */
+  --accent-hover: var(--palette-red-dark);   /* = --primary-hover */
+  --accent-light: var(--palette-red-light);  /* = --palette-red-light */
+  --accent-tint:  rgba(200, 72, 27, 0.08);   /* ultra-light tint for active state backgrounds */
+  --primary:            var(--palette-primary);
+  --primary-foreground: var(--palette-white);
+  --primary-hover:      var(--palette-red-dark);
+  --primary-light:      var(--palette-red-light);
+
+  /* =============================================
+     SEMANTIC TOKENS — Layout
+  ============================================= */
+  --header-background: var(--palette-carbon);
+  --carbon:            var(--palette-carbon);
+
+  /* =============================================
+     SEMANTIC TOKENS — Nav (dark surface)
+  ============================================= */
+  --nav-text:        var(--palette-neutral-300);  /* inactive nav link on dark header */
+  --nav-text-active: var(--palette-white);         /* active nav link on dark header */
+  --nav-border:      rgba(255, 255, 255, 0.08);    /* nav bottom border on dark header */
+  --nav-control-bg:  rgba(255, 255, 255, 0.07);   /* icon buttons / ghost controls on dark header */
+  --nav-control-border: rgba(255, 255, 255, 0.12); /* border for controls on dark header */
+
+  /* =============================================
+     FONT
+  ============================================= */
   --font-dm-sans: "DM Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
-  --bg: #fafaf7;
-  --surface: #ffffff;
-  --surface-2: #f2efe8;
-  --border: #e5e1d9;
-  --text: #1c1a16;
-  --text-muted: #6e6559;
-  --text-light: #a8a096;
-  --accent: oklch(0.58 0.17 38);
-  --accent-hover: oklch(0.52 0.17 38);
-  --accent-light: oklch(0.95 0.04 38);
+
+  /* =============================================
+     FEEDBACK — TODO: not in design kit
+     Replace when the design kit defines these.
+  ============================================= */
+  --success: #22c55e;
+  --warning: #f59e0b;
+  --danger:  #ef4444;
 }
 
 @theme inline {
-  --font-sans: var(--font-dm-sans);
+  --font-sans:    var(--font-dm-sans);
   --font-display: var(--font-dm-sans);
+
+  /* Semantic */
+  --color-bg:           var(--bg);
+  --color-surface:      var(--surface);
+  --color-surface-2:    var(--surface-2);
+  --color-border:       var(--border);
+  --color-text:         var(--text);
+  --color-text-muted:   var(--text-muted);
+  --color-text-light:   var(--text-light);
+  --color-accent:       var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-light: var(--accent-light);
+
+  /* Brand (canonical names) */
+  --color-primary:            var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-hover:      var(--primary-hover);
+  --color-primary-light:      var(--primary-light);
+  --color-accent-tint:        var(--accent-tint);
+  --color-carbon:             var(--carbon);
+  --color-header-background:  var(--header-background);
+
+  /* Nav */
+  --color-nav-text:           var(--nav-text);
+  --color-nav-text-active:    var(--nav-text-active);
+  --color-nav-border:         var(--nav-border);
+  --color-nav-control-bg:     var(--nav-control-bg);
+  --color-nav-control-border: var(--nav-control-border);
+
+  /* Raw palette (direct Tailwind access when needed) */
+  --color-palette-primary:     var(--palette-primary);
+  --color-palette-carbon:      var(--palette-carbon);
+  --color-palette-white:       var(--palette-white);
+  --color-palette-neutral-100: var(--palette-neutral-100);
+  --color-palette-neutral-300: var(--palette-neutral-300);
+  --color-palette-neutral-500: var(--palette-neutral-500);
+  --color-palette-neutral-700: var(--palette-neutral-700);
+  --color-palette-neutral-900: var(--palette-neutral-900);
+  --color-palette-red-dark:    var(--palette-red-dark);
+  --color-palette-red-light:   var(--palette-red-light);
+  --color-palette-steel-gray:  var(--palette-steel-gray);
+  --color-palette-night-black: var(--palette-night-black);
+
+  /* Feedback */
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-danger:  var(--danger);
 }

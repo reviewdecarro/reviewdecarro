@@ -44,7 +44,7 @@ export function ReviewsFilter({ items }: ReviewsFilterProps) {
             className="px-3.5 py-1.5 rounded-lg border text-[13px] font-medium cursor-pointer transition-all duration-150"
             style={{
               background:
-                active === seg ? "var(--accent-light)" : "var(--surface-2)",
+                active === seg ? "var(--accent-tint)" : "var(--surface-2)",
               borderColor: active === seg ? "var(--accent)" : "var(--border)",
               color: active === seg ? "var(--accent)" : "var(--text-muted)",
             }}
@@ -54,7 +54,7 @@ export function ReviewsFilter({ items }: ReviewsFilterProps) {
         ))}
       </div>
 
-      <div className="grid grid-cols-2 gap-5 sm:grid-cols-3">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {filtered.map(({ review, car }) => (
           <ReviewCard key={review.id} review={review} car={car} />
         ))}

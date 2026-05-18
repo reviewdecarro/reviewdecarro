@@ -27,7 +27,7 @@ const ratingLabels: Record<string, string> = {
 
 function RatingStars({ value }: { value: number }) {
   return (
-    <div className="flex items-center gap-1">
+    <div className="flex items-center gap-1" style={{ color: "var(--accent)" }}>
       {Array.from({ length: 5 }, (_, index) => {
         const filled = index < value;
 
@@ -64,7 +64,7 @@ export default async function ReviewPage({ params }: ReviewPageProps) {
     <>
       <Nav />
       <main className="flex-1" style={{ background: "var(--bg)" }}>
-        <div className="max-w-[960px] mx-auto px-6 py-10 flex flex-col gap-8">
+        <div className="max-w-[1100px] mx-auto px-6 py-10 flex flex-col gap-8">
           <section
             className="rounded-2xl border px-5 py-6"
             style={{
@@ -96,7 +96,7 @@ export default async function ReviewPage({ params }: ReviewPageProps) {
 
             <div
               className="flex flex-wrap items-center gap-2 text-[13px] mb-6"
-              style={{ color: "var(--text-light)" }}
+              style={{ color: "var(--text-muted)" }}
             >
               <span className="font-medium" style={{ color: "var(--accent)" }}>
                 {review.author}
@@ -113,7 +113,7 @@ export default async function ReviewPage({ params }: ReviewPageProps) {
                 style={{
                   background: "var(--bg)",
                   borderColor: "var(--border)",
-                  color: "var(--text-light)",
+                  color: "var(--text-muted)",
                 }}
               >
                 <span className="font-medium" style={{ color: "var(--text)" }}>
@@ -234,7 +234,7 @@ export default async function ReviewPage({ params }: ReviewPageProps) {
               </h2>
               <span
                 className="text-[13px]"
-                style={{ color: "var(--text-light)" }}
+                style={{ color: "var(--text-muted)" }}
               >
                 {comments.length} comentários
               </span>
@@ -262,7 +262,7 @@ export default async function ReviewPage({ params }: ReviewPageProps) {
                       </span>
                       <span
                         className="text-[12px]"
-                        style={{ color: "var(--text-light)" }}
+                        style={{ color: "var(--text-muted)" }}
                       >
                         {comment.date}
                       </span>

@@ -60,7 +60,7 @@ export default async function HomePage() {
 					</section>
 
 					<section>
-						<SectionHeader title="Avaliações recentes" action="Ver todas" />
+						<SectionHeader title="Avaliações recentes" action="Ver todas as avaliações" href="/reviews" />
 						{latestReviews.length > 0 ? (
 							<div className="grid grid-cols-2 gap-5 sm:grid-cols-4">
 								{latestReviews.map((review) => (
@@ -89,6 +89,7 @@ export default async function HomePage() {
 						<SectionHeader
 							title="Destaques do fórum"
 							action="Ir para o fórum"
+							href="/forum"
 						/>
 						<div className="flex flex-col">
 							{featuredThreads.map((thread) => (

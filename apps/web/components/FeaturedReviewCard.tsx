@@ -83,7 +83,7 @@ export function FeaturedReviewCard({ review, car }: FeaturedReviewCardProps) {
         </p>
         <div
           className="text-[13px] flex gap-2.5"
-          style={{ color: "var(--text-light)" }}
+          style={{ color: "var(--text-muted)" }}
         >
           <span className="font-medium" style={{ color: "var(--accent)" }}>
             {review.author}

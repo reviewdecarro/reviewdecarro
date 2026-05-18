@@ -1,6 +1,6 @@
 "use client";
 
-import { CarFront, Menu, Search, Settings, UserRound, X } from "lucide-react";
+import { Menu, Search, Settings, UserRound, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
@@ -66,25 +66,20 @@ export function Nav() {
 		<nav
 			className="sticky top-0 z-50 border-b"
 			style={{
-				background: "var(--bg)",
-				borderColor: "var(--border)",
+				background: "var(--header-background)",
+				borderColor: "var(--nav-border)",
 			}}
 		>
 			<div className="max-w-[1100px] mx-auto px-4 sm:px-6">
 				<div className="h-14 flex items-center justify-between gap-3">
-					<Link href="/" className="flex items-center gap-2.5 min-w-0">
-						<div
-							className="w-[30px] h-[30px] rounded-lg flex items-center justify-center flex-shrink-0"
-							style={{ background: "var(--accent)" }}
-						>
-							<CarFront size={18} strokeWidth={2.25} color="white" />
-						</div>
-						<span
-							className="font-display font-extrabold text-[19px] tracking-tight"
-							style={{ color: "var(--text)" }}
-						>
-							PapoAuto
-						</span>
+					<Link href="/" className="flex items-center min-w-0">
+						{/* eslint-disable-next-line @next/next/no-img-element */}
+						<img
+							src="/logos/papo-auto-logo-white.svg"
+							alt="PapoAuto"
+							height={40}
+							style={{ height: 40, width: "auto" }}
+						/>
 					</Link>
 
 					<div className="hidden sm:flex flex-1">
@@ -96,7 +91,7 @@ export function Nav() {
 									href={l.href}
 									className="flex items-center h-[56px] px-3 text-[14px] font-medium transition-colors duration-150"
 									style={{
-										color: active ? "var(--accent)" : "var(--text-muted)",
+										color: active ? "var(--nav-text-active)" : "var(--nav-text)",
 										borderBottom: `2px solid ${active ? "var(--accent)" : "transparent"}`,
 										borderRadius: "6px 6px 0 0",
 									}}
@@ -136,9 +131,9 @@ export function Nav() {
 									aria-expanded={accountMenuOpen}
 									className="inline-flex items-center justify-center w-10 h-10 rounded-lg border cursor-pointer"
 									style={{
-										background: "var(--surface-2)",
-										borderColor: "var(--border)",
-										color: "var(--text-muted)",
+										background: "var(--nav-control-bg)",
+										borderColor: "var(--nav-control-border)",
+										color: "var(--nav-text)",
 									}}
 									onClick={() => setAccountMenuOpen((value) => !value)}
 								>
@@ -199,9 +194,9 @@ export function Nav() {
 									href="/register"
 									className="px-4 py-1.5 rounded-lg border text-[13px] font-medium cursor-pointer"
 									style={{
-										background: "var(--surface-2)",
-										borderColor: "var(--border)",
-										color: "var(--text-muted)",
+										background: "var(--nav-control-bg)",
+										borderColor: "var(--nav-control-border)",
+										color: "var(--nav-text)",
 									}}
 								>
 									Cadastrar
@@ -221,9 +216,9 @@ export function Nav() {
 						type="button"
 						className="sm:hidden inline-flex items-center justify-center w-10 h-10 rounded-lg border"
 						style={{
-							background: "var(--surface-2)",
-							borderColor: "var(--border)",
-							color: "var(--text-muted)",
+							background: "var(--nav-control-bg)",
+							borderColor: "var(--nav-control-border)",
+							color: "var(--nav-text)",
 						}}
 						aria-label={mobileMenuOpen ? "Fechar menu" : "Abrir menu"}
 						aria-expanded={mobileMenuOpen}
@@ -259,7 +254,7 @@ export function Nav() {
 									className="flex items-center justify-between rounded-lg px-3 py-2 text-[14px] font-medium"
 									style={{
 										background: active
-											? "var(--accent-light)"
+											? "var(--accent-tint)"
 											: "var(--surface)",
 										color: active ? "var(--accent)" : "var(--text-muted)",
 										border: `1px solid ${active ? "var(--accent)" : "var(--border)"}`,
