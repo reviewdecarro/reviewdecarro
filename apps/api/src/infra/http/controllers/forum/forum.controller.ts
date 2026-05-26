@@ -17,7 +17,7 @@ import {
 	ApiParam,
 	ApiTags,
 } from "@nestjs/swagger";
-import { Response } from "express";
+import type { Response } from "express";
 import { CreateForumPostDto } from "src/application/forum/dtos/create-forum-post.dto";
 import { CreateForumTopicDto } from "src/application/forum/dtos/create-forum-topic.dto";
 import { UpsertForumVoteDto } from "src/application/forum/dtos/upsert-forum-vote.dto";

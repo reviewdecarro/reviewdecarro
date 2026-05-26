@@ -17,7 +17,7 @@ import {
 	ApiParam,
 	ApiTags,
 } from "@nestjs/swagger";
-import { Response } from "express";
+import type { Response } from "express";
 import { CreateCommentDto } from "src/application/comments/dtos/create-comment.dto";
 import { CreateCommentUseCase } from "src/application/comments/use-cases/create-comment.usecase";
 import { DeleteCommentUseCase } from "src/application/comments/use-cases/delete-comment.usecase";

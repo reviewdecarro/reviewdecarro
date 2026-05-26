@@ -28,7 +28,7 @@ export function ForumPage({ data }: ForumPageProps) {
 
 	return (
 		<div className="max-w-[1100px] mx-auto px-6 py-10">
-			<div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_280px]">
+			<div className="grid gap-8">
 				<section className="w-full">
 					<div className="mb-7">
 						<h1
@@ -119,83 +119,6 @@ export function ForumPage({ data }: ForumPageProps) {
 						) : null}
 					</div>
 				</section>
-
-				<aside className="h-fit">
-					<div
-						className="rounded-2xl border p-5"
-						style={{
-							background:
-								"linear-gradient(180deg, var(--surface) 0%, var(--surface-2) 100%)",
-							borderColor: "var(--border)",
-						}}
-					>
-						<p
-							className="text-[11px] font-semibold uppercase tracking-[0.18em] mb-2"
-							style={{ color: "var(--accent)" }}
-						>
-							Panorama da comunidade
-						</p>
-						<h2
-							className="font-display font-extrabold text-[24px] leading-tight mb-3"
-							style={{ color: "var(--text)" }}
-						>
-							Onde dúvidas de compra viram respostas práticas.
-						</h2>
-						<p
-							className="text-[14px] leading-6 mb-5"
-							style={{ color: "var(--text-muted)" }}
-						>
-							Navegue por relatos de proprietários, compare opiniões e encontre
-							os tópicos mais úteis antes da próxima decisão de garagem.
-						</p>
-
-						<div className="grid grid-cols-2 gap-3">
-							<div
-								className="rounded-xl border px-3 py-3"
-								style={{
-									background: "var(--bg)",
-									borderColor: "var(--border)",
-								}}
-							>
-								<div
-									className="text-[11px] uppercase tracking-[0.12em]"
-									style={{ color: "var(--text-muted)" }}
-								>
-									Tópicos
-								</div>
-								<div
-									className="mt-1 font-display font-extrabold text-[22px]"
-									style={{ color: "var(--text)" }}
-								>
-									{data.threads.length}
-								</div>
-							</div>
-							<div
-								className="rounded-xl border px-3 py-3"
-								style={{
-									background: "var(--bg)",
-									borderColor: "var(--border)",
-								}}
-							>
-								<div
-									className="text-[11px] uppercase tracking-[0.12em]"
-									style={{ color: "var(--text-muted)" }}
-								>
-									Respostas
-								</div>
-								<div
-									className="mt-1 font-display font-extrabold text-[22px]"
-									style={{ color: "var(--text)" }}
-								>
-									{data.threads.reduce(
-										(total, thread) => total + thread.comments,
-										0,
-									)}
-								</div>
-							</div>
-						</div>
-					</div>
-				</aside>
 			</div>
 		</div>
 	);
