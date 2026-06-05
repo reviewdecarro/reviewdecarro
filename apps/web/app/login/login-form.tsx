@@ -2,7 +2,7 @@
 
 import { Eye, EyeOff, Lock, LoaderCircle, Mail } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { type FormEvent, useState } from "react";
 import { API_BASE_URL } from "@/lib/api";
 import { useAuthSession } from "@/hooks/use-auth-session";
@@ -12,11 +12,13 @@ type LoginResponse = {
   user?: {
     username: string;
     email: string;
+    roles?: { name: string }[];
   };
 };
 
 export function LoginForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { storeAuthUser } = useAuthSession();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -58,9 +60,13 @@ export function LoginForm() {
         throw new Error("Resposta de autenticação incompleta.");
       }
 
-      storeAuthUser(data.user);
-
-      router.push("/");
+      storeAuthUser({
+          username: data.user.username,
+          email: data.user.email,
+          roles: data.user.roles?.map((r) => r.name) ?? [],
+        });
+      const next = searchParams.get("next");
+      router.push(next || "/");
     } catch (submitError) {
       setError(
         submitError instanceof Error
@@ -127,8 +133,8 @@ export function LoginForm() {
                 borderColor: "var(--border)",
                 color: "var(--text)",
               }}
-              onFocus={(e) => (e.target.style.borderColor = "var(--accent)")}
-              onBlur={(e) => (e.target.style.borderColor = "var(--border)")}
+              onFocus={(e) => { e.target.style.borderColor = "var(--accent)"; e.target.style.background = "#ffffff"; }}
+              onBlur={(e) => { e.target.style.borderColor = "var(--border)"; e.target.style.background = "var(--surface)"; }}
             />
           </div>
         </div>
@@ -160,8 +166,8 @@ export function LoginForm() {
                 borderColor: "var(--border)",
                 color: "var(--text)",
               }}
-              onFocus={(e) => (e.target.style.borderColor = "var(--accent)")}
-              onBlur={(e) => (e.target.style.borderColor = "var(--border)")}
+              onFocus={(e) => { e.target.style.borderColor = "var(--accent)"; e.target.style.background = "#ffffff"; }}
+              onBlur={(e) => { e.target.style.borderColor = "var(--border)"; e.target.style.background = "var(--surface)"; }}
             />
             <button
               type="button"

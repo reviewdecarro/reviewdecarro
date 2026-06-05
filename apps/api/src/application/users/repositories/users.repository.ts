@@ -8,4 +8,5 @@ export abstract class UsersRepositoryProps {
 	abstract findByUsername(username: string): Promise<UserEntity | null>;
 	abstract confirmEmail(id: string): Promise<void>;
 	abstract updatePassword(id: string, passwordHash: string): Promise<void>;
+	abstract delete(id: string): Promise<void>;
 }

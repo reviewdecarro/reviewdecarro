@@ -548,7 +548,7 @@ export function NewReviewForm() {
 	if (isCheckingSession) {
 		return (
 			<div
-				className="rounded-2xl border p-6 text-[14px]"
+				className="rounded-2xl border p-8 text-[14px]"
 				style={{
 					background: "var(--surface)",
 					borderColor: "var(--border)",
@@ -563,7 +563,7 @@ export function NewReviewForm() {
 	if (!isLoggedIn || !authUser) {
 		return (
 			<div
-				className="rounded-2xl border p-6"
+				className="rounded-2xl border p-8"
 				style={{
 					background: "var(--surface)",
 					borderColor: "var(--border)",
@@ -622,7 +622,7 @@ export function NewReviewForm() {
 	if (state.status === "success") {
 		return (
 			<div
-				className="rounded-2xl border p-6"
+				className="rounded-2xl border p-8"
 				style={{
 					background: "var(--surface)",
 					borderColor: "var(--border)",
@@ -682,7 +682,7 @@ export function NewReviewForm() {
 	return (
 		<form
 			onSubmit={handleSubmit}
-			className="rounded-2xl border p-6"
+			className="rounded-2xl border p-8"
 			style={{
 				background: "var(--surface)",
 				borderColor: "var(--border)",
@@ -883,12 +883,14 @@ export function NewReviewForm() {
 						id="title"
 						value={payload.title}
 						onChange={(event) => updateField("title", event.target.value)}
-						className="rounded-lg border px-3 py-2 text-[14px] outline-none"
+						className="rounded-lg border px-3 py-2 text-[14px] outline-none transition-colors duration-150"
 						style={{
 							background: "var(--bg)",
 							borderColor: "var(--border)",
 							color: "var(--text)",
 						}}
+						onFocus={(e) => { e.target.style.borderColor = "var(--accent)"; e.target.style.background = "#ffffff"; }}
+						onBlur={(e) => { e.target.style.borderColor = "var(--border)"; e.target.style.background = "var(--bg)"; }}
 						required
 						minLength={3}
 					/>
@@ -909,6 +911,7 @@ export function NewReviewForm() {
 						}
 						placeholder="Descreva sua experiência com o carro em markdown..."
 						maxLength={MAX_MARKDOWN_LENGTH}
+						height={520}
 					/>
 					<p className="text-[12px]" style={{ color: "var(--text-light)" }}>
 						{payload.content.length}/{MAX_MARKDOWN_LENGTH} caracteres
@@ -1039,12 +1042,14 @@ export function NewReviewForm() {
 								event.target.value ? Number(event.target.value) : undefined,
 							)
 						}
-						className="rounded-lg border px-3 py-2 text-[14px] outline-none"
+						className="rounded-lg border px-3 py-2 text-[14px] outline-none transition-colors duration-150"
 						style={{
 							background: "var(--bg)",
 							borderColor: "var(--border)",
 							color: "var(--text)",
 						}}
+						onFocus={(e) => { e.target.style.borderColor = "var(--accent)"; e.target.style.background = "#ffffff"; }}
+						onBlur={(e) => { e.target.style.borderColor = "var(--border)"; e.target.style.background = "var(--bg)"; }}
 					/>
 				</div>
 
@@ -1061,12 +1066,14 @@ export function NewReviewForm() {
 							id="pros"
 							value={payload.pros ?? ""}
 							onChange={(event) => updateField("pros", event.target.value)}
-							className="min-h-12 rounded-lg border px-3 py-3 text-[14px] outline-none"
+							className="min-h-12 rounded-lg border px-3 py-3 text-[14px] outline-none transition-colors duration-150"
 							style={{
 								background: "var(--bg)",
 								borderColor: "var(--border)",
 								color: "var(--text)",
 							}}
+							onFocus={(e) => { e.target.style.borderColor = "var(--accent)"; e.target.style.background = "#ffffff"; }}
+							onBlur={(e) => { e.target.style.borderColor = "var(--border)"; e.target.style.background = "var(--bg)"; }}
 						/>
 					</div>
 
@@ -1082,12 +1089,14 @@ export function NewReviewForm() {
 							id="cons"
 							value={payload.cons ?? ""}
 							onChange={(event) => updateField("cons", event.target.value)}
-							className="min-h-12 rounded-lg border px-3 py-3 text-[14px] outline-none"
+							className="min-h-12 rounded-lg border px-3 py-3 text-[14px] outline-none transition-colors duration-150"
 							style={{
 								background: "var(--bg)",
 								borderColor: "var(--border)",
 								color: "var(--text)",
 							}}
+							onFocus={(e) => { e.target.style.borderColor = "var(--accent)"; e.target.style.background = "#ffffff"; }}
+							onBlur={(e) => { e.target.style.borderColor = "var(--border)"; e.target.style.background = "var(--bg)"; }}
 						/>
 					</div>
 
@@ -1106,12 +1115,14 @@ export function NewReviewForm() {
 							placeholder="Ex.: 74.490km"
 							value={payload.kmDriven ?? ""}
 							onChange={(event) => updateField("kmDriven", event.target.value)}
-							className="rounded-lg border px-3 py-2 text-[14px] outline-none"
+							className="rounded-lg border px-3 py-2 text-[14px] outline-none transition-colors duration-150"
 							style={{
 								background: "var(--bg)",
 								borderColor: "var(--border)",
 								color: "var(--text)",
 							}}
+							onFocus={(e) => { e.target.style.borderColor = "var(--accent)"; e.target.style.background = "#ffffff"; }}
+							onBlur={(e) => { e.target.style.borderColor = "var(--border)"; e.target.style.background = "var(--bg)"; }}
 						/>
 					</div>
 				</div>

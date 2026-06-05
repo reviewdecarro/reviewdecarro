@@ -12,7 +12,8 @@
 		"test:e2e": "turbo run test:e2e",
 		"lint": "turbo run lint",
 		"format": "prettier --write \"**/*.{ts,tsx,md}\"",
-		"seeds": "pnpm --filter api exec prisma db seed"
+		"seed": "pnpm --filter api seed",
+		"seeds": "pnpm seed"
 	},
 	"devDependencies": {
 		"@repo/eslint-config": "workspace:*",

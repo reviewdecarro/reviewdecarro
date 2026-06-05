@@ -56,15 +56,51 @@ export type PublicReview = {
 };
 
 export type Thread = {
-  id: number;
+  id: number | string;
+  slug?: string;
   title: string;
   author: string;
   date: string;
   votes: number;
   comments: number;
-  views: string;
-  category: string;
+  views?: string;
+  category?: string;
   body?: string;
+};
+
+export type ForumPost = {
+  id: string;
+  topicId: string;
+  authorId: string;
+  parentPostId: string | null;
+  content: string;
+  upvotes: number;
+  downvotes: number;
+  createdAt: string;
+  updatedAt: string;
+  author: string;
+  date: string;
+  replies: ForumPost[];
+};
+
+export type ForumTopicSummary = {
+  id: string;
+  slug: string;
+  title: string;
+  author: string;
+  date: string;
+  createdAt: string;
+  upvotes: number;
+  votes: number;
+  comments: number;
+  body?: string;
+};
+
+export type ForumTopicDetail = ForumTopicSummary & {
+  content: string;
+  createdAt: string;
+  updatedAt: string;
+  posts: ForumPost[];
 };
 
 export type ForumComment = {

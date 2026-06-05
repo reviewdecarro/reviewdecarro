@@ -1,9 +1,12 @@
+import Link from "next/link";
+
 type SectionHeaderProps = {
   title: string;
   action?: string;
+  href?: string;
 };
 
-export function SectionHeader({ title, action }: SectionHeaderProps) {
+export function SectionHeader({ title, action, href }: SectionHeaderProps) {
   return (
     <div className="mb-4 flex items-center justify-between">
       <h2
@@ -12,7 +15,15 @@ export function SectionHeader({ title, action }: SectionHeaderProps) {
       >
         {title}
       </h2>
-      {action ? (
+      {action && href ? (
+        <Link
+          href={href}
+          className="border-none bg-transparent text-[13px] font-medium"
+          style={{ color: "var(--accent)" }}
+        >
+          {action}
+        </Link>
+      ) : action ? (
         <button
           type="button"
           className="border-none bg-transparent text-[13px] font-medium"

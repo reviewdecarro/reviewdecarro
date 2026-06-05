@@ -1,6 +1,7 @@
 import {
 	Body,
 	Controller,
+	Delete,
 	Get,
 	HttpStatus,
 	Param,
@@ -9,7 +10,9 @@ import {
 } from "@nestjs/common";
 import {
 	ApiBadRequestResponse,
+	ApiBearerAuth,
 	ApiCreatedResponse,
+	ApiNoContentResponse,
 	ApiNotFoundResponse,
 	ApiOkResponse,
 	ApiOperation,
@@ -21,12 +24,16 @@ import { ConfirmEmailDto } from "src/application/users/dtos/confirm-email.dto";
 import { CreateUserDto } from "src/application/users/dtos/create-user.dto";
 import { ForgotPasswordDto } from "src/application/users/dtos/forgot-password.dto";
 import { ResetPasswordDto } from "src/application/users/dtos/reset-password.dto";
+import { UserEntity } from "src/application/users/entities/user.entity";
 import { ConfirmEmailUseCase } from "src/application/users/use-cases/confirm-email.usecase";
 import { CreateUserUseCase } from "src/application/users/use-cases/create-user.usecase";
+import { DeleteAccountUseCase } from "src/application/users/use-cases/delete-account.usecase";
 import { FindUserByUsernameUseCase } from "src/application/users/use-cases/find-user-by-username.usecase";
 import { ResetUserPasswordUseCase } from "src/application/users/use-cases/reset-user-password.usecase";
 import { SendForgotPasswordEmailUseCase } from "src/application/users/use-cases/send-forgot-password-email.usecase";
+import { Roles } from "src/infra/auth/decorators/roles.decorator";
 import { IsPublic } from "src/shared/decorators/is-public.decorator";
+import { LoggedInUser } from "src/shared/decorators/logged-in.decorator";
 import { RegisterUserResponse, ShowProfileResponse } from "./response.props";
 
 @ApiTags("Users")
@@ -38,6 +45,7 @@ export class UsersController {
 		private confirmEmailService: ConfirmEmailUseCase,
 		private sendForgotPasswordEmailService: SendForgotPasswordEmailUseCase,
 		private resetUserPasswordService: ResetUserPasswordUseCase,
+		private deleteAccountService: DeleteAccountUseCase,
 	) {}
 
 	@Post("register")
@@ -97,6 +105,35 @@ export class UsersController {
 		return res.status(HttpStatus.OK).json({
 			message: "Senha redefinida com sucesso.",
 		});
+	}
+
+	@Delete()
+	@ApiBearerAuth()
+	@ApiOperation({ description: "Deletar conta do usuário autenticado" })
+	@ApiNoContentResponse({ description: "Conta deletada com sucesso" })
+	async deleteAccount(
+		@LoggedInUser() user: UserEntity,
+		@Res() res: Response,
+	) {
+		await this.deleteAccountService.execute(user.id);
+
+		return res.status(HttpStatus.NO_CONTENT).send();
+	}
+
+	@Delete(":id")
+	@Roles("admin")
+	@ApiBearerAuth()
+	@ApiOperation({ description: "Deletar conta de qualquer usuário (ADMIN)" })
+	@ApiNoContentResponse({ description: "Conta deletada com sucesso" })
+	@ApiBadRequestResponse({ description: "Usuário não encontrado" })
+	@ApiParam({ name: "id", example: "uuid-123" })
+	async deleteAccountById(
+		@Param("id") id: string,
+		@Res() res: Response,
+	) {
+		await this.deleteAccountService.execute(id);
+
+		return res.status(HttpStatus.NO_CONTENT).send();
 	}
 
 	@Get(":username")

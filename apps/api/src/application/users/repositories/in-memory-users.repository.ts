@@ -53,4 +53,14 @@ export class InMemoryUsersRepository extends UsersRepositoryProps {
 
 		user.passwordHash = passwordHash;
 	}
+
+	async delete(id: string): Promise<void> {
+		const index = this.items.findIndex((item) => item.id === id);
+
+		if (index === -1) {
+			throw new Error("User not found.");
+		}
+
+		this.items.splice(index, 1);
+	}
 }

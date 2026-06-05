@@ -154,7 +154,7 @@ export function ReviewCommentForm({ reviewId }: ReviewCommentFormProps) {
 				placeholder="Escreva seu comentário"
 				maxLength={MAX_MARKDOWN_LENGTH}
 			/>
-			<p className="mt-2 text-[12px]" style={{ color: "var(--text-light)" }}>
+			<p className="mt-2 text-[12px]" style={{ color: "var(--text-muted)" }}>
 				{content.length}/{MAX_MARKDOWN_LENGTH} caracteres
 			</p>
 

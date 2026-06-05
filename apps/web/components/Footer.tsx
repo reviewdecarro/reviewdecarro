@@ -13,12 +13,13 @@ export function Footer() {
     >
       <div className="max-w-[1100px] mx-auto px-6 py-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <div
-            className="font-display font-extrabold text-[18px]"
-            style={{ color: "var(--text)" }}
-          >
-            PapoAuto
-          </div>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/logos/papo-auto-logo-color.svg"
+            alt="PapoAuto"
+            style={{ height: 30, width: "auto" }}
+            className="mb-2"
+          />
           <p className="text-[13px]" style={{ color: "var(--text-muted)" }}>
             Avaliações de carros, discussões no fórum e destaques da comunidade.
           </p>

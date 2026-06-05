@@ -1,4 +1,6 @@
+import { env } from "src/env";
+
 export const jwtConstants = {
-	secret: process.env.JWT_SECRET || "default-secret-change-me",
+	secret: env.JWT_SECRET || "default-secret-change-me",
 	expiresIn: "15m" as const,
 };

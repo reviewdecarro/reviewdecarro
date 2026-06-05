@@ -1,3 +1,9 @@
 import { nestConfig } from "@repo/jest-config";
 
-export default nestConfig;
+export default {
+	...nestConfig,
+	moduleNameMapper: {
+		...nestConfig.moduleNameMapper,
+		"^@infra/(.*)$": "<rootDir>/infra/$1",
+	},
+};
