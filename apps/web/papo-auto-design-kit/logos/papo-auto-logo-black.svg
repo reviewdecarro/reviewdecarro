@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="280" height="80" viewBox="0 0 200 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <g transform="translate(0, 4)">
+    <path d="M40 8C40 5.79086 38.2091 4 36 4H20C17.7909 4 16 5.79086 16 8V24C16 26.2091 17.7909 28 20 28H24L26.6667 34L29.3333 28H36C38.2091 28 40 26.2091 40 24V8Z" fill="#0A0A0A"/>
+    <path d="M22 12H34M22 17H31M22 22H28" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M43 11C44.6569 11 46 12.3431 46 14V20C46 21.6569 44.6569 23 43 23V11Z" fill="#0A0A0A" opacity="1"/>
+  </g>
+  <g transform="translate(60, 0)">
+    <text x="0" y="32" fill="#0A0A0A" style="font-family: system-ui, -apple-system, sans-serif; font-size: 28px; font-weight: 800; letter-spacing: -0.02em">PAPO</text>
+    <text x="0" y="50" fill="#0A0A0A" style="font-family: system-ui, -apple-system, sans-serif; font-size: 20px; font-weight: 700; letter-spacing: 0.15em">AUTO</text>
+  </g>
+</svg>

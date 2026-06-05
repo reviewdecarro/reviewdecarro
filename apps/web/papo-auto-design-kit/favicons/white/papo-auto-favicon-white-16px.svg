@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16" height="16" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="48" height="48" rx="12" fill="#FFFFFF"/>
+  <path d="M32 14C32 12.3431 30.6569 11 29 11H19C17.3431 11 16 12.3431 16 14V26C16 27.6569 17.3431 29 19 29H22L24 34L26 29H29C30.6569 29 32 27.6569 32 26V14Z" fill="#0A0A0A"/>
+  <text x="24" y="26" fill="#FFFFFF" text-anchor="middle" style="font-family: system-ui, -apple-system, sans-serif; font-size: 16px; font-weight: 900">P</text>
+</svg>
