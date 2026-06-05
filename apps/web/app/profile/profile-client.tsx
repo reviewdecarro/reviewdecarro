@@ -11,10 +11,12 @@ import {
   UserRound,
 } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
+import { startTransition, useEffect, useMemo, useState } from "react";
 import { ReviewCard } from "@/components/ReviewCard";
 import { MarkdownViewer } from "@/components/MarkdownViewer";
 import { useAuthSession } from "@/hooks/use-auth-session";
+import { API_BASE_URL } from "@/lib/api";
 import { fetchPublicReviews } from "@/lib/reviews";
 import { comments, threads } from "@/lib/data";
 import type { PublicReview } from "@/types";
@@ -44,9 +46,15 @@ function formatScore(score: number) {
 }
 
 export function ProfileClient() {
-  const { authUser, isCheckingSession, isLoggedIn } = useAuthSession();
+  const router = useRouter();
+  const { authUser, isCheckingSession, isLoggedIn, removeAuthUser } =
+    useAuthSession();
   const [activeTab, setActiveTab] = useState<ProfileTab>("resumo");
   const [liveReviews, setLiveReviews] = useState<PublicReview[]>([]);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [deleteConfirmation, setDeleteConfirmation] = useState("");
+  const [deleteError, setDeleteError] = useState("");
+  const [isDeletingAccount, setIsDeletingAccount] = useState(false);
 
   const userHandle = authUser?.username ?? "";
 
@@ -104,6 +112,54 @@ export function ProfileClient() {
   const recentReviewHref = recentReview?.slug
     ? `/reviews/${recentReview.slug}`
     : null;
+  const isDeleteConfirmationValid =
+    deleteConfirmation.trim() === authUser?.username;
+
+  async function handleDeleteAccount() {
+    if (!authUser) {
+      return;
+    }
+
+    if (!isDeleteConfirmationValid) {
+      setDeleteError(`Digite ${authUser.username} para confirmar a exclusão.`);
+      return;
+    }
+
+    setDeleteError("");
+    setIsDeletingAccount(true);
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/users`, {
+        method: "DELETE",
+        credentials: "include",
+      });
+
+      if (!response.ok) {
+        let message = "Não foi possível excluir sua conta agora.";
+        const contentType = response.headers.get("content-type") ?? "";
+
+        if (contentType.includes("application/json")) {
+          const data = (await response.json()) as { message?: string };
+          message = data.message ?? message;
+        }
+
+        throw new Error(message);
+      }
+
+      removeAuthUser();
+      startTransition(() => {
+        router.push("/");
+      });
+    } catch (deleteAccountError) {
+      setDeleteError(
+        deleteAccountError instanceof Error
+          ? deleteAccountError.message
+          : "Não foi possível excluir sua conta agora.",
+      );
+    } finally {
+      setIsDeletingAccount(false);
+    }
+  }
 
   if (isCheckingSession) {
     return (
@@ -624,6 +680,129 @@ export function ProfileClient() {
           </p>
         </div>
       )}
+
+      <section
+        className="rounded-2xl border p-6"
+        style={{
+          background: "oklch(0.98 0.01 30)",
+          borderColor: "oklch(0.88 0.05 28)",
+        }}
+      >
+        <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
+          <div className="max-w-2xl">
+            <p
+              className="text-[12px] font-semibold uppercase tracking-wide"
+              style={{ color: "oklch(0.52 0.15 28)" }}
+            >
+              Zona de perigo
+            </p>
+            <h2
+              className="mt-2 text-[20px] font-display font-extrabold"
+              style={{ color: "var(--text)" }}
+            >
+              Excluir conta
+            </h2>
+            <p
+              className="mt-2 text-[14px]"
+              style={{ color: "var(--text-muted)" }}
+            >
+              Essa ação remove sua conta permanentemente e encerra sua sessão
+              atual. Não há como desfazer depois.
+            </p>
+          </div>
+
+          <button
+            type="button"
+            onClick={() => {
+              setShowDeleteConfirm((current) => !current);
+              setDeleteError("");
+              setDeleteConfirmation("");
+            }}
+            className="inline-flex items-center justify-center rounded-lg px-4 py-2 text-[14px] font-semibold text-white"
+            style={{ background: "oklch(0.57 0.2 27)" }}
+          >
+            {showDeleteConfirm ? "Cancelar" : "Deletar minha conta"}
+          </button>
+        </div>
+
+        {showDeleteConfirm ? (
+          <div
+            className="mt-5 rounded-2xl border p-5"
+            style={{
+              background: "var(--surface)",
+              borderColor: "oklch(0.88 0.05 28)",
+            }}
+          >
+            <label
+              htmlFor="delete-account-confirmation"
+              className="block text-[13px] font-medium"
+              style={{ color: "var(--text)" }}
+            >
+              Digite <strong>{authUser.username}</strong> para confirmar
+            </label>
+            <input
+              id="delete-account-confirmation"
+              type="text"
+              value={deleteConfirmation}
+              onChange={(event) => setDeleteConfirmation(event.target.value)}
+              className="mt-3 w-full rounded-xl border px-4 py-3 text-[14px] outline-none transition-colors duration-150"
+              style={{
+                background: "var(--bg)",
+                borderColor: "var(--border)",
+                color: "var(--text)",
+              }}
+              placeholder={authUser.username}
+            />
+
+            {deleteError ? (
+              <div
+                className="mt-3 rounded-xl border px-4 py-3 text-[13px]"
+                style={{
+                  background: "oklch(0.97 0.04 25)",
+                  borderColor: "oklch(0.88 0.08 25)",
+                  color: "oklch(0.45 0.17 25)",
+                }}
+              >
+                {deleteError}
+              </div>
+            ) : null}
+
+            <div className="mt-4 flex flex-wrap gap-3">
+              <button
+                type="button"
+                onClick={() => {
+                  setShowDeleteConfirm(false);
+                  setDeleteError("");
+                  setDeleteConfirmation("");
+                }}
+                className="rounded-lg border px-4 py-2 text-[14px] font-semibold"
+                style={{
+                  borderColor: "var(--border)",
+                  color: "var(--text-muted)",
+                }}
+              >
+                Manter conta
+              </button>
+              <button
+                type="button"
+                onClick={handleDeleteAccount}
+                disabled={isDeletingAccount}
+                className="inline-flex items-center gap-2 rounded-lg px-4 py-2 text-[14px] font-semibold text-white disabled:cursor-not-allowed disabled:opacity-70"
+                style={{ background: "oklch(0.57 0.2 27)" }}
+              >
+                {isDeletingAccount ? (
+                  <>
+                    <LoaderCircle size={16} className="animate-spin" />
+                    Excluindo conta...
+                  </>
+                ) : (
+                  "Confirmar exclusão"
+                )}
+              </button>
+            </div>
+          </div>
+        ) : null}
+      </section>
     </div>
   );
 }

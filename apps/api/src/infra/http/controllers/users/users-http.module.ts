@@ -2,6 +2,7 @@ import { Module } from "@nestjs/common";
 import { AssignRoleUseCase } from "src/application/roles/use-cases/assign-role.usecase";
 import { ConfirmEmailUseCase } from "src/application/users/use-cases/confirm-email.usecase";
 import { CreateUserUseCase } from "src/application/users/use-cases/create-user.usecase";
+import { DeleteAccountUseCase } from "src/application/users/use-cases/delete-account.usecase";
 import { FindUserByUsernameUseCase } from "src/application/users/use-cases/find-user-by-username.usecase";
 import { ResetUserPasswordUseCase } from "src/application/users/use-cases/reset-user-password.usecase";
 import { SendForgotPasswordEmailUseCase } from "src/application/users/use-cases/send-forgot-password-email.usecase";
@@ -20,6 +21,7 @@ import { UsersController } from "./users.controller";
 		ConfirmEmailUseCase,
 		SendForgotPasswordEmailUseCase,
 		ResetUserPasswordUseCase,
+		DeleteAccountUseCase,
 	],
 })
 export class UsersHttpModule {}

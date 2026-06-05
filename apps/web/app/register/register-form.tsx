@@ -169,12 +169,8 @@ export function RegisterForm() {
                     : "var(--border)",
                   color: "var(--text)",
                 }}
-                onFocus={(e) => (e.target.style.borderColor = "var(--accent)")}
-                onBlur={(e) =>
-                  (e.target.style.borderColor = errors.username
-                    ? "oklch(0.60 0.17 28)"
-                    : "var(--border)")
-                }
+                onFocus={(e) => { e.target.style.borderColor = "var(--accent)"; e.target.style.background = "#ffffff"; }}
+                onBlur={(e) => { e.target.style.borderColor = errors.username ? "oklch(0.60 0.17 28)" : "var(--border)"; e.target.style.background = "var(--surface)"; }}
               />
             </div>
             {errors.username && (
@@ -216,12 +212,8 @@ export function RegisterForm() {
                     : "var(--border)",
                   color: "var(--text)",
                 }}
-                onFocus={(e) => (e.target.style.borderColor = "var(--accent)")}
-                onBlur={(e) =>
-                  (e.target.style.borderColor = errors.email
-                    ? "oklch(0.60 0.17 28)"
-                    : "var(--border)")
-                }
+                onFocus={(e) => { e.target.style.borderColor = "var(--accent)"; e.target.style.background = "#ffffff"; }}
+                onBlur={(e) => { e.target.style.borderColor = errors.email ? "oklch(0.60 0.17 28)" : "var(--border)"; e.target.style.background = "var(--surface)"; }}
               />
             </div>
             {errors.email && (
@@ -263,12 +255,8 @@ export function RegisterForm() {
                     : "var(--border)",
                   color: "var(--text)",
                 }}
-                onFocus={(e) => (e.target.style.borderColor = "var(--accent)")}
-                onBlur={(e) =>
-                  (e.target.style.borderColor = errors.password
-                    ? "oklch(0.60 0.17 28)"
-                    : "var(--border)")
-                }
+                onFocus={(e) => { e.target.style.borderColor = "var(--accent)"; e.target.style.background = "#ffffff"; }}
+                onBlur={(e) => { e.target.style.borderColor = errors.password ? "oklch(0.60 0.17 28)" : "var(--border)"; e.target.style.background = "var(--surface)"; }}
               />
               <button
                 type="button"

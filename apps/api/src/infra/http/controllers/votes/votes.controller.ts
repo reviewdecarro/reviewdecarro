@@ -16,7 +16,7 @@ import {
 	ApiParam,
 	ApiTags,
 } from "@nestjs/swagger";
-import { Response } from "express";
+import type { Response } from "express";
 import { UserEntity } from "src/application/users/entities/user.entity";
 import { UpsertVoteDto } from "src/application/votes/dtos/upsert-vote.dto";
 import { DeleteVoteUseCase } from "src/application/votes/use-cases/delete-vote.usecase";

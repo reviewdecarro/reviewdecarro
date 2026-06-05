@@ -1,4 +1,4 @@
-import { FeaturedReviewCard } from "@/components/FeaturedReviewCard";
+import { EditorsPick } from "@/components/EditorsPick";
 import { Footer } from "@/components/Footer";
 import { ForumThreadRow } from "@/components/ForumThreadRow";
 import { Nav } from "@/components/Nav";
@@ -36,31 +36,19 @@ export default async function HomePage() {
 		<>
 			<Nav />
 			<main className="flex-1" style={{ background: "var(--bg)" }}>
-				<div className="max-w-[1100px] mx-auto px-6 py-10 flex flex-col gap-14">
-					<section>
-						<SectionHeader title="Escolha do editor" />
-						{featuredReview ? (
-							<FeaturedReviewCard review={featuredReview} />
-						) : (
-							<div
-								className="rounded-2xl border px-5 py-6"
-								style={{
-									background: "var(--surface)",
-									borderColor: "var(--border)",
-								}}
-							>
-								<p
-									className="text-[14px]"
-									style={{ color: "var(--text-muted)" }}
-								>
-									Ainda não há avaliações publicadas.
-								</p>
-							</div>
-						)}
-					</section>
+				<div className="container mx-auto px-6 py-10 flex flex-col gap-14">
+					{featuredReview && (
+						<section>
+							<EditorsPick review={featuredReview} />
+						</section>
+					)}
 
 					<section>
-						<SectionHeader title="Avaliações recentes" action="Ver todas" />
+						<SectionHeader
+							title="Avaliações recentes"
+							action="Ver todas as avaliações"
+							href="/reviews"
+						/>
 						{latestReviews.length > 0 ? (
 							<div className="grid grid-cols-2 gap-5 sm:grid-cols-4">
 								{latestReviews.map((review) => (
@@ -89,6 +77,7 @@ export default async function HomePage() {
 						<SectionHeader
 							title="Destaques do fórum"
 							action="Ir para o fórum"
+							href="/forum"
 						/>
 						<div className="flex flex-col">
 							{featuredThreads.map((thread) => (

@@ -76,4 +76,8 @@ export class PrismaUsersRepository implements UsersRepositoryProps {
 			data: { passwordHash },
 		});
 	}
+
+	async delete(id: string): Promise<void> {
+		await this.prisma.user.delete({ where: { id } });
+	}
 }
