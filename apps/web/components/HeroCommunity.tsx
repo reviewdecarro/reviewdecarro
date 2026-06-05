@@ -26,7 +26,7 @@ export function HeroCommunity() {
 					/>
 					<Link
 						href="/reviews/new"
-						className="flex items-center justify-center gap-2 px-8 py-4 bg-[#E84E27] hover:bg-[#d44522] text-white font-bold rounded-lg transition-all shadow-lg hover:shadow-xl whitespace-nowrap"
+						className="flex items-center justify-center gap-2 px-8 py-4 bg-[#E84E27] text-white font-bold rounded-lg transition-all shadow-lg hover:shadow-xl hover:brightness-90 whitespace-nowrap"
 					>
 						+ Criar tópico
 					</Link>

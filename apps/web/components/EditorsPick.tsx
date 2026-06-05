@@ -83,7 +83,7 @@ export function EditorsPick({ review }: EditorsPickProps) {
 				{/* CTA */}
 				<Link
 					href={href}
-					className="self-start inline-flex items-center gap-2 px-5 py-3 rounded-lg text-sm font-semibold transition-colors"
+					className="self-start inline-flex items-center gap-2 px-5 py-3 rounded-lg text-sm font-semibold transition-all hover:brightness-90"
 					style={{ background: "var(--accent)", color: "var(--palette-white)" }}
 				>
 					Ler avaliação completa →

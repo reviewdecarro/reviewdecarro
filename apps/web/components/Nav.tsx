@@ -203,7 +203,7 @@ export function Nav() {
 								</Link>
 								<Link
 									href="/login"
-									className="rounded-xl px-6 py-2 text-[16px] font-semibold text-white shadow-sm transition-colors duration-150 cursor-pointer"
+									className="rounded-xl px-6 py-2 text-[16px] font-semibold text-white shadow-sm transition-all duration-150 cursor-pointer hover:brightness-90"
 									style={{ background: "var(--accent)" }}
 								>
 									Entrar
@@ -345,7 +345,7 @@ export function Nav() {
 								<Link
 									href="/login"
 									onClick={() => setMobileMenuOpen(false)}
-									className="flex items-center justify-center rounded-lg border-none px-3 py-2 text-[13px] font-semibold text-white"
+									className="flex items-center justify-center rounded-lg border-none px-3 py-2 text-[13px] font-semibold text-white transition-all hover:brightness-90"
 									style={{ background: "var(--accent)" }}
 								>
 									Entrar
