@@ -36,7 +36,7 @@ export default async function HomePage() {
 		<>
 			<Nav />
 			<main className="flex-1" style={{ background: "var(--bg)" }}>
-				<div className="max-w-[1100px] mx-auto px-6 py-10 flex flex-col gap-14">
+				<div className="container mx-auto px-6 py-10 flex flex-col gap-14">
 					{featuredReview && (
 						<section>
 							<EditorsPick review={featuredReview} />
@@ -44,7 +44,11 @@ export default async function HomePage() {
 					)}
 
 					<section>
-						<SectionHeader title="Avaliações recentes" action="Ver todas as avaliações" href="/reviews" />
+						<SectionHeader
+							title="Avaliações recentes"
+							action="Ver todas as avaliações"
+							href="/reviews"
+						/>
 						{latestReviews.length > 0 ? (
 							<div className="grid grid-cols-2 gap-5 sm:grid-cols-4">
 								{latestReviews.map((review) => (
