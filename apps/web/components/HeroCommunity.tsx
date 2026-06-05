@@ -22,6 +22,7 @@ export function HeroCommunity() {
 
         <div className="w-full flex flex-col sm:flex-row gap-3 mt-5">
           <input
+            aria-label="Buscar avaliações"
             type="text"
             placeholder="Buscar por marca, modelo ou categoria..."
             className="flex-1 rounded-xl px-4 py-3 text-sm outline-none border"
