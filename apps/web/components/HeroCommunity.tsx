@@ -11,7 +11,7 @@ export function HeroCommunity() {
           className="font-display font-extrabold text-4xl sm:text-5xl leading-tight"
           style={{ color: "var(--palette-white)" }}
         >
-          Avaliações da Comunidade
+          Fórum da comunidade
         </h1>
         <p
           className="text-base sm:text-lg"
@@ -25,20 +25,11 @@ export function HeroCommunity() {
             aria-label="Buscar avaliações"
             type="text"
             placeholder="Buscar por marca, modelo ou categoria..."
-            className="flex-1 rounded-xl px-4 py-3 text-sm outline-none border"
-            style={{
-              background: "var(--hero-input-bg)",
-              borderColor: "rgba(255,255,255,0.12)",
-              color: "var(--palette-white)",
-            }}
+            className="w-full pl-12 pr-4 py-4 bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#E84E27] focus:border-transparent"
           />
           <Link
             href="/reviews/new"
-            className="inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold whitespace-nowrap transition-colors"
-            style={{
-              background: "var(--accent)",
-              color: "var(--palette-white)",
-            }}
+            className="flex items-center justify-center gap-2 px-8 py-4 bg-[#E84E27] hover:bg-[#d44522] text-white font-bold rounded-lg transition-all shadow-lg hover:shadow-xl whitespace-nowrap"
           >
             + Nova avaliação
           </Link>
