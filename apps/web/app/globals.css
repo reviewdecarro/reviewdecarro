@@ -35,6 +35,12 @@
   --surface-2: #EBEBEB;                     /* secondary surface — slightly darker than surface */
 
   /* =============================================
+     SEMANTIC TOKENS — Hero
+  ============================================= */
+  --hero-bg:       #152035; /* Navy escuro do hero da homepage */
+  --hero-input-bg: #1e2f45; /* Input dentro do hero — ligeiramente mais claro */
+
+  /* =============================================
      SEMANTIC TOKENS — Text
   ============================================= */
   --text:       var(--palette-neutral-900); /* primary text */
@@ -63,17 +69,17 @@
   /* =============================================
      SEMANTIC TOKENS — Layout
   ============================================= */
-  --header-background: var(--palette-carbon);
+  --header-background: var(--palette-white);
   --carbon:            var(--palette-carbon);
 
   /* =============================================
-     SEMANTIC TOKENS — Nav (dark surface)
+     SEMANTIC TOKENS — Nav (light surface)
   ============================================= */
-  --nav-text:        var(--palette-neutral-300);  /* inactive nav link on dark header */
-  --nav-text-active: var(--palette-white);         /* active nav link on dark header */
-  --nav-border:      rgba(255, 255, 255, 0.08);    /* nav bottom border on dark header */
-  --nav-control-bg:  rgba(255, 255, 255, 0.07);   /* icon buttons / ghost controls on dark header */
-  --nav-control-border: rgba(255, 255, 255, 0.12); /* border for controls on dark header */
+  --nav-text:        var(--palette-neutral-700);
+  --nav-text-active: var(--palette-neutral-900);
+  --nav-border:      var(--palette-neutral-300);
+  --nav-control-bg:  var(--palette-white);
+  --nav-control-border: var(--palette-neutral-300);
 
   /* =============================================
      FONT
@@ -113,6 +119,8 @@
   --color-accent-tint:        var(--accent-tint);
   --color-carbon:             var(--carbon);
   --color-header-background:  var(--header-background);
+  --color-hero-bg:       var(--hero-bg);
+  --color-hero-input-bg: var(--hero-input-bg);
 
   /* Nav */
   --color-nav-text:           var(--nav-text);
