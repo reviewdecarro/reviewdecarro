@@ -4,8 +4,9 @@
   "testEnvironment": "node",
   "testRegex": ".e2e-spec.ts$",
   "transform": {
-    "^.+\\.(t|j)s$": "ts-jest"
+    "^.+\\.(t|j)s$": ["ts-jest", { "tsconfig": "<rootDir>/../tsconfig.json" }]
   },
+  "setupFiles": ["reflect-metadata"],
   "moduleNameMapper": {
     "^src/(.*)$": "<rootDir>/../src/$1",
     "^@infra/(.*)$": "<rootDir>/../src/infra/$1"
