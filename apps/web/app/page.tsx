@@ -1,6 +1,7 @@
 import { FeaturedReviewCard } from "@/components/FeaturedReviewCard";
 import { Footer } from "@/components/Footer";
 import { ForumThreadRow } from "@/components/ForumThreadRow";
+import { HeroCommunity } from "@/components/HeroCommunity";
 import { Nav } from "@/components/Nav";
 import { ReviewCard } from "@/components/ReviewCard";
 import { SectionHeader } from "@/components/SectionHeader";
@@ -35,6 +36,7 @@ export default async function HomePage() {
 	return (
 		<>
 			<Nav />
+			<HeroCommunity />
 			<main className="flex-1" style={{ background: "var(--bg)" }}>
 				<div className="max-w-[1100px] mx-auto px-6 py-10 flex flex-col gap-14">
 					<section>
