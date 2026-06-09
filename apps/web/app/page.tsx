@@ -75,37 +75,41 @@ export default async function HomePage() {
 							</div>
 						)}
 					</section>
+				</div>
 
-					<section className="bg-gray-50 rounded-2xl px-6 py-8 -mx-6">
-						<SectionHeader
-							title="Discussões em Alta"
-							action="Ver todas →"
-							href="/forum"
-							icon={<MessageSquare size={24} style={{ color: "var(--accent)" }} />}
-						/>
-						{topDiscussions.length > 0 ? (
-							<div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-								{topDiscussions.map((thread) => (
-									<DiscussionCard key={thread.id} thread={thread} />
-								))}
-							</div>
-						) : (
-							<div
-								className="rounded-xl border px-5 py-6"
-								style={{
-									background: "var(--surface)",
-									borderColor: "var(--border)",
-								}}
-							>
-								<p
-									className="text-[14px]"
-									style={{ color: "var(--text-muted)" }}
+				<div className="w-full bg-gray-50 py-12">
+					<div className="container mx-auto px-6">
+						<section>
+							<SectionHeader
+								title="Discussões em Alta"
+								action="Ver todas →"
+								href="/forum"
+								icon={<MessageSquare size={24} style={{ color: "var(--accent)" }} />}
+							/>
+							{topDiscussions.length > 0 ? (
+								<div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+									{topDiscussions.map((thread) => (
+										<DiscussionCard key={thread.id} thread={thread} />
+									))}
+								</div>
+							) : (
+								<div
+									className="rounded-xl border px-5 py-6"
+									style={{
+										background: "var(--surface)",
+										borderColor: "var(--border)",
+									}}
 								>
-									Ainda não há discussões em alta.
-								</p>
-							</div>
-						)}
-					</section>
+									<p
+										className="text-[14px]"
+										style={{ color: "var(--text-muted)" }}
+									>
+										Ainda não há discussões em alta.
+									</p>
+								</div>
+							)}
+						</section>
+					</div>
 				</div>
 			</main>
 			<Footer />
