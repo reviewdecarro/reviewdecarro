@@ -21,7 +21,9 @@ export function DiscussionCard({ thread }: DiscussionCardProps) {
       className="block rounded-xl p-4 transition-all duration-200"
       style={{
         background: "var(--surface)",
-        border: "1px solid var(--border)",
+        borderTop: "1px solid var(--border)",
+        borderRight: "1px solid var(--border)",
+        borderBottom: "1px solid var(--border)",
         borderLeft: "4px solid var(--accent)",
         boxShadow: hovered ? "0 6px 24px rgba(0,0,0,0.10)" : "none",
         transform: hovered ? "translateY(-2px)" : "none",

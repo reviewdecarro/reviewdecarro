@@ -1,10 +1,11 @@
+import type { ReactNode } from "react";
 import Link from "next/link";
 
 type SectionHeaderProps = {
   title: string;
   action?: string;
   href?: string;
-  icon?: React.ReactNode;
+  icon?: ReactNode;
 };
 
 export function SectionHeader({ title, action, href, icon }: SectionHeaderProps) {

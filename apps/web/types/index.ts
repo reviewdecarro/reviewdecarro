@@ -94,6 +94,7 @@ export type ForumTopicSummary = {
   votes: number;
   comments: number;
   body?: string;
+  category?: string;
 };
 
 export type ForumTopicDetail = ForumTopicSummary & {
