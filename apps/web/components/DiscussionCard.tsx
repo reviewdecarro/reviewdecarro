@@ -70,7 +70,7 @@ export function DiscussionCard({ thread }: DiscussionCardProps) {
         className="flex items-center gap-1.5 text-xs flex-wrap"
         style={{ color: "var(--text-muted)" }}
       >
-        <span className="text-gray-700">{thread.author}</span>
+        <span className="text-gray-700 font-semibold">{thread.author}</span>
         <span>·</span>
         <Clock size={12} strokeWidth={1.8} />
         <span>{thread.date}</span>

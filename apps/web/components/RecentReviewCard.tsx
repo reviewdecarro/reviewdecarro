@@ -66,7 +66,7 @@ export function RecentReviewCard({ review }: RecentReviewCardProps) {
         className="flex items-center gap-1.5 text-xs flex-wrap"
         style={{ color: "var(--text-muted)" }}
       >
-        <span className="text-gray-700">{review.author}</span>
+        <span className="text-gray-700 font-semibold">{review.author}</span>
         <span>·</span>
         <span>{review.date}</span>
         <span>·</span>
