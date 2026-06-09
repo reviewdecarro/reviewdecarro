@@ -24,9 +24,9 @@ export function RecentReviewCard({ review }: RecentReviewCardProps) {
       href={href}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      className="block rounded-xl p-4 transition-all duration-200"
+      className="block rounded-xl p-5 transition-all duration-200"
       style={{
-        background: "var(--surface)",
+        background: "var(--palette-white)",
         border: "1px solid var(--border)",
         boxShadow: hovered ? "0 6px 24px rgba(0,0,0,0.10)" : "none",
         transform: hovered ? "translateY(-2px)" : "none",
@@ -35,8 +35,8 @@ export function RecentReviewCard({ review }: RecentReviewCardProps) {
       {/* Linha superior: nome do veículo + score inline */}
       <div className="flex items-start justify-between gap-2 mb-2">
         <span
-          className="font-bold text-sm leading-snug"
-          style={{ color: "var(--text)" }}
+          className="font-bold text-sm leading-snug transition-colors duration-200"
+          style={{ color: hovered ? "var(--accent)" : "var(--text)" }}
         >
           {carName}
         </span>
