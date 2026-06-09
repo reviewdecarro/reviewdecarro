@@ -76,7 +76,7 @@ export default async function HomePage() {
 						)}
 					</section>
 
-					<section>
+					<section className="bg-gray-50 rounded-2xl px-6 py-8 -mx-6">
 						<SectionHeader
 							title="Discussões em Alta"
 							action="Ver todas →"

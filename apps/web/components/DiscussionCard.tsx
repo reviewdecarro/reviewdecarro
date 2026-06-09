@@ -18,9 +18,9 @@ export function DiscussionCard({ thread }: DiscussionCardProps) {
       href={`/forum/${thread.slug}`}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      className="block rounded-xl p-4 transition-all duration-200"
+      className="block rounded-xl p-6 transition-all duration-200"
       style={{
-        background: "var(--surface)",
+        background: "var(--palette-white)",
         borderTop: "1px solid var(--border)",
         borderRight: "1px solid var(--border)",
         borderBottom: "1px solid var(--border)",
