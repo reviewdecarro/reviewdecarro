@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Footer } from "@/components/Footer";
 import { AdminClient } from "./admin-client";
 
 export const metadata: Metadata = {
@@ -14,7 +13,6 @@ export default function AdminPage() {
           <AdminClient />
         </div>
       </main>
-      <Footer />
     </>
   );
 }

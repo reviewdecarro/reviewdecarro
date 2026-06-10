@@ -1,4 +1,3 @@
-import { Footer } from "@/components/Footer";
 import { NewReviewForm } from "./new-review-form";
 
 export default function NewReviewPage() {
@@ -27,7 +26,6 @@ export default function NewReviewPage() {
           <NewReviewForm />
         </div>
       </main>
-      <Footer />
     </>
   );
 }

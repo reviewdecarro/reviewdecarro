@@ -1,4 +1,3 @@
-import { Footer } from "@/components/Footer";
 import { fetchPublicReviews } from "@/lib/reviews";
 import { FeaturedReviewBanner } from "./FeaturedReviewBanner";
 import { ReviewsFilter } from "./ReviewsFilter";
@@ -47,7 +46,6 @@ export default async function ReviewsPage() {
 					)}
 				</div>
 			</main>
-			<Footer />
 		</>
 	);
 }

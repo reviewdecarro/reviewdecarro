@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Footer } from "@/components/Footer";
 import { ProfileClient } from "./profile-client";
 
 export const metadata: Metadata = {
@@ -14,7 +13,6 @@ export default function ProfilePage() {
           <ProfileClient />
         </div>
       </main>
-      <Footer />
     </>
   );
 }

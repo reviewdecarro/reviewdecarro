@@ -1,4 +1,3 @@
-import { Footer } from "@/components/Footer";
 import { NewThreadForm } from "./new-thread-form";
 
 export default function NewForumThreadPage() {
@@ -26,7 +25,6 @@ export default function NewForumThreadPage() {
           <NewThreadForm />
         </div>
       </main>
-      <Footer />
     </>
   );
 }

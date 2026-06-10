@@ -1,6 +1,5 @@
 import { notFound } from "next/navigation";
 import { Star } from "lucide-react";
-import { Footer } from "@/components/Footer";
 import { MarkdownViewer } from "@/components/MarkdownViewer";
 import { ScoreBadge } from "@/components/ScoreBadge";
 import { TagBadge } from "@/components/TagBadge";
@@ -288,7 +287,6 @@ export default async function ReviewPage({ params }: ReviewPageProps) {
           </section>
         </div>
       </main>
-      <Footer />
     </>
   );
 }

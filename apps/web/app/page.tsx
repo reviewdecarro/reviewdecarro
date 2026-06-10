@@ -2,7 +2,6 @@ import { MessageSquare } from "lucide-react";
 import { CtaSection } from "@/components/CtaSection";
 import { DiscussionCard } from "@/components/DiscussionCard";
 import { EditorsPick } from "@/components/EditorsPick";
-import { Footer } from "@/components/Footer";
 import { RecentReviewCard } from "@/components/RecentReviewCard";
 import { SectionHeader } from "@/components/SectionHeader";
 import { fetchForumTopics } from "@/lib/forum";
@@ -116,7 +115,6 @@ export default async function HomePage() {
 				</div>
 			<CtaSection />
 			</main>
-			<Footer />
 		</>
 	);
 }
