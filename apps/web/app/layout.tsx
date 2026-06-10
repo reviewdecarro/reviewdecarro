@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { Nav } from "@/components/Nav";
 import { TopLoader } from "@/components/TopLoader";
 import { AuthSessionProvider } from "@/hooks/use-auth-session";
 
@@ -17,7 +18,10 @@ export default function RootLayout({
 		<html lang="pt-BR">
 			<body className="min-h-screen flex flex-col font-sans">
 				<TopLoader />
-				<AuthSessionProvider>{children}</AuthSessionProvider>
+				<AuthSessionProvider>
+					<Nav />
+					{children}
+				</AuthSessionProvider>
 			</body>
 		</html>
 	);

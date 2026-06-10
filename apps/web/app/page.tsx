@@ -3,7 +3,6 @@ import { CtaSection } from "@/components/CtaSection";
 import { DiscussionCard } from "@/components/DiscussionCard";
 import { EditorsPick } from "@/components/EditorsPick";
 import { Footer } from "@/components/Footer";
-import { Nav } from "@/components/Nav";
 import { RecentReviewCard } from "@/components/RecentReviewCard";
 import { SectionHeader } from "@/components/SectionHeader";
 import { fetchForumTopics } from "@/lib/forum";
@@ -37,7 +36,6 @@ export default async function HomePage() {
 
 	return (
 		<>
-			<Nav />
 			<main className="flex-1" style={{ background: "var(--bg)" }}>
 				<div className="container mx-auto px-6 py-12 md:py-16 flex flex-col gap-14">
 					{featuredReview && (

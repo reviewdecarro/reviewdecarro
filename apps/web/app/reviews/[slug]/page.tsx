@@ -2,7 +2,6 @@ import { notFound } from "next/navigation";
 import { Star } from "lucide-react";
 import { Footer } from "@/components/Footer";
 import { MarkdownViewer } from "@/components/MarkdownViewer";
-import { Nav } from "@/components/Nav";
 import { ScoreBadge } from "@/components/ScoreBadge";
 import { TagBadge } from "@/components/TagBadge";
 import { fetchReviewBySlug, fetchReviewComments } from "@/lib/reviews";
@@ -62,7 +61,6 @@ export default async function ReviewPage({ params }: ReviewPageProps) {
 
   return (
     <>
-      <Nav />
       <main className="flex-1" style={{ background: "var(--bg)" }}>
         <div className="max-w-[1100px] mx-auto px-6 py-10 flex flex-col gap-8">
           <section
