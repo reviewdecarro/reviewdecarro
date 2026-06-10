@@ -1,3 +1,5 @@
+import { MessageSquare } from "lucide-react";
+import { CtaSection } from "@/components/CtaSection";
 import { DiscussionCard } from "@/components/DiscussionCard";
 import { EditorsPick } from "@/components/EditorsPick";
 import { Footer } from "@/components/Footer";
@@ -6,7 +8,6 @@ import { RecentReviewCard } from "@/components/RecentReviewCard";
 import { SectionHeader } from "@/components/SectionHeader";
 import { fetchForumTopics } from "@/lib/forum";
 import { fetchPublicReviews } from "@/lib/reviews";
-import { MessageSquare } from "lucide-react";
 
 export default async function HomePage() {
 	const reviews = await fetchPublicReviews();
@@ -50,10 +51,12 @@ export default async function HomePage() {
 							title="Avaliações Recentes"
 							action="Ver todas →"
 							href="/reviews"
-							icon={<span className="text-yellow-400 text-2xl leading-none">★</span>}
+							icon={
+								<span className="text-yellow-400 text-2xl leading-none">★</span>
+							}
 						/>
 						{latestReviews.length > 0 ? (
-							<div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+							<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
 								{latestReviews.map((review) => (
 									<RecentReviewCard key={review.id} review={review} />
 								))}
@@ -84,7 +87,9 @@ export default async function HomePage() {
 								title="Discussões em Alta"
 								action="Ver todas →"
 								href="/forum"
-								icon={<MessageSquare size={24} style={{ color: "var(--accent)" }} />}
+								icon={
+									<MessageSquare size={24} style={{ color: "var(--accent)" }} />
+								}
 							/>
 							{topDiscussions.length > 0 ? (
 								<div className="grid grid-cols-1 gap-4 md:grid-cols-3">
@@ -111,6 +116,7 @@ export default async function HomePage() {
 						</section>
 					</div>
 				</div>
+			<CtaSection />
 			</main>
 			<Footer />
 		</>
