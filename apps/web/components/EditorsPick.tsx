@@ -19,7 +19,7 @@ export function EditorsPick({ review }: EditorsPickProps) {
 
 	return (
 		<div
-			className="max-w-2xl rounded-2xl p-8 flex flex-col gap-4"
+			className="max-w-2xl mx-auto rounded-2xl p-8 flex flex-col gap-4"
 			style={{ background: "var(--hero-bg)" }}
 		>
 			{/* Linha superior: badge + score */}
