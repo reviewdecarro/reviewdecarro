@@ -87,7 +87,7 @@ export function EditorsPick({ review, pros }: EditorsPickProps) {
 				{/* CTA */}
 				<Link
 					href={href}
-					className="mt-2 inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl text-base font-bold text-white hover:brightness-90 transition-all"
+					className="mt-2 self-start inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold text-white hover:brightness-90 transition-all"
 					style={{ background: "var(--accent)" }}
 				>
 					Ler avaliação completa →
