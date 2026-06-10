@@ -7,7 +7,12 @@ export default async function ForumRoutePage() {
 
   return (
     <>
-      <HeroCommunity />
+      <HeroCommunity
+        title="Fórum da comunidade"
+        subtitle="Compartilhe experiências, tire dúvidas e conecte-se com entusiastas"
+        buttonLabel="+ Criar tópico"
+        buttonHref="/forum/new"
+      />
       <main className="flex-1" style={{ background: "var(--bg)" }}>
         <ForumPage data={{ threads }} />
       </main>

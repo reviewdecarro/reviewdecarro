@@ -1,6 +1,20 @@
 import Link from "next/link";
 
-export function HeroCommunity() {
+type HeroCommunityProps = {
+	title: string;
+	subtitle: string;
+	searchPlaceholder?: string;
+	buttonLabel: string;
+	buttonHref: string;
+};
+
+export function HeroCommunity({
+	title,
+	subtitle,
+	searchPlaceholder = "Buscar por marca, modelo ou categoria...",
+	buttonLabel,
+	buttonHref,
+}: HeroCommunityProps) {
 	return (
 		<section
 			className="w-full py-16 px-6"
@@ -11,24 +25,22 @@ export function HeroCommunity() {
 					className="font-display font-extrabold text-4xl sm:text-5xl leading-tight"
 					style={{ color: "var(--palette-white)" }}
 				>
-					Fórum da comunidade
+					{title}
 				</h1>
-				<p className="text-xl text-gray-300">
-					Compartilhe experiências, tire dúvidas e conecte-se com entusiastas
-				</p>
+				<p className="text-xl text-gray-300">{subtitle}</p>
 
 				<div className="w-full flex flex-col sm:flex-row gap-3 mt-5">
 					<input
-						aria-label="Buscar avaliações"
+						aria-label={searchPlaceholder}
 						type="text"
-						placeholder="Buscar por marca, modelo ou categoria..."
+						placeholder={searchPlaceholder}
 						className="w-full pl-12 pr-4 py-4 bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#E84E27] focus:border-transparent"
 					/>
 					<Link
-						href="/reviews/new"
+						href={buttonHref}
 						className="flex items-center justify-center gap-2 px-8 py-4 bg-[#E84E27] text-white font-bold rounded-lg transition-all shadow-lg hover:shadow-xl hover:brightness-90 whitespace-nowrap"
 					>
-						+ Criar tópico
+						{buttonLabel}
 					</Link>
 				</div>
 			</div>

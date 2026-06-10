@@ -1,3 +1,4 @@
+import { HeroCommunity } from "@/components/HeroCommunity";
 import { fetchPublicReviews } from "@/lib/reviews";
 import { FeaturedReviewBanner } from "./FeaturedReviewBanner";
 import { ReviewsFilter } from "./ReviewsFilter";
@@ -9,7 +10,14 @@ export default async function ReviewsPage() {
 	const items = rest.map((review) => ({ review }));
 
 	return (
-		<main className="flex-1" style={{ background: "var(--bg)" }}>
+		<>
+			<HeroCommunity
+				title="Avaliações da Comunidade"
+				subtitle="Descubra opiniões reais de quem realmente dirigiu"
+				buttonLabel="+ Nova avaliação"
+				buttonHref="/reviews/new"
+			/>
+			<main className="flex-1" style={{ background: "var(--bg)" }}>
 			<div className="max-w-[1100px] mx-auto px-6 py-10">
 				<div className="mb-8">
 					<h1
@@ -42,6 +50,7 @@ export default async function ReviewsPage() {
 					</div>
 				)}
 			</div>
-		</main>
+			</main>
+		</>
 	);
 }
