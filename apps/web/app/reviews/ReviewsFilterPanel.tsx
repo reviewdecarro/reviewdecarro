@@ -24,32 +24,34 @@ export function ReviewsFilterPanel() {
       <div className="flex flex-col gap-4">
         {/* Marca */}
         <div>
-          <label className={labelClass}>Marca</label>
-          <select disabled className={inputClass}>
+          <label className={labelClass} htmlFor="filter-brand">Marca</label>
+          <select disabled id="filter-brand" className={inputClass}>
             <option>Todas</option>
           </select>
         </div>
 
         {/* Categoria */}
         <div>
-          <label className={labelClass}>Categoria</label>
-          <select disabled className={inputClass}>
+          <label className={labelClass} htmlFor="filter-category">Categoria</label>
+          <select disabled id="filter-category" className={inputClass}>
             <option>Todas</option>
           </select>
         </div>
 
         {/* Ano */}
         <div>
-          <label className={labelClass}>Ano</label>
+          <label className={labelClass} htmlFor="filter-year-from">Ano</label>
           <div className="flex gap-2">
             <input
               disabled
+              id="filter-year-from"
               type="text"
               placeholder="De"
               className={inputClass}
             />
             <input
               disabled
+              id="filter-year-to"
               type="text"
               placeholder="Até"
               className={inputClass}
@@ -59,16 +61,16 @@ export function ReviewsFilterPanel() {
 
         {/* Nota mínima */}
         <div>
-          <label className={labelClass}>Nota mínima</label>
-          <select disabled className={inputClass}>
+          <label className={labelClass} htmlFor="filter-score">Nota mínima</label>
+          <select disabled id="filter-score" className={inputClass}>
             <option>Qualquer</option>
           </select>
         </div>
 
         {/* Ordenar por */}
         <div>
-          <label className={labelClass}>Ordenar por</label>
-          <select disabled className={inputClass}>
+          <label className={labelClass} htmlFor="filter-sort">Ordenar por</label>
+          <select disabled id="filter-sort" className={inputClass}>
             <option>Mais recentes</option>
           </select>
         </div>
