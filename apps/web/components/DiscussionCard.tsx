@@ -12,7 +12,7 @@ export function DiscussionCard({ thread }: DiscussionCardProps) {
 	return (
 		<Link
 			href={`/forum/${thread.slug}`}
-			className="group block rounded-xl p-6 bg-white transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5"
+			className="group block rounded-xl p-6 bg-white transition-all duration-200 hover:shadow-lg"
 			style={{
 				borderTop: "1px solid var(--border)",
 				borderRight: "1px solid var(--border)",

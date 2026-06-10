@@ -18,7 +18,7 @@ export function RecentReviewCard({ review }: RecentReviewCardProps) {
 	return (
 		<Link
 			href={href}
-			className="group block rounded-xl p-5 bg-white border border-[var(--border)] transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5"
+			className="group block rounded-xl p-5 bg-white border border-[var(--border)] transition-all duration-200 hover:shadow-lg"
 		>
 			{/* Linha superior: nome do veículo + score inline */}
 			<div className="flex items-start justify-between gap-2 mb-2">
