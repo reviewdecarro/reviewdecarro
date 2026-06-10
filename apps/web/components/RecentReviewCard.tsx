@@ -22,15 +22,13 @@ export function RecentReviewCard({ review }: RecentReviewCardProps) {
 		>
 			{/* Linha superior: nome do veículo + score inline */}
 			<div className="flex items-start justify-between gap-2 mb-2">
-				<span className="font-bold text-sm leading-snug text-[var(--text)] group-hover:text-[var(--accent)] transition-colors duration-200">
+				<span className="font-bold text-lg leading-snug text-[var(--text)] group-hover:text-[var(--accent)] transition-colors duration-200">
 					{carName}
 				</span>
 				<span className="inline-flex items-center gap-0.5 flex-shrink-0">
 					<span className="text-yellow-400 text-sm">★</span>
-					<span className="text-sm font-bold text-[var(--text)]">
-						{review.score}
-					</span>
-					<span className="text-xs font-normal text-[var(--text-muted)]">
+					<span className="font-bold text-[var(--text)]">{review.score}</span>
+					<span className="text-sm font-medium text-[var(--text-muted)]">
 						/5
 					</span>
 				</span>
@@ -38,7 +36,7 @@ export function RecentReviewCard({ review }: RecentReviewCardProps) {
 
 			{/* Excerpt */}
 			{review.excerpt && (
-				<p className="text-sm line-clamp-2 mb-3 text-[var(--text-muted)]">
+				<p className="text-sm mb-3 line-clamp-2 leading-relaxed min-h-[2.5rem] text-[var(--text-muted)]">
 					{review.excerpt}
 				</p>
 			)}
