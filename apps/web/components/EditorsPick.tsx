@@ -19,12 +19,11 @@ export function EditorsPick({ review }: EditorsPickProps) {
 
 	return (
 		<div
-			className="rounded-2xl p-8"
+			className="max-w-2xl rounded-2xl p-8 flex flex-col gap-4"
 			style={{ background: "var(--hero-bg)" }}
 		>
-			{/* Coluna esquerda — conteúdo */}
-			<div className="flex-1 flex flex-col gap-4">
-				{/* Badge */}
+			{/* Linha superior: badge + score */}
+			<div className="flex items-start justify-between gap-4">
 				<span
 					className="inline-flex items-center gap-1.5 self-start px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider"
 					style={{ background: "var(--accent)", color: "var(--palette-white)" }}
@@ -32,64 +31,56 @@ export function EditorsPick({ review }: EditorsPickProps) {
 					★ Escolha do editor
 				</span>
 
-				{/* Nome e ano */}
-				<div>
-					<h2
-						className="font-display font-extrabold text-3xl sm:text-4xl leading-tight"
-						style={{ color: "var(--palette-white)" }}
-					>
-						{carName}
-					</h2>
-					{year !== null && (
-						<p
-							className="text-base mt-1"
-							style={{ color: "rgba(255,255,255,0.65)" }}
-						>
-							{year}
-						</p>
-					)}
-				</div>
-
-				{/* Score badge */}
-				<span className="inline-flex items-center gap-1.5 self-start px-3 py-1.5 rounded-full text-sm font-bold bg-white/10">
-					<span className="text-yellow-400">★</span>
-					<span style={{ color: "var(--palette-white)" }}>{review.score}</span>
-					<span
-						className="text-xs font-normal"
-						style={{ color: "rgba(255,255,255,0.6)" }}
-					>
+				{/* Score badge — grande, à direita */}
+				<span className="inline-flex items-center gap-1 bg-white/10 rounded-full px-4 py-2 flex-shrink-0">
+					<span className="text-yellow-400 text-xl">★</span>
+					<span className="text-2xl font-extrabold" style={{ color: "var(--palette-white)" }}>
+						{review.score}
+					</span>
+					<span className="text-sm font-normal" style={{ color: "rgba(255,255,255,0.6)" }}>
 						/5
 					</span>
 				</span>
-
-				{/* Headline */}
-				<p
-					className="text-lg font-bold"
-					style={{ color: "var(--palette-white)" }}
-				>
-					{review.title}
-				</p>
-
-				{/* Excerpt */}
-				{review.excerpt && (
-					<p
-						className="text-sm leading-relaxed line-clamp-3"
-						style={{ color: "rgba(255,255,255,0.75)" }}
-					>
-						{review.excerpt}
-					</p>
-				)}
-
-				{/* CTA */}
-				<Link
-					href={href}
-					className="self-start inline-flex items-center gap-2 px-5 py-3 rounded-lg text-sm font-semibold transition-all hover:brightness-90"
-					style={{ background: "var(--accent)", color: "var(--palette-white)" }}
-				>
-					Ler avaliação completa →
-				</Link>
 			</div>
 
+			{/* Nome e ano */}
+			<div>
+				<h2
+					className="font-display font-extrabold text-3xl sm:text-4xl leading-tight"
+					style={{ color: "var(--palette-white)" }}
+				>
+					{carName}
+				</h2>
+				{year !== null && (
+					<p className="text-base mt-1" style={{ color: "rgba(255,255,255,0.65)" }}>
+						{year}
+					</p>
+				)}
+			</div>
+
+			{/* Headline */}
+			<p className="text-lg font-bold" style={{ color: "var(--palette-white)" }}>
+				{review.title}
+			</p>
+
+			{/* Excerpt */}
+			{review.excerpt && (
+				<p
+					className="text-sm leading-relaxed line-clamp-3"
+					style={{ color: "rgba(255,255,255,0.75)" }}
+				>
+					{review.excerpt}
+				</p>
+			)}
+
+			{/* CTA */}
+			<Link
+				href={href}
+				className="self-start inline-flex items-center gap-2 px-5 py-3 rounded-lg text-sm font-semibold transition-all hover:brightness-90"
+				style={{ background: "var(--accent)", color: "var(--palette-white)" }}
+			>
+				Ler avaliação completa →
+			</Link>
 		</div>
 	);
 }
