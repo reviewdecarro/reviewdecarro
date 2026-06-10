@@ -19,7 +19,7 @@ export function EditorsPick({ review }: EditorsPickProps) {
 
 	return (
 		<div
-			className="rounded-2xl p-8 flex flex-col md:flex-row gap-8 md:items-center"
+			className="rounded-2xl p-8"
 			style={{ background: "var(--hero-bg)" }}
 		>
 			{/* Coluna esquerda — conteúdo */}
@@ -90,10 +90,6 @@ export function EditorsPick({ review }: EditorsPickProps) {
 				</Link>
 			</div>
 
-			{/* Coluna direita — placeholder de imagem */}
-			<div className="w-full md:w-[42%] min-h-[180px] md:min-h-[280px] rounded-xl flex items-center justify-center bg-white/5">
-				<span className="text-5xl">🚗</span>
-			</div>
 		</div>
 	);
 }
