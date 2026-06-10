@@ -1,12 +1,15 @@
 import { Footer } from "@/components/Footer";
 import { Nav } from "@/components/Nav";
 import { fetchPublicReviews } from "@/lib/reviews";
+import { FeaturedReviewBanner } from "./FeaturedReviewBanner";
 import { ReviewCreateButton } from "./review-create-button";
 import { ReviewsFilter } from "./ReviewsFilter";
 
 export default async function ReviewsPage() {
   const reviews = await fetchPublicReviews();
-  const items = reviews.map((review) => ({ review }));
+  const featured = [...reviews].sort((a, b) => b.score - a.score)[0];
+  const rest = reviews.filter((r) => r.id !== featured?.id);
+  const items = rest.map((review) => ({ review }));
 
   return (
     <>
@@ -22,6 +25,12 @@ export default async function ReviewsPage() {
             </h1>
             <ReviewCreateButton />
           </div>
+
+          {featured && (
+            <div className="mb-8">
+              <FeaturedReviewBanner review={featured} />
+            </div>
+          )}
 
           {items.length > 0 ? (
             <ReviewsFilter items={items} />
