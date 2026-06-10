@@ -51,7 +51,6 @@ Criar o componente `FeaturedReviewBanner` e integrá-lo em `app/reviews/page.tsx
 
 6. **Linha de metadados**:
    - `MessageSquare` icon (`size={14}`) + `"{commentsCount} comentários"` — branco/70%, `text-sm`.
-   - `ThumbsUp` icon (`size={14}`) + `"{votes} úteis"` — branco/70%, `text-sm`. Se `votes` não disponível, omitir este item.
    - Separador `·`
    - `"{author} · {date}"` — branco/70%, `text-sm`.
 
@@ -75,10 +74,6 @@ Criar o componente `FeaturedReviewBanner` e integrá-lo em `app/reviews/page.tsx
   const carName = review.vehicle
     ? `${review.vehicle.brand} ${review.vehicle.model} ${review.vehicle.year}`
     : review.title;
-  ```
-- Votes não existe em `PublicReview` — usar renderização condicional:
-  ```ts
-  const votes = "votes" in review ? (review as { votes: number }).votes : null;
   ```
 - Integração em `page.tsx`:
   ```ts
