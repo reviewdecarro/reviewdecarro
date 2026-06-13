@@ -18,8 +18,7 @@ import { MarkdownViewer } from "@/components/MarkdownViewer";
 import { useAuthSession } from "@/hooks/use-auth-session";
 import { API_BASE_URL } from "@/lib/api";
 import { fetchPublicReviews } from "@/lib/reviews";
-import { comments, threads } from "@/lib/data";
-import type { PublicReview } from "@/types";
+import type { ForumComment, PublicReview, Thread } from "@/types";
 
 type ProfileTab = "resumo" | "avaliacoes" | "forum" | "comentarios";
 
@@ -89,14 +88,8 @@ export function ProfileClient() {
   }, [userHandle]);
 
   const userReviews = liveReviews;
-  const userThreads = useMemo(
-    () => threads.filter((thread) => thread.author === userHandle),
-    [userHandle],
-  );
-  const userComments = useMemo(
-    () => comments.filter((comment) => comment.author === userHandle),
-    [userHandle],
-  );
+  const userThreads: Thread[] = [];
+  const userComments: ForumComment[] = [];
   const averageScore = useMemo(() => {
     if (!userReviews.length) return 0;
 

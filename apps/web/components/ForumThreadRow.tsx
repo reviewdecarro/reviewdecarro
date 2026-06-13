@@ -66,11 +66,16 @@ export function ForumThreadRow({ thread }: ForumThreadRowProps) {
   return (
     <div
       className="flex items-center gap-3.5 py-3.5 border-b rounded-lg px-2.5 transition-colors duration-100"
-      style={{ borderColor: "var(--border)" }}
+      style={{
+        background: "var(--palette-white)",
+        borderColor: "var(--border)",
+      }}
       onMouseEnter={(e) =>
         (e.currentTarget.style.background = "var(--surface-2)")
       }
-      onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
+      onMouseLeave={(e) =>
+        (e.currentTarget.style.background = "var(--palette-white)")
+      }
     >
       <div className="flex-shrink-0">
         <VoteButton count={votes} voted={voted} onVote={handleVote} />

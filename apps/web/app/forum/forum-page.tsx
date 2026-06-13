@@ -101,7 +101,7 @@ export function ForumPage({ data }: ForumPageProps) {
 					<div
 						className="rounded-xl overflow-hidden px-3 border"
 						style={{
-							background: "var(--surface)",
+							background: "var(--palette-white)",
 							borderColor: "var(--border)",
 						}}
 					>

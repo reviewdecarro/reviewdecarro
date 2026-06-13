@@ -3,24 +3,22 @@ import { fetchForumTopicBySlug } from "@/lib/forum";
 import { ThreadDetailClient } from "./thread-detail-client";
 
 type ThreadPageProps = {
-  params: Promise<{
-    slug: string;
-  }>;
+	params: Promise<{
+		slug: string;
+	}>;
 };
 
 export default async function ThreadPage({ params }: ThreadPageProps) {
-  const { slug } = await params;
-  const thread = await fetchForumTopicBySlug(slug);
+	const { slug } = await params;
+	const thread = await fetchForumTopicBySlug(slug);
 
-  if (!thread) {
-    notFound();
-  }
+	if (!thread) {
+		notFound();
+	}
 
-  return (
-    <>
-      <main className="flex-1" style={{ background: "var(--bg)" }}>
-        <ThreadDetailClient thread={thread} />
-      </main>
-    </>
-  );
+	return (
+		<main className="flex-1" style={{ background: "var(--bg)" }}>
+			<ThreadDetailClient thread={thread} />
+		</main>
+	);
 }
