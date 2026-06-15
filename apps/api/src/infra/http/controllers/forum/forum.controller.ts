@@ -6,6 +6,7 @@ import {
 	HttpStatus,
 	Param,
 	Post,
+	Query,
 	Res,
 } from "@nestjs/common";
 import {
@@ -15,6 +16,7 @@ import {
 	ApiOkResponse,
 	ApiOperation,
 	ApiParam,
+	ApiQuery,
 	ApiTags,
 } from "@nestjs/swagger";
 import type { Response } from "express";
@@ -66,9 +68,10 @@ export class ForumController {
 	@Get("topics")
 	@IsPublic()
 	@ApiOperation({ description: "Listar tópicos do fórum" })
+	@ApiQuery({ name: "q", required: false })
 	@ApiOkResponse({ description: "Lista de tópicos" })
-	async listTopics(@Res() res: Response) {
-		const topics = await this.listForumTopicsUseCase.execute();
+	async listTopics(@Query("q") query: string, @Res() res: Response) {
+		const topics = await this.listForumTopicsUseCase.execute({ query });
 
 		return res.status(HttpStatus.OK).json({ topics });
 	}

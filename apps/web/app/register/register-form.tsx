@@ -111,6 +111,11 @@ export function RegisterForm() {
     "oklch(0.57 0.17 148)",
   ] as const;
   const strengthLabels = ["", "Fraca", "Razoável", "Boa", "Forte"] as const;
+  const isFormComplete =
+    username.trim().length > 0 &&
+    email.includes("@") &&
+    password.length >= 8 &&
+    acceptedTerms;
 
   return (
     <div className="w-full max-w-[440px]">
@@ -332,11 +337,11 @@ export function RegisterForm() {
 
           <button
             type="submit"
-            disabled={loading || !acceptedTerms}
-            className="w-full py-3 rounded-xl text-[15px] font-semibold text-white border-none cursor-pointer transition-all duration-200 flex items-center justify-center gap-2"
+            disabled={loading || !isFormComplete}
+            className="w-full py-3 rounded-xl text-[15px] font-semibold text-white border-none cursor-pointer transition-all duration-200 flex items-center justify-center gap-2 disabled:cursor-not-allowed"
             style={{
               background:
-                loading || !acceptedTerms
+                loading || !isFormComplete
                   ? "oklch(0.68 0.10 38)"
                   : "var(--accent)",
             }}

@@ -1,7 +1,4 @@
-"use client";
-
 import Link from "next/link";
-import { useState } from "react";
 import type { Car, PublicReview, Review } from "@/types";
 import { ScoreBadge } from "./ScoreBadge";
 import { TagBadge } from "./TagBadge";
@@ -32,48 +29,25 @@ export function ReviewCard({ review, car, compact }: ReviewCardProps) {
 				? review.comments
 				: 0;
 
-	const [hovered, setHovered] = useState(false);
-
 	return (
 		<Link
 			href={reviewHref}
-			onMouseEnter={() => setHovered(true)}
-			onMouseLeave={() => setHovered(false)}
-			className="block w-full rounded-xl overflow-hidden border transition-all duration-200"
-			style={{
-				background: "var(--surface)",
-				borderColor: "var(--border)",
-				boxShadow: hovered ? "0 6px 24px rgba(0,0,0,0.10)" : "none",
-				transform: hovered ? "translateY(-2px)" : "none",
-			}}
+			className="block w-full rounded-xl overflow-hidden border border-[var(--border)] bg-[var(--surface)] transition-all duration-200 hover:shadow-lg"
 		>
 			<div className={compact ? "p-3" : "p-4"}>
 				<div className="flex items-start justify-between gap-2 mb-2">
 					<TagBadge label={vehicleTag} />
 					<ScoreBadge score={review.score} size="sm" />
 				</div>
-				<div
-					className="text-[11px] font-medium uppercase tracking-[0.06em] mb-2"
-					style={{ color: "var(--text-muted)" }}
-				>
+				<div className="text-[11px] font-medium uppercase tracking-[0.06em] mb-2 text-[var(--text-muted)]">
 					{yearTag}
 				</div>
 				<div
-					className="font-display font-bold leading-snug mb-2"
-					style={
-						{
-							fontSize: compact ? 13 : 15,
-							color: "var(--text)",
-							textWrap: "pretty",
-						} as React.CSSProperties
-					}
+					className={`font-display font-bold leading-snug mb-2 text-[var(--text)] [text-wrap:pretty] ${compact ? "text-[13px]" : "text-[15px]"}`}
 				>
 					{review.title}
 				</div>
-				<div
-					className="text-[12px] flex flex-wrap gap-2"
-					style={{ color: "var(--text-muted)" }}
-				>
+				<div className="text-[12px] flex flex-wrap gap-2 text-[var(--text-muted)]">
 					<span>{review.author}</span>
 					<span>·</span>
 					<span>{review.date}</span>

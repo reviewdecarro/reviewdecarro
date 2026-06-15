@@ -32,9 +32,17 @@ export class InMemoryForumTopicsRepository extends ForumTopicsRepositoryProps {
 		return topic;
 	}
 
-	async findAll(): Promise<ForumTopicEntity[]> {
+	async findAll(filters?: { query?: string }): Promise<ForumTopicEntity[]> {
+		const query = filters?.query?.toLowerCase();
+
 		return this.items
 			.filter((topic) => topic.status === ForumTopicStatus.PUBLISHED)
+			.filter(
+				(topic) =>
+					!query ||
+					topic.title.toLowerCase().includes(query) ||
+					topic.content.toLowerCase().includes(query),
+			)
 			.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
 	}
 

@@ -120,6 +120,33 @@ export class PrismaReviewsRepository implements ReviewsRepositoryProps {
 			where.OR = [
 				{ title: { contains: filters.query, mode: "insensitive" } },
 				{ content: { contains: filters.query, mode: "insensitive" } },
+				{
+					carVersionYear: {
+						carVersion: {
+							versionName: { contains: filters.query, mode: "insensitive" },
+						},
+					},
+				},
+				{
+					carVersionYear: {
+						carVersion: {
+							model: {
+								name: { contains: filters.query, mode: "insensitive" },
+							},
+						},
+					},
+				},
+				{
+					carVersionYear: {
+						carVersion: {
+							model: {
+								brand: {
+									name: { contains: filters.query, mode: "insensitive" },
+								},
+							},
+						},
+					},
+				},
 			];
 		}
 

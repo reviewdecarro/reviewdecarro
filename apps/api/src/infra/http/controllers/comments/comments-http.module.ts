@@ -3,10 +3,11 @@ import { CreateCommentUseCase } from "src/application/comments/use-cases/create-
 import { DeleteCommentUseCase } from "src/application/comments/use-cases/delete-comment.usecase";
 import { ListCommentsUseCase } from "src/application/comments/use-cases/list-comments.usecase";
 import { DatabaseModule } from "src/infra/database/database.module";
+import { SearchModule } from "src/infra/search/search.module";
 import { CommentsController } from "./comments.controller";
 
 @Module({
-	imports: [DatabaseModule],
+	imports: [DatabaseModule, SearchModule],
 	controllers: [CommentsController],
 	providers: [CreateCommentUseCase, ListCommentsUseCase, DeleteCommentUseCase],
 })

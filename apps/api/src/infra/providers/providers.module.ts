@@ -18,11 +18,7 @@ import { HashProviderProps } from "./hash/types/hash-provider.props";
 			provide: MailProviderProps,
 			useClass: MailProviderOptions[env.NODE_ENV],
 		},
-		{
-			provide: MailProviderProps,
-			useClass: MailProviderOptions[env.NODE_ENV],
-		},
 	],
-	exports: [HashProviderProps, MailProviderProps, MailProviderProps],
+	exports: [HashProviderProps, MailProviderProps],
 })
 export class ProvidersModule {}

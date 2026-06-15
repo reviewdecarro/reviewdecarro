@@ -6,10 +6,11 @@ import { GetReviewBySlugUseCase } from "src/application/reviews/use-cases/get-re
 import { ListReviewsUseCase } from "src/application/reviews/use-cases/list-reviews.usecase";
 import { UpdateReviewUseCase } from "src/application/reviews/use-cases/update-review.usecase";
 import { DatabaseModule } from "src/infra/database/database.module";
+import { SearchModule } from "src/infra/search/search.module";
 import { ReviewsController } from "./reviews.controller";
 
 @Module({
-	imports: [DatabaseModule],
+	imports: [DatabaseModule, SearchModule],
 	controllers: [ReviewsController],
 	providers: [
 		CreateReviewUseCase,

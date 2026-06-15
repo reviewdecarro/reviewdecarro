@@ -1,11 +1,8 @@
-import { Footer } from "@/components/Footer";
-import { Nav } from "@/components/Nav";
 import { NewThreadForm } from "./new-thread-form";
 
 export default function NewForumThreadPage() {
   return (
     <>
-      <Nav />
       <main
         className="flex-1 px-4 py-8 sm:px-6 sm:py-12"
         style={{ background: "var(--bg)" }}
@@ -28,7 +25,6 @@ export default function NewForumThreadPage() {
           <NewThreadForm />
         </div>
       </main>
-      <Footer />
     </>
   );
 }

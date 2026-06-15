@@ -14,11 +14,11 @@ import {
 	useOptimistic,
 	useState,
 } from "react";
+import { API_BASE_URL } from "@/api/api";
 import { MarkdownEditor } from "@/components/MarkdownEditor";
 import { MarkdownViewer } from "@/components/MarkdownViewer";
 import { VoteButton } from "@/components/VoteButton";
 import { useAuthSession } from "@/hooks/use-auth-session";
-import { API_BASE_URL } from "@/lib/api";
 import type { ForumPost, ForumTopicDetail } from "@/types";
 
 type ThreadDetailClientProps = {
@@ -237,33 +237,25 @@ function ForumReplyComposer({
 	}
 
 	if (!isOpen) {
-		return isLoggedIn ? (
+		return (
 			<button
 				type="button"
-				onClick={() => setIsOpen(true)}
-				className="mt-3 inline-flex cursor-pointer items-center gap-2 rounded-lg border px-3 py-2 text-[12px] font-semibold transition-all duration-150 hover:border-[var(--accent)] hover:bg-[var(--surface)] hover:text-[var(--text)] hover:brightness-95"
+				onClick={() => {
+					if (!isLoggedIn) {
+						onRequireLogin();
+						return;
+					}
+
+					setIsOpen(true);
+				}}
+				className="mt-3 inline-flex cursor-pointer items-center gap-2 rounded-lg border px-3 py-2 text-[12px] font-semibold text-white transition-all duration-150 hover:brightness-95"
 				style={{
-					background: "var(--surface-2)",
-					borderColor: "var(--border)",
-					color: "var(--text-muted)",
+					background: "var(--accent)",
+					borderColor: "var(--accent)",
 				}}
 			>
 				<Reply size={14} strokeWidth={2} />
 				Responder
-			</button>
-		) : (
-			<button
-				type="button"
-				onClick={onRequireLogin}
-				className="mt-3 inline-flex cursor-pointer items-center gap-2 rounded-lg border px-3 py-2 text-[12px] font-semibold transition-all duration-150 hover:border-[var(--accent)] hover:bg-[var(--surface)] hover:text-[var(--text)] hover:brightness-95"
-				style={{
-					background: "var(--surface-2)",
-					borderColor: "var(--border)",
-					color: "var(--text-muted)",
-				}}
-			>
-				<Reply size={14} strokeWidth={2} />
-				Entrar para responder
 			</button>
 		);
 	}
@@ -273,7 +265,7 @@ function ForumReplyComposer({
 			onSubmit={handleSubmit}
 			className="mt-4 rounded-2xl border px-4 py-4"
 			style={{
-				background: "var(--bg)",
+				background: "var(--palette-white)",
 				borderColor: "var(--border)",
 			}}
 		>
@@ -429,7 +421,7 @@ function ForumTopicReplyComposer({
 			<div
 				className="rounded-2xl border px-6 py-5"
 				style={{
-					background: "var(--surface)",
+					background: "var(--palette-white)",
 					borderColor: "var(--border)",
 				}}
 			>
@@ -441,33 +433,25 @@ function ForumTopicReplyComposer({
 	}
 
 	if (!isOpen) {
-		return isLoggedIn ? (
+		return (
 			<button
 				type="button"
-				onClick={() => setIsOpen(true)}
-				className="inline-flex cursor-pointer items-center gap-2 rounded-lg border px-4 py-2 text-[13px] font-semibold transition-all duration-150 hover:border-[var(--accent)] hover:bg-[var(--surface)] hover:text-[var(--text)] hover:brightness-95"
+				onClick={() => {
+					if (!isLoggedIn) {
+						onRequireLogin();
+						return;
+					}
+
+					setIsOpen(true);
+				}}
+				className="inline-flex cursor-pointer items-center gap-2 rounded-lg border px-4 py-2 text-[13px] font-semibold text-white transition-all duration-150 hover:brightness-95"
 				style={{
-					background: "var(--surface-2)",
-					borderColor: "var(--border)",
-					color: "var(--text-muted)",
+					background: "var(--accent)",
+					borderColor: "var(--accent)",
 				}}
 			>
 				<MessageSquarePlus size={15} strokeWidth={2} />
 				Responder
-			</button>
-		) : (
-			<button
-				type="button"
-				onClick={onRequireLogin}
-				className="inline-flex cursor-pointer items-center gap-2 rounded-lg border px-4 py-2 text-[13px] font-semibold transition-all duration-150 hover:border-[var(--accent)] hover:bg-[var(--surface)] hover:text-[var(--text)] hover:brightness-95"
-				style={{
-					background: "var(--surface-2)",
-					borderColor: "var(--border)",
-					color: "var(--text-muted)",
-				}}
-			>
-				<MessageSquarePlus size={15} strokeWidth={2} />
-				Entrar para responder
 			</button>
 		);
 	}
@@ -477,7 +461,7 @@ function ForumTopicReplyComposer({
 			onSubmit={handleSubmit}
 			className="rounded-2xl border px-6 py-6"
 			style={{
-				background: "var(--surface)",
+				background: "var(--palette-white)",
 				borderColor: "var(--border)",
 			}}
 		>
@@ -578,7 +562,7 @@ function ForumReplyCard({
 			<article
 				className="rounded-2xl border px-5 py-5"
 				style={{
-					background: "var(--surface)",
+					background: "var(--palette-white)",
 					borderColor: "var(--border)",
 				}}
 			>
@@ -839,7 +823,7 @@ export function ThreadDetailClient({ thread }: ThreadDetailClientProps) {
 				<article
 					className="rounded-2xl border p-6 mb-6"
 					style={{
-						background: "var(--surface)",
+						background: "var(--palette-white)",
 						borderColor: "var(--border)",
 					}}
 				>
@@ -916,7 +900,7 @@ export function ThreadDetailClient({ thread }: ThreadDetailClientProps) {
 						<div
 							className="rounded-2xl border px-5 py-6"
 							style={{
-								background: "var(--surface)",
+								background: "var(--palette-white)",
 								borderColor: "var(--border)",
 							}}
 						>

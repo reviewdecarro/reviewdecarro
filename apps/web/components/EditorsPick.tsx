@@ -1,11 +1,13 @@
+import { CheckCircle } from "lucide-react";
 import Link from "next/link";
 import type { PublicReview } from "@/types";
 
 type EditorsPickProps = {
 	review: PublicReview;
+	pros?: string[];
 };
 
-export function EditorsPick({ review }: EditorsPickProps) {
+export function EditorsPick({ review, pros }: EditorsPickProps) {
 	const href =
 		"slug" in review && review.slug
 			? `/reviews/${review.slug}`
@@ -19,10 +21,10 @@ export function EditorsPick({ review }: EditorsPickProps) {
 
 	return (
 		<div
-			className="rounded-2xl p-8 flex flex-col md:flex-row gap-8 md:items-center"
+			className="mx-auto flex max-w-5xl flex-col gap-8 rounded-2xl p-8 md:flex-row"
 			style={{ background: "var(--hero-bg)" }}
 		>
-			{/* Coluna esquerda — conteúdo */}
+			{/* Coluna esquerda */}
 			<div className="flex-1 flex flex-col gap-4">
 				{/* Badge */}
 				<span
@@ -34,41 +36,31 @@ export function EditorsPick({ review }: EditorsPickProps) {
 
 				{/* Nome e ano */}
 				<div>
-					<h2
-						className="font-display font-extrabold text-3xl sm:text-4xl leading-tight"
-						style={{ color: "var(--palette-white)" }}
-					>
+					<h2 className="font-display font-extrabold text-5xl sm:text-6xl leading-tight text-white">
 						{carName}
 					</h2>
 					{year !== null && (
-						<p
-							className="text-base mt-1"
-							style={{ color: "rgba(255,255,255,0.65)" }}
-						>
-							{year}
-						</p>
+						<p className="text-blue-400 font-semibold text-lg mt-1">{year}</p>
 					)}
 				</div>
 
-				{/* Score badge */}
-				<span className="inline-flex items-center gap-1.5 self-start px-3 py-1.5 rounded-full text-sm font-bold bg-white/10">
-					<span className="text-yellow-400">★</span>
-					<span style={{ color: "var(--palette-white)" }}>{review.score}</span>
-					<span
-						className="text-xs font-normal"
-						style={{ color: "rgba(255,255,255,0.6)" }}
-					>
-						/5
+				{/* Score badge + contagem */}
+				<div className="flex items-center gap-3">
+					<span className="inline-flex items-center gap-1 bg-white/10 rounded-lg px-3 py-1.5">
+						<span className="text-yellow-400 font-bold text-base">
+							{review.score}
+						</span>
+						<span
+							className="text-sm font-normal"
+							style={{ color: "rgba(255,255,255,0.6)" }}
+						>
+							/5
+						</span>
 					</span>
-				</span>
-
-				{/* Headline */}
-				<p
-					className="text-lg font-bold"
-					style={{ color: "var(--palette-white)" }}
-				>
-					{review.title}
-				</p>
+					<span className="text-sm" style={{ color: "rgba(255,255,255,0.65)" }}>
+						{review.commentsCount} avaliações
+					</span>
+				</div>
 
 				{/* Excerpt */}
 				{review.excerpt && (
@@ -80,19 +72,58 @@ export function EditorsPick({ review }: EditorsPickProps) {
 					</p>
 				)}
 
+				{/* Pontos positivos — opcional */}
+				{pros && pros.length > 0 && (
+					<div>
+						<p className="mb-2 text-xs font-bold uppercase tracking-wider text-blue-400">
+							Pontos positivos
+						</p>
+						<ul className="flex flex-col gap-1.5">
+							{pros.slice(0, 3).map((pro, i) => (
+								<li
+									key={i}
+									className="flex items-center gap-2 text-sm font-semibold text-white"
+								>
+									<CheckCircle
+										size={16}
+										className="flex-shrink-0 text-green-400"
+									/>
+									{pro}
+								</li>
+							))}
+						</ul>
+					</div>
+				)}
+
 				{/* CTA */}
 				<Link
 					href={href}
-					className="self-start inline-flex items-center gap-2 px-5 py-3 rounded-lg text-sm font-semibold transition-colors"
-					style={{ background: "var(--accent)", color: "var(--palette-white)" }}
+					className="mt-2 self-start inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold text-white hover:brightness-90 transition-all"
+					style={{ background: "var(--accent)" }}
 				>
 					Ler avaliação completa →
 				</Link>
 			</div>
 
-			{/* Coluna direita — placeholder de imagem */}
-			<div className="w-full md:w-[42%] min-h-[180px] md:min-h-[280px] rounded-xl flex items-center justify-center bg-white/5">
-				<span className="text-5xl">🚗</span>
+			{/* Coluna direita — score grande */}
+			<div className="flex flex-col items-center justify-center text-center md:w-[40%] gap-2">
+				<span
+					className="font-extrabold leading-none text-white"
+					style={{ fontSize: "7rem" }}
+				>
+					{review.score}
+				</span>
+				<span
+					className="text-2xl font-normal"
+					style={{ color: "rgba(255,255,255,0.5)" }}
+				>
+					/5
+				</span>
+				<div className="w-10 border-t border-white/20 my-1" />
+				<p className="text-white font-bold text-lg">Avaliação da Comunidade</p>
+				<p className="text-blue-400 text-sm">
+					{review.commentsCount} avaliações
+				</p>
 			</div>
 		</div>
 	);

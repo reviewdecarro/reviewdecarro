@@ -8,6 +8,7 @@ import { ForumTopicsRepositoryProps } from "../../application/forum/repositories
 import { ForumVotesRepositoryProps } from "../../application/forum/repositories/forum-votes.repository";
 import { ReviewsRepositoryProps } from "../../application/reviews/repositories/reviews.repository";
 import { RolesRepositoryProps } from "../../application/roles/repositories/roles.repository";
+import { SearchRepositoryProps } from "../../application/search/repositories/search.repository";
 import { SessionsRepositoryProps } from "../../application/sessions/repositories/sessions.repository";
 import { UserTokensRepositoryProps } from "../../application/users/repositories/user-tokens.repository";
 import { UsersRepositoryProps } from "../../application/users/repositories/users.repository";
@@ -21,6 +22,7 @@ import { PrismaForumVotesRepository } from "./prisma/repositories/prisma-forum-v
 import { PrismaModelsRepository } from "./prisma/repositories/prisma-models.repository";
 import { PrismaReviewsRepository } from "./prisma/repositories/prisma-reviews.repository";
 import { PrismaRolesRepository } from "./prisma/repositories/prisma-roles.repository";
+import { PrismaSearchRepository } from "./prisma/repositories/prisma-search.repository";
 import { PrismaSessionsRepository } from "./prisma/repositories/prisma-sessions.repository";
 import { PrismaUserTokensRepository } from "./prisma/repositories/prisma-user-tokens.repository";
 import { PrismaUsersRepository } from "./prisma/repositories/prisma-users.repository";
@@ -82,6 +84,10 @@ import { PrismaVotesRepository } from "./prisma/repositories/prisma-votes.reposi
 			provide: SessionsRepositoryProps,
 			useClass: PrismaSessionsRepository,
 		},
+		{
+			provide: SearchRepositoryProps,
+			useClass: PrismaSearchRepository,
+		},
 	],
 	exports: [
 		PrismaService,
@@ -98,6 +104,7 @@ import { PrismaVotesRepository } from "./prisma/repositories/prisma-votes.reposi
 		UserTokensRepositoryProps,
 		RolesRepositoryProps,
 		SessionsRepositoryProps,
+		SearchRepositoryProps,
 	],
 })
 export class DatabaseModule {}

@@ -3,9 +3,9 @@
 import { LoaderCircle, MessageSquarePlus } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { type FormEvent, useState } from "react";
+import { API_BASE_URL } from "@/api/api";
 import { MarkdownEditor } from "@/components/MarkdownEditor";
 import { useAuthSession } from "@/hooks/use-auth-session";
-import { API_BASE_URL } from "@/lib/api";
 
 type ReviewCommentFormProps = {
 	reviewId: string;

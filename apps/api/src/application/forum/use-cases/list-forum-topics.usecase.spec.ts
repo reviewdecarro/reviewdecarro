@@ -64,4 +64,45 @@ describe("ListForumTopicsUseCase", () => {
 		expect(result[0]).toHaveProperty("slug", "terceiro");
 		expect(result[1]).toHaveProperty("slug", "primeiro");
 	});
+
+	it("should filter topics by title or content case-insensitively", async () => {
+		topicsRepository.items.push(
+			new ForumTopicEntity({
+				id: "topic-title",
+				authorId: "user-1",
+				title: "Manutenção preventiva",
+				slug: "manutencao-preventiva",
+				content: "Conteúdo geral",
+				status: "PUBLISHED" as never,
+				postsCount: 0,
+				upvotes: 0,
+				downvotes: 0,
+				createdAt: new Date("2024-01-01T10:00:00.000Z"),
+				updatedAt: new Date("2024-01-01T10:00:00.000Z"),
+				deletedAt: null,
+			}),
+			new ForumTopicEntity({
+				id: "topic-content",
+				authorId: "user-2",
+				title: "Dúvida geral",
+				slug: "duvida-geral",
+				content: "Experiência com carros híbridos",
+				status: "PUBLISHED" as never,
+				postsCount: 0,
+				upvotes: 0,
+				downvotes: 0,
+				createdAt: new Date("2024-01-02T10:00:00.000Z"),
+				updatedAt: new Date("2024-01-02T10:00:00.000Z"),
+				deletedAt: null,
+			}),
+		);
+
+		await expect(sut.execute({ query: "MANUTENÇÃO" })).resolves.toEqual([
+			expect.objectContaining({ id: "topic-title" }),
+		]);
+		await expect(sut.execute({ query: "híbridos" })).resolves.toEqual([
+			expect.objectContaining({ id: "topic-content" }),
+		]);
+		await expect(sut.execute({ query: "inexistente" })).resolves.toEqual([]);
+	});
 });

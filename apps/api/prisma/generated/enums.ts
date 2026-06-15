@@ -31,6 +31,14 @@ export const RatingCategory = {
 export type RatingCategory = (typeof RatingCategory)[keyof typeof RatingCategory]
 
 
+export const SearchEntityType = {
+  REVIEW: 'REVIEW',
+  TOPIC: 'TOPIC'
+} as const
+
+export type SearchEntityType = (typeof SearchEntityType)[keyof typeof SearchEntityType]
+
+
 export const ReviewStatus = {
   DRAFT: 'DRAFT',
   PUBLISHED: 'PUBLISHED',

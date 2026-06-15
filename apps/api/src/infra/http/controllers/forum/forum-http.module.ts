@@ -7,10 +7,11 @@ import { GetForumTopicBySlugUseCase } from "src/application/forum/use-cases/get-
 import { ListForumTopicsUseCase } from "src/application/forum/use-cases/list-forum-topics.usecase";
 import { UpsertForumVoteUseCase } from "src/application/forum/use-cases/upsert-forum-vote.usecase";
 import { DatabaseModule } from "src/infra/database/database.module";
+import { SearchModule } from "src/infra/search/search.module";
 import { ForumController } from "./forum.controller";
 
 @Module({
-	imports: [DatabaseModule],
+	imports: [DatabaseModule, SearchModule],
 	controllers: [ForumController],
 	providers: [
 		CreateForumTopicUseCase,

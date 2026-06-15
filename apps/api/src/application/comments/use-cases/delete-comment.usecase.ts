@@ -1,6 +1,7 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, Optional } from "@nestjs/common";
 import { BadRequestError } from "../../../shared/errors/types/bad-request-error";
 import { ReviewsRepositoryProps } from "../../reviews/repositories/reviews.repository";
+import { SearchIndexerService } from "../../search/services/search-indexer.service";
 import { UserEntity } from "../../users/entities/user.entity";
 import { CommentsRepositoryProps } from "../repositories/comments.repository";
 
@@ -9,6 +10,7 @@ export class DeleteCommentUseCase {
 	constructor(
 		private commentsRepository: CommentsRepositoryProps,
 		private reviewsRepository: ReviewsRepositoryProps,
+		@Optional() private searchIndexer?: SearchIndexerService,
 	) {}
 
 	async execute(user: UserEntity, reviewId: string, commentId: string) {
@@ -26,5 +28,6 @@ export class DeleteCommentUseCase {
 
 		await this.commentsRepository.delete(commentId);
 		await this.reviewsRepository.decrementCommentsCount(reviewId);
+		await this.searchIndexer?.indexReview(reviewId);
 	}
 }
