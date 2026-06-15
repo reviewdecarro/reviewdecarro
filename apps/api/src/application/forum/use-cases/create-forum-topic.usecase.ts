@@ -1,6 +1,7 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, Optional } from "@nestjs/common";
 import { BadRequestError } from "../../../shared/errors/types/bad-request-error";
 import { slugify } from "../../../shared/utils/slugify";
+import { SearchIndexerService } from "../../search/services/search-indexer.service";
 import { CreateForumTopicDto } from "../dtos/create-forum-topic.dto";
 import { ForumTopicEntity } from "../entities/forum-topic.entity";
 import { ForumTopicMapper } from "../mappers/forum-topic.mapper";
@@ -8,7 +9,10 @@ import { ForumTopicsRepositoryProps } from "../repositories/forum-topics.reposit
 
 @Injectable()
 export class CreateForumTopicUseCase {
-	constructor(private forumTopicsRepository: ForumTopicsRepositoryProps) {}
+	constructor(
+		private forumTopicsRepository: ForumTopicsRepositoryProps,
+		@Optional() private searchIndexer?: SearchIndexerService,
+	) {}
 
 	async execute(userId: string, data: CreateForumTopicDto) {
 		const slug = await this.buildUniqueSlug(data.title);
@@ -16,6 +20,7 @@ export class CreateForumTopicUseCase {
 			...data,
 			slug,
 		});
+		await this.searchIndexer?.indexTopic(topic.id);
 
 		return ForumTopicMapper.toResponseDto(new ForumTopicEntity(topic));
 	}

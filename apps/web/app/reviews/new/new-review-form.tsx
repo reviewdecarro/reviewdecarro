@@ -1,19 +1,13 @@
 "use client";
 
-import {
-	CheckCircle2,
-	LoaderCircle,
-	LockKeyhole,
-	Plus,
-	Sparkles,
-	Star,
-} from "lucide-react";
+import { LoaderCircle, Plus, Sparkles, Star } from "lucide-react";
 import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 import { type FormEvent, useEffect, useMemo, useState } from "react";
 import Select, { type SingleValue, type StylesConfig } from "react-select";
 import { MarkdownEditor } from "@/components/MarkdownEditor";
 import { useAuthSession } from "@/hooks/use-auth-session";
-import { API_BASE_URL } from "@/lib/api";
+import { API_BASE_URL } from "@/api/api";
 
 type RatingCategory =
 	| "CONSUMPTION"
@@ -204,6 +198,8 @@ async function fetchJson<T>(path: string): Promise<T> {
 }
 
 export function NewReviewForm() {
+	const router = useRouter();
+	const pathname = usePathname();
 	const { authUser, isCheckingSession, isLoggedIn } = useAuthSession();
 	const [brands, setBrands] = useState<BrandOption[]>([]);
 	const [models, setModels] = useState<ModelOption[]>([]);
@@ -247,6 +243,13 @@ export function NewReviewForm() {
 			})),
 		[models],
 	);
+
+	useEffect(() => {
+		if (!isCheckingSession && !isLoggedIn) {
+			const next = encodeURIComponent(pathname);
+			router.replace(`/login?next=${next}`);
+		}
+	}, [isCheckingSession, isLoggedIn, pathname, router]);
 
 	useEffect(() => {
 		let active = true;
@@ -355,6 +358,7 @@ export function NewReviewForm() {
 	const yearOptions = useMemo(() => {
 		return [...years].sort((a, b) => b.year - a.year);
 	}, [years]);
+
 	const yearSelectOptions = useMemo(
 		() =>
 			yearOptions.map((year) => ({
@@ -409,6 +413,7 @@ export function NewReviewForm() {
 			),
 		[versions, selectedYear],
 	);
+
 	const versionSelectOptions = useMemo(
 		(): VersionSelectOption[] =>
 			filteredVersions.flatMap(
@@ -563,58 +568,14 @@ export function NewReviewForm() {
 	if (!isLoggedIn || !authUser) {
 		return (
 			<div
-				className="rounded-2xl border p-8"
+				className="rounded-2xl border p-8 text-[14px]"
 				style={{
 					background: "var(--surface)",
 					borderColor: "var(--border)",
+					color: "var(--text-muted)",
 				}}
 			>
-				<div className="flex items-start gap-3">
-					<div
-						className="flex h-10 w-10 items-center justify-center rounded-xl"
-						style={{
-							background: "var(--accent-light)",
-							color: "var(--accent)",
-						}}
-					>
-						<LockKeyhole size={18} strokeWidth={2} />
-					</div>
-					<div className="min-w-0">
-						<h2
-							className="text-[16px] font-semibold"
-							style={{ color: "var(--text)" }}
-						>
-							Entre para criar avaliações
-						</h2>
-						<p
-							className="mt-1 text-[14px]"
-							style={{ color: "var(--text-muted)" }}
-						>
-							Você precisa estar autenticado para publicar uma nova review.
-						</p>
-						<div className="mt-4 flex flex-wrap gap-3">
-							<Link
-								href="/login"
-								className="inline-flex items-center gap-2 rounded-lg px-4 py-2 text-[14px] font-semibold text-white"
-								style={{ background: "var(--accent)" }}
-							>
-								<CheckCircle2 size={16} strokeWidth={2} />
-								Entrar
-							</Link>
-							<Link
-								href="/"
-								className="inline-flex items-center gap-2 rounded-lg border px-4 py-2 text-[14px] font-semibold"
-								style={{
-									background: "var(--surface-2)",
-									borderColor: "var(--border)",
-									color: "var(--text-muted)",
-								}}
-							>
-								Voltar
-							</Link>
-						</div>
-					</div>
-				</div>
+				Redirecionando para o login...
 			</div>
 		);
 	}
@@ -889,8 +850,14 @@ export function NewReviewForm() {
 							borderColor: "var(--border)",
 							color: "var(--text)",
 						}}
-						onFocus={(e) => { e.target.style.borderColor = "var(--accent)"; e.target.style.background = "#ffffff"; }}
-						onBlur={(e) => { e.target.style.borderColor = "var(--border)"; e.target.style.background = "var(--bg)"; }}
+						onFocus={(e) => {
+							e.target.style.borderColor = "var(--accent)";
+							e.target.style.background = "#ffffff";
+						}}
+						onBlur={(e) => {
+							e.target.style.borderColor = "var(--border)";
+							e.target.style.background = "var(--bg)";
+						}}
 						required
 						minLength={3}
 					/>
@@ -1048,8 +1015,14 @@ export function NewReviewForm() {
 							borderColor: "var(--border)",
 							color: "var(--text)",
 						}}
-						onFocus={(e) => { e.target.style.borderColor = "var(--accent)"; e.target.style.background = "#ffffff"; }}
-						onBlur={(e) => { e.target.style.borderColor = "var(--border)"; e.target.style.background = "var(--bg)"; }}
+						onFocus={(e) => {
+							e.target.style.borderColor = "var(--accent)";
+							e.target.style.background = "#ffffff";
+						}}
+						onBlur={(e) => {
+							e.target.style.borderColor = "var(--border)";
+							e.target.style.background = "var(--bg)";
+						}}
 					/>
 				</div>
 
@@ -1072,8 +1045,14 @@ export function NewReviewForm() {
 								borderColor: "var(--border)",
 								color: "var(--text)",
 							}}
-							onFocus={(e) => { e.target.style.borderColor = "var(--accent)"; e.target.style.background = "#ffffff"; }}
-							onBlur={(e) => { e.target.style.borderColor = "var(--border)"; e.target.style.background = "var(--bg)"; }}
+							onFocus={(e) => {
+								e.target.style.borderColor = "var(--accent)";
+								e.target.style.background = "#ffffff";
+							}}
+							onBlur={(e) => {
+								e.target.style.borderColor = "var(--border)";
+								e.target.style.background = "var(--bg)";
+							}}
 						/>
 					</div>
 
@@ -1095,8 +1074,14 @@ export function NewReviewForm() {
 								borderColor: "var(--border)",
 								color: "var(--text)",
 							}}
-							onFocus={(e) => { e.target.style.borderColor = "var(--accent)"; e.target.style.background = "#ffffff"; }}
-							onBlur={(e) => { e.target.style.borderColor = "var(--border)"; e.target.style.background = "var(--bg)"; }}
+							onFocus={(e) => {
+								e.target.style.borderColor = "var(--accent)";
+								e.target.style.background = "#ffffff";
+							}}
+							onBlur={(e) => {
+								e.target.style.borderColor = "var(--border)";
+								e.target.style.background = "var(--bg)";
+							}}
 						/>
 					</div>
 
@@ -1121,8 +1106,14 @@ export function NewReviewForm() {
 								borderColor: "var(--border)",
 								color: "var(--text)",
 							}}
-							onFocus={(e) => { e.target.style.borderColor = "var(--accent)"; e.target.style.background = "#ffffff"; }}
-							onBlur={(e) => { e.target.style.borderColor = "var(--border)"; e.target.style.background = "var(--bg)"; }}
+							onFocus={(e) => {
+								e.target.style.borderColor = "var(--accent)";
+								e.target.style.background = "#ffffff";
+							}}
+							onBlur={(e) => {
+								e.target.style.borderColor = "var(--border)";
+								e.target.style.background = "var(--bg)";
+							}}
 						/>
 					</div>
 				</div>

@@ -348,6 +348,23 @@ export type EnumForumVoteValueWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedEnumForumVoteValueFilter<$PrismaModel>
 }
 
+export type EnumSearchEntityTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.SearchEntityType | Prisma.EnumSearchEntityTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.SearchEntityType[] | Prisma.ListEnumSearchEntityTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.SearchEntityType[] | Prisma.ListEnumSearchEntityTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumSearchEntityTypeFilter<$PrismaModel> | $Enums.SearchEntityType
+}
+
+export type EnumSearchEntityTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.SearchEntityType | Prisma.EnumSearchEntityTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.SearchEntityType[] | Prisma.ListEnumSearchEntityTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.SearchEntityType[] | Prisma.ListEnumSearchEntityTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumSearchEntityTypeWithAggregatesFilter<$PrismaModel> | $Enums.SearchEntityType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumSearchEntityTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumSearchEntityTypeFilter<$PrismaModel>
+}
+
 export type NestedStringFilter<$PrismaModel = never> = {
   equals?: string | Prisma.StringFieldRefInput<$PrismaModel>
   in?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
@@ -682,6 +699,23 @@ export type NestedEnumForumVoteValueWithAggregatesFilter<$PrismaModel = never> =
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumForumVoteValueFilter<$PrismaModel>
   _max?: Prisma.NestedEnumForumVoteValueFilter<$PrismaModel>
+}
+
+export type NestedEnumSearchEntityTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.SearchEntityType | Prisma.EnumSearchEntityTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.SearchEntityType[] | Prisma.ListEnumSearchEntityTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.SearchEntityType[] | Prisma.ListEnumSearchEntityTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumSearchEntityTypeFilter<$PrismaModel> | $Enums.SearchEntityType
+}
+
+export type NestedEnumSearchEntityTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.SearchEntityType | Prisma.EnumSearchEntityTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.SearchEntityType[] | Prisma.ListEnumSearchEntityTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.SearchEntityType[] | Prisma.ListEnumSearchEntityTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumSearchEntityTypeWithAggregatesFilter<$PrismaModel> | $Enums.SearchEntityType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumSearchEntityTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumSearchEntityTypeFilter<$PrismaModel>
 }
 
 

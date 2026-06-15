@@ -65,7 +65,8 @@ export const ModelName = {
   ReviewVote: 'ReviewVote',
   ForumTopic: 'ForumTopic',
   ForumPost: 'ForumPost',
-  ForumVote: 'ForumVote'
+  ForumVote: 'ForumVote',
+  SearchDocument: 'SearchDocument'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -280,6 +281,29 @@ export const ForumVoteScalarFieldEnum = {
 } as const
 
 export type ForumVoteScalarFieldEnum = (typeof ForumVoteScalarFieldEnum)[keyof typeof ForumVoteScalarFieldEnum]
+
+
+export const SearchDocumentScalarFieldEnum = {
+  id: 'id',
+  entityId: 'entityId',
+  entityType: 'entityType',
+  title: 'title',
+  content: 'content',
+  excerpt: 'excerpt',
+  authorName: 'authorName',
+  brandName: 'brandName',
+  modelName: 'modelName',
+  versionName: 'versionName',
+  year: 'year',
+  slug: 'slug',
+  score: 'score',
+  votesCount: 'votesCount',
+  commentsCount: 'commentsCount',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SearchDocumentScalarFieldEnum = (typeof SearchDocumentScalarFieldEnum)[keyof typeof SearchDocumentScalarFieldEnum]
 
 
 export const SortOrder = {

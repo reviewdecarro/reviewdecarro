@@ -1,11 +1,11 @@
+import { MessageSquare } from "lucide-react";
+import { fetchForumTopics } from "@/api/forum";
+import { fetchPublicReviews, fetchReviewBySlug } from "@/api/reviews";
+import { CtaSection } from "@/components/CtaSection";
+import { DiscussionCard } from "@/components/DiscussionCard";
 import { EditorsPick } from "@/components/EditorsPick";
-import { Footer } from "@/components/Footer";
-import { ForumThreadRow } from "@/components/ForumThreadRow";
-import { Nav } from "@/components/Nav";
-import { ReviewCard } from "@/components/ReviewCard";
+import { RecentReviewCard } from "@/components/RecentReviewCard";
 import { SectionHeader } from "@/components/SectionHeader";
-import { fetchForumTopics } from "@/lib/forum";
-import { fetchPublicReviews } from "@/lib/reviews";
 
 export default async function HomePage() {
 	const reviews = await fetchPublicReviews();
@@ -31,28 +31,73 @@ export default async function HomePage() {
 	const latestReviews = reviews
 		.filter((review) => review.id !== featuredReview?.id)
 		.slice(0, 4);
+	const topDiscussions = featuredThreads.slice(0, 3);
+
+	const featuredDetail = featuredReview?.slug
+		? await fetchReviewBySlug(featuredReview.slug)
+		: null;
+	const featuredPros = featuredDetail?.pros
+		? featuredDetail.pros
+				.split("\n")
+				.map((s) => s.trim())
+				.filter(Boolean)
+		: undefined;
 
 	return (
-		<>
-			<Nav />
-			<main className="flex-1" style={{ background: "var(--bg)" }}>
-				<div className="container mx-auto px-6 py-10 flex flex-col gap-14">
-					{featuredReview && (
-						<section>
-							<EditorsPick review={featuredReview} />
-						</section>
-					)}
+		<main className="flex-1" style={{ background: "var(--bg)" }}>
+			<div className="container mx-auto px-6 py-12 md:py-16 flex flex-col gap-14">
+				{featuredReview && (
+					<section>
+						<EditorsPick review={featuredReview} pros={featuredPros} />
+					</section>
+				)}
 
+				<section>
+					<SectionHeader
+						title="Avaliações Recentes"
+						action="Ver todas →"
+						href="/reviews"
+						icon={
+							<span className="text-yellow-400 text-2xl leading-none">★</span>
+						}
+					/>
+					{latestReviews.length > 0 ? (
+						<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+							{latestReviews.map((review) => (
+								<RecentReviewCard key={review.id} review={review} />
+							))}
+						</div>
+					) : (
+						<div
+							className="rounded-xl border px-5 py-6"
+							style={{
+								background: "var(--surface)",
+								borderColor: "var(--border)",
+							}}
+						>
+							<p className="text-[14px]" style={{ color: "var(--text-muted)" }}>
+								Ainda não há avaliações recentes.
+							</p>
+						</div>
+					)}
+				</section>
+			</div>
+
+			<div className="w-full bg-gray-50 py-12">
+				<div className="container mx-auto px-6">
 					<section>
 						<SectionHeader
-							title="Avaliações recentes"
-							action="Ver todas as avaliações"
-							href="/reviews"
+							title="Discussões em Alta"
+							action="Ver todas →"
+							href="/forum"
+							icon={
+								<MessageSquare size={24} style={{ color: "var(--accent)" }} />
+							}
 						/>
-						{latestReviews.length > 0 ? (
-							<div className="grid grid-cols-2 gap-5 sm:grid-cols-4">
-								{latestReviews.map((review) => (
-									<ReviewCard key={review.id} review={review} />
+						{topDiscussions.length > 0 ? (
+							<div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+								{topDiscussions.map((thread) => (
+									<DiscussionCard key={thread.id} thread={thread} />
 								))}
 							</div>
 						) : (
@@ -67,27 +112,14 @@ export default async function HomePage() {
 									className="text-[14px]"
 									style={{ color: "var(--text-muted)" }}
 								>
-									Ainda não há avaliações recentes.
+									Ainda não há discussões em alta.
 								</p>
 							</div>
 						)}
 					</section>
-
-					<section>
-						<SectionHeader
-							title="Destaques do fórum"
-							action="Ir para o fórum"
-							href="/forum"
-						/>
-						<div className="flex flex-col">
-							{featuredThreads.map((thread) => (
-								<ForumThreadRow key={thread.id} thread={thread} />
-							))}
-						</div>
-					</section>
 				</div>
-			</main>
-			<Footer />
-		</>
+			</div>
+			<CtaSection />
+		</main>
 	);
 }

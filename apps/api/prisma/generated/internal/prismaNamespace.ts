@@ -80,12 +80,12 @@ export type PrismaVersion = {
 }
 
 /**
- * Prisma Client JS version: 7.6.0
- * Query Engine version: 75cbdc1eb7150937890ad5465d861175c6624711
+ * Prisma Client JS version: 7.8.0
+ * Query Engine version: 3c6e192761c0362d496ed980de936e2f3cebcd3a
  */
 export const prismaVersion: PrismaVersion = {
-  client: "7.6.0",
-  engine: "75cbdc1eb7150937890ad5465d861175c6624711"
+  client: "7.8.0",
+  engine: "3c6e192761c0362d496ed980de936e2f3cebcd3a"
 }
 
 /**
@@ -398,7 +398,8 @@ export const ModelName = {
   ReviewVote: 'ReviewVote',
   ForumTopic: 'ForumTopic',
   ForumPost: 'ForumPost',
-  ForumVote: 'ForumVote'
+  ForumVote: 'ForumVote',
+  SearchDocument: 'SearchDocument'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -414,7 +415,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "session" | "userToken" | "role" | "brand" | "model" | "carVersion" | "carVersionYear" | "review" | "reviewRating" | "comment" | "reviewVote" | "forumTopic" | "forumPost" | "forumVote"
+    modelProps: "user" | "session" | "userToken" | "role" | "brand" | "model" | "carVersion" | "carVersionYear" | "review" | "reviewRating" | "comment" | "reviewVote" | "forumTopic" | "forumPost" | "forumVote" | "searchDocument"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1528,6 +1529,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    SearchDocument: {
+      payload: Prisma.$SearchDocumentPayload<ExtArgs>
+      fields: Prisma.SearchDocumentFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.SearchDocumentFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SearchDocumentPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.SearchDocumentFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SearchDocumentPayload>
+        }
+        findFirst: {
+          args: Prisma.SearchDocumentFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SearchDocumentPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.SearchDocumentFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SearchDocumentPayload>
+        }
+        findMany: {
+          args: Prisma.SearchDocumentFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SearchDocumentPayload>[]
+        }
+        create: {
+          args: Prisma.SearchDocumentCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SearchDocumentPayload>
+        }
+        createMany: {
+          args: Prisma.SearchDocumentCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.SearchDocumentCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SearchDocumentPayload>[]
+        }
+        delete: {
+          args: Prisma.SearchDocumentDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SearchDocumentPayload>
+        }
+        update: {
+          args: Prisma.SearchDocumentUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SearchDocumentPayload>
+        }
+        deleteMany: {
+          args: Prisma.SearchDocumentDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.SearchDocumentUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.SearchDocumentUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SearchDocumentPayload>[]
+        }
+        upsert: {
+          args: Prisma.SearchDocumentUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SearchDocumentPayload>
+        }
+        aggregate: {
+          args: Prisma.SearchDocumentAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateSearchDocument>
+        }
+        groupBy: {
+          args: Prisma.SearchDocumentGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SearchDocumentGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.SearchDocumentCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SearchDocumentCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1765,6 +1840,29 @@ export const ForumVoteScalarFieldEnum = {
 export type ForumVoteScalarFieldEnum = (typeof ForumVoteScalarFieldEnum)[keyof typeof ForumVoteScalarFieldEnum]
 
 
+export const SearchDocumentScalarFieldEnum = {
+  id: 'id',
+  entityId: 'entityId',
+  entityType: 'entityType',
+  title: 'title',
+  content: 'content',
+  excerpt: 'excerpt',
+  authorName: 'authorName',
+  brandName: 'brandName',
+  modelName: 'modelName',
+  versionName: 'versionName',
+  year: 'year',
+  slug: 'slug',
+  score: 'score',
+  votesCount: 'votesCount',
+  commentsCount: 'commentsCount',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SearchDocumentScalarFieldEnum = (typeof SearchDocumentScalarFieldEnum)[keyof typeof SearchDocumentScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -1955,6 +2053,20 @@ export type EnumForumVoteValueFieldRefInput<$PrismaModel> = FieldRefInputType<$P
 export type ListEnumForumVoteValueFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ForumVoteValue[]'>
     
 
+
+/**
+ * Reference to a field of type 'SearchEntityType'
+ */
+export type EnumSearchEntityTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SearchEntityType'>
+    
+
+
+/**
+ * Reference to a field of type 'SearchEntityType[]'
+ */
+export type ListEnumSearchEntityTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SearchEntityType[]'>
+    
+
 /**
  * Batch Payload for updateMany & deleteMany & createMany
  */
@@ -2048,6 +2160,21 @@ export type PrismaClientOptions = ({
    * ```
    */
   comments?: runtime.SqlCommenterPlugin[]
+  /**
+   * Optional maximum size for the query plan cache. If not provided, a default size will be used.
+   * A value of `0` can be used to disable the cache entirely. A higher cache size can improve
+   * performance for applications that execute a large number of unique queries, while a smaller
+   * cache size can reduce memory usage.
+   * 
+   * @example
+   * ```
+   * const prisma = new PrismaClient({
+   *   adapter,
+   *   queryPlanCacheMaxSize: 100,
+   * })
+   * ```
+   */
+  queryPlanCacheMaxSize?: number
 }
 export type GlobalOmitConfig = {
   user?: Prisma.UserOmit
@@ -2065,6 +2192,7 @@ export type GlobalOmitConfig = {
   forumTopic?: Prisma.ForumTopicOmit
   forumPost?: Prisma.ForumPostOmit
   forumVote?: Prisma.ForumVoteOmit
+  searchDocument?: Prisma.SearchDocumentOmit
 }
 
 /* Types for Logging */

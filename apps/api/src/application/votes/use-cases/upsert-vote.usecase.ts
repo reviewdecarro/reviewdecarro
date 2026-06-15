@@ -1,6 +1,7 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, Optional } from "@nestjs/common";
 import { BadRequestError } from "../../../shared/errors/types/bad-request-error";
 import { ReviewsRepositoryProps } from "../../reviews/repositories/reviews.repository";
+import { SearchIndexerService } from "../../search/services/search-indexer.service";
 import { UpsertVoteDto } from "../dtos/upsert-vote.dto";
 import { ReviewVoteEntity } from "../entities/review-vote.entity";
 import { VotesMapper } from "../mappers/vote.mapper";
@@ -11,6 +12,7 @@ export class UpsertVoteUseCase {
 	constructor(
 		private votesRepository: VotesRepositoryProps,
 		private reviewsRepository: ReviewsRepositoryProps,
+		@Optional() private searchIndexer?: SearchIndexerService,
 	) {}
 
 	async execute(userId: string, reviewId: string, data: UpsertVoteDto) {
@@ -21,6 +23,7 @@ export class UpsertVoteUseCase {
 		}
 
 		const vote = await this.votesRepository.upsert(userId, reviewId, data.type);
+		await this.searchIndexer?.indexReview(reviewId);
 
 		return VotesMapper.toVoteResponseDto(new ReviewVoteEntity(vote));
 	}

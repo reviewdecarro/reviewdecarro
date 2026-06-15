@@ -1,5 +1,6 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, Optional } from "@nestjs/common";
 import { BadRequestError } from "../../../shared/errors/types/bad-request-error";
+import { SearchIndexerService } from "../../search/services/search-indexer.service";
 import { CreateForumPostDto } from "../dtos/create-forum-post.dto";
 import { ForumPostEntity } from "../entities/forum-post.entity";
 import { ForumPostMapper } from "../mappers/forum-post.mapper";
@@ -11,6 +12,7 @@ export class CreateForumPostUseCase {
 	constructor(
 		private forumTopicsRepository: ForumTopicsRepositoryProps,
 		private forumPostsRepository: ForumPostsRepositoryProps,
+		@Optional() private searchIndexer?: SearchIndexerService,
 	) {}
 
 	async execute(userId: string, topicId: string, data: CreateForumPostDto) {
@@ -37,6 +39,7 @@ export class CreateForumPostUseCase {
 		const post = await this.forumPostsRepository.create(topicId, userId, data);
 
 		await this.forumTopicsRepository.incrementPostsCount(topicId);
+		await this.searchIndexer?.indexTopic(topicId);
 
 		return ForumPostMapper.toResponseDto(new ForumPostEntity(post));
 	}
