@@ -7,7 +7,7 @@ import { type FormEvent, useEffect, useMemo, useState } from "react";
 import Select, { type SingleValue, type StylesConfig } from "react-select";
 import { MarkdownEditor } from "@/components/MarkdownEditor";
 import { useAuthSession } from "@/hooks/use-auth-session";
-import { API_BASE_URL } from "@/lib/api";
+import { API_BASE_URL } from "@/api/api";
 
 type RatingCategory =
 	| "CONSUMPTION"

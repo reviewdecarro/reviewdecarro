@@ -1,31 +1,21 @@
-"use client";
-
-import Link from "next/link";
-import { useState } from "react";
 import { ForumThreadRow } from "@/components/ForumThreadRow";
+import { SearchResultsControls } from "@/components/SearchResultsControls";
+import type { SearchSort } from "@/api/search";
 import type { ForumTopicSummary } from "@/types";
 
 type ForumPageProps = {
 	data: {
 		threads: ForumTopicSummary[];
 	};
+	query: string;
+	total?: number;
+	sort: SearchSort;
+	page?: number;
+	totalPages?: number;
 };
 
-export function ForumPage({ data }: ForumPageProps) {
-	const [tab, setTab] = useState<"recent" | "top">("recent");
-	const [search, setSearch] = useState("");
-
-	const filtered = [...data.threads]
-		.filter(
-			(thread) =>
-				!search || thread.title.toLowerCase().includes(search.toLowerCase()),
-		)
-		.sort((a, b) =>
-			tab === "top"
-				? b.votes - a.votes
-				: new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
-		);
-
+export function ForumPage({ data, query, total, sort, page, totalPages }: ForumPageProps) {
+	const resultCount = total ?? data.threads.length;
 	return (
 		<div className="max-w-[1100px] mx-auto px-6 py-10">
 			<div className="grid gap-8">
@@ -35,86 +25,41 @@ export function ForumPage({ data }: ForumPageProps) {
 							className="font-display font-extrabold text-[28px] mb-1.5"
 							style={{ color: "var(--text)" }}
 						>
-							Fórum da Comunidade
+							{resultCount}{" "}
+							{resultCount === 1 ? "tópico encontrado" : "tópicos encontrados"}
 						</h1>
 						<p className="text-[14px]" style={{ color: "var(--text-muted)" }}>
 							Dúvidas, discussões e relatos da comunidade PapoAuto.
 						</p>
 					</div>
 
-					<div className="flex gap-3 mb-5 items-center flex-wrap">
-						<div
-							className="flex gap-0 rounded-lg p-0.5 border"
-							style={{
-								background: "var(--surface-2)",
-								borderColor: "var(--border)",
-							}}
-						>
-							{[
-								{ value: "recent", label: "Recentes" },
-								{ value: "top", label: "Em alta" },
-							].map((option) => (
-								<button
-									key={option.value}
-									type="button"
-									onClick={() => setTab(option.value as "recent" | "top")}
-									className="rounded-md px-4 py-1.5 text-[13px] font-medium cursor-pointer border-none transition-all duration-150"
-									style={{
-										background:
-											tab === option.value ? "var(--surface)" : "transparent",
-										color:
-											tab === option.value
-												? "var(--text)"
-												: "var(--text-muted)",
-										boxShadow:
-											tab === option.value
-												? "0 1px 4px rgba(0,0,0,0.08)"
-												: "none",
-									}}
-								>
-									{option.label}
-								</button>
-							))}
-						</div>
-
-						<input
-							value={search}
-							onChange={(event) => setSearch(event.target.value)}
-							placeholder="Buscar tópicos..."
-							className="flex-1 min-w-[220px] rounded-lg px-3.5 py-2 text-[13px] border outline-none"
-							style={{
-								background: "var(--surface)",
-								borderColor: "var(--border)",
-								color: "var(--text)",
-							}}
+					{query ? (
+						<SearchResultsControls
+							sort={sort}
+							page={page ?? 1}
+							totalPages={totalPages ?? 0}
 						/>
-
-						<Link
-							href="/forum/new"
-							className="px-4 py-2 rounded-lg border-none text-[13px] font-semibold text-white whitespace-nowrap"
-							style={{ background: "var(--accent)" }}
-						>
-							+ Criar um tópico
-						</Link>
-					</div>
+					) : null}
 
 					<div
-						className="rounded-xl overflow-hidden px-3 border"
+						className="rounded-xl overflow-hidden border"
 						style={{
 							background: "var(--palette-white)",
 							borderColor: "var(--border)",
 						}}
 					>
-						{filtered.map((thread) => (
+						{data.threads.map((thread) => (
 							<ForumThreadRow key={thread.id} thread={thread} />
 						))}
 
-						{filtered.length === 0 ? (
+						{data.threads.length === 0 ? (
 							<div
 								className="py-10 text-center text-[14px]"
 								style={{ color: "var(--text-muted)" }}
 							>
-								Nenhum tópico encontrado.
+								{query
+									? `Nenhum tópico encontrado para “${query}”.`
+									: "Ainda não há tópicos publicados."}
 							</div>
 						) : null}
 					</div>

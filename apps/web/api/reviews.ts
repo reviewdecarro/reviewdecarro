@@ -1,4 +1,4 @@
-import { API_BASE_URL } from "@/lib/api";
+import { API_BASE_URL } from "@/api/api";
 import type { PublicReview, ReviewComment } from "@/types";
 
 type ApiReview = {
@@ -170,11 +170,28 @@ function toReviewComment(
 	};
 }
 
-export async function fetchPublicReviews(): Promise<PublicReview[]> {
+type PublicReviewsFilters = {
+	query?: string;
+};
+
+export async function fetchPublicReviews(
+	filters: PublicReviewsFilters = {},
+): Promise<PublicReview[]> {
 	try {
-		const response = await fetch(`${API_BASE_URL}/reviews`, {
-			cache: "no-store",
-		});
+		const searchParams = new URLSearchParams();
+		const query = filters.query?.trim();
+
+		if (query) {
+			searchParams.set("q", query);
+		}
+
+		const queryString = searchParams.toString();
+		const response = await fetch(
+			`${API_BASE_URL}/reviews${queryString ? `?${queryString}` : ""}`,
+			{
+				cache: "no-store",
+			},
+		);
 
 		if (!response.ok) {
 			return [];

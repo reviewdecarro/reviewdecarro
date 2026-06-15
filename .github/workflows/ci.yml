@@ -72,6 +72,10 @@ jobs:
         run: pnpm seed
         working-directory: apps/api
 
+      - name: Rebuild search index
+        run: pnpm search:reindex
+        working-directory: apps/api
+
       - name: Lint
         run: pnpm turbo lint
 

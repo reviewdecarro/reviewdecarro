@@ -18,6 +18,7 @@ describe("ListReviewsUseCase", () => {
 			userId: overrides.userId ?? "user-1",
 			user: overrides.user,
 			carVersionYearId: overrides.carVersionYearId ?? "year-1",
+			carVersionYear: overrides.carVersionYear,
 			title: overrides.title ?? "Title",
 			content: overrides.content ?? "Content",
 			pros: null,
@@ -73,16 +74,52 @@ describe("ListReviewsUseCase", () => {
 		expect(result[0]).toHaveProperty("userId", "u1");
 	});
 
-	it("should filter by query (case-insensitive, title or content)", async () => {
+	it("should filter by query using review and vehicle fields", async () => {
 		reviewsRepository.items.push(
 			makeReview({ id: "a", title: "Great car", content: "x" }),
 			makeReview({ id: "b", title: "x", content: "Horrible experience" }),
-			makeReview({ id: "c", title: "x", content: "x" }),
+			makeReview({
+				id: "c",
+				title: "x",
+				content: "x",
+				carVersionYear: {
+					id: "year-1",
+					year: 2026,
+					carVersion: {
+						id: "version-1",
+						versionName: "Touring",
+						slug: "touring",
+						model: {
+							id: "model-1",
+							name: "Civic",
+							slug: "civic",
+							brand: {
+								id: "brand-1",
+								name: "Honda",
+								slug: "honda",
+							},
+						},
+					},
+				},
+			}),
+			makeReview({ id: "d", title: "x", content: "x" }),
 		);
 
-		const result = await sut.execute({ query: "great" });
-
-		expect(result).toHaveLength(1);
-		expect(result[0]).toHaveProperty("id", "a");
+		await expect(sut.execute({ query: "GREAT" })).resolves.toEqual([
+			expect.objectContaining({ id: "a" }),
+		]);
+		await expect(sut.execute({ query: "experience" })).resolves.toEqual([
+			expect.objectContaining({ id: "b" }),
+		]);
+		await expect(sut.execute({ query: "touring" })).resolves.toEqual([
+			expect.objectContaining({ id: "c" }),
+		]);
+		await expect(sut.execute({ query: "civic" })).resolves.toEqual([
+			expect.objectContaining({ id: "c" }),
+		]);
+		await expect(sut.execute({ query: "honda" })).resolves.toEqual([
+			expect.objectContaining({ id: "c" }),
+		]);
+		await expect(sut.execute({ query: "missing" })).resolves.toEqual([]);
 	});
 });

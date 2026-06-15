@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { ReactNode } from "react";
 
 type HeroCommunityProps = {
 	title: string;
@@ -6,6 +7,7 @@ type HeroCommunityProps = {
 	searchPlaceholder?: string;
 	buttonLabel: string;
 	buttonHref: string;
+	searchControl?: ReactNode;
 };
 
 export function HeroCommunity({
@@ -14,6 +16,7 @@ export function HeroCommunity({
 	searchPlaceholder = "Buscar por marca, modelo ou categoria...",
 	buttonLabel,
 	buttonHref,
+	searchControl,
 }: HeroCommunityProps) {
 	return (
 		<section
@@ -30,12 +33,14 @@ export function HeroCommunity({
 				<p className="text-xl text-gray-300">{subtitle}</p>
 
 				<div className="w-full flex flex-col sm:flex-row gap-3 mt-5">
-					<input
-						aria-label={searchPlaceholder}
-						type="text"
-						placeholder={searchPlaceholder}
-						className="w-full pl-12 pr-4 py-4 bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#E84E27] focus:border-transparent"
-					/>
+					{searchControl ?? (
+						<input
+							aria-label={searchPlaceholder}
+							type="text"
+							placeholder={searchPlaceholder}
+							className="w-full pl-12 pr-4 py-4 bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#E84E27] focus:border-transparent"
+						/>
+					)}
 					<Link
 						href={buttonHref}
 						className="flex items-center justify-center gap-2 px-8 py-4 bg-[#E84E27] text-white font-bold rounded-lg transition-all shadow-lg hover:shadow-xl hover:brightness-90 whitespace-nowrap"

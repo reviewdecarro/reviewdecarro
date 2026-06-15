@@ -7,8 +7,8 @@ import { ForumTopicsRepositoryProps } from "../repositories/forum-topics.reposit
 export class ListForumTopicsUseCase {
 	constructor(private forumTopicsRepository: ForumTopicsRepositoryProps) {}
 
-	async execute() {
-		const topics = await this.forumTopicsRepository.findAll();
+	async execute(filters?: { query?: string }) {
+		const topics = await this.forumTopicsRepository.findAll(filters);
 
 		return topics.map((topic) =>
 			ForumTopicMapper.toResponseDto(new ForumTopicEntity(topic)),

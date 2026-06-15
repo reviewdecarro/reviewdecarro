@@ -38,11 +38,29 @@ export class PrismaForumTopicsRepository extends ForumTopicsRepositoryProps {
 		return new ForumTopicEntity(topic);
 	}
 
-	async findAll(): Promise<ForumTopicEntity[]> {
+	async findAll(filters?: { query?: string }): Promise<ForumTopicEntity[]> {
 		const topics = await this.prisma.forumTopic.findMany({
 			where: {
 				status: ForumTopicStatus.PUBLISHED,
 				deletedAt: null,
+				...(filters?.query
+					? {
+							OR: [
+								{
+									title: {
+										contains: filters.query,
+										mode: "insensitive" as const,
+									},
+								},
+								{
+									content: {
+										contains: filters.query,
+										mode: "insensitive" as const,
+									},
+								},
+							],
+						}
+					: {}),
 			},
 			include: forumTopicInclude,
 			orderBy: { createdAt: "desc" },

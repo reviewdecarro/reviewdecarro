@@ -150,8 +150,8 @@ import { ForumThreadRow } from "@/components/ForumThreadRow";
 import { Nav } from "@/components/Nav";
 import { ReviewCard } from "@/components/ReviewCard";
 import { SectionHeader } from "@/components/SectionHeader";
-import { fetchForumTopics } from "@/lib/forum";
-import { fetchPublicReviews } from "@/lib/reviews";
+import { fetchForumTopics } from "@/api/forum";
+import { fetchPublicReviews } from "@/api/reviews";
 ```
 
 Substituir por:
@@ -162,8 +162,8 @@ import { ForumThreadRow } from "@/components/ForumThreadRow";
 import { Nav } from "@/components/Nav";
 import { ReviewCard } from "@/components/ReviewCard";
 import { SectionHeader } from "@/components/SectionHeader";
-import { fetchForumTopics } from "@/lib/forum";
-import { fetchPublicReviews } from "@/lib/reviews";
+import { fetchForumTopics } from "@/api/forum";
+import { fetchPublicReviews } from "@/api/reviews";
 ```
 
 - [ ] **Step 2: Substituir o bloco "Escolha do editor"**

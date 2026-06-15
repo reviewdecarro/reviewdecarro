@@ -80,7 +80,16 @@ export class InMemoryReviewsRepository extends ReviewsRepositoryProps {
 			result = result.filter(
 				(r) =>
 					r.title.toLowerCase().includes(q) ||
-					r.content.toLowerCase().includes(q),
+					r.content.toLowerCase().includes(q) ||
+					r.carVersionYear?.carVersion?.versionName
+						.toLowerCase()
+						.includes(q) ||
+					r.carVersionYear?.carVersion?.model?.name
+						.toLowerCase()
+						.includes(q) ||
+					r.carVersionYear?.carVersion?.model?.brand?.name
+						.toLowerCase()
+						.includes(q),
 			);
 		}
 

@@ -153,8 +153,8 @@ import {
   useMemo,
   useState,
 } from "react";
-import { API_BASE_URL } from "@/lib/api";
-import type { AuthUser } from "@/lib/auth";
+import { API_BASE_URL } from "@/api/api";
+import type { AuthUser } from "@/api/auth";
 
 type AuthSessionContextValue = {
   authUser: AuthUser | null;

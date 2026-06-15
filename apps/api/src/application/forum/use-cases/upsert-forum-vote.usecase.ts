@@ -1,9 +1,10 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, Optional } from "@nestjs/common";
 import {
 	ForumVoteTargetType,
 	ForumVoteValue,
 } from "../../../../prisma/generated/enums";
 import { BadRequestError } from "../../../shared/errors/types/bad-request-error";
+import { SearchIndexerService } from "../../search/services/search-indexer.service";
 import { ForumPostEntity } from "../entities/forum-post.entity";
 import { ForumTopicEntity } from "../entities/forum-topic.entity";
 import { ForumVoteEntity } from "../entities/forum-vote.entity";
@@ -22,6 +23,7 @@ export class UpsertForumVoteUseCase {
 		private forumVotesRepository: ForumVotesRepositoryProps,
 		private forumTopicsRepository: ForumTopicsRepositoryProps,
 		private forumPostsRepository: ForumPostsRepositoryProps,
+		@Optional() private searchIndexer?: SearchIndexerService,
 	) {}
 
 	async execute(
@@ -51,6 +53,7 @@ export class UpsertForumVoteUseCase {
 			);
 
 			await this.applyVoteDelta(targetType, targetId, value, 1);
+			await this.refreshTopicIndex(targetType, target);
 
 			return {
 				action: "created",
@@ -61,6 +64,7 @@ export class UpsertForumVoteUseCase {
 		if (existing.value === value) {
 			await this.forumVotesRepository.delete(existing.id);
 			await this.applyVoteDelta(targetType, targetId, value, -1);
+			await this.refreshTopicIndex(targetType, target);
 
 			return {
 				action: "removed",
@@ -72,6 +76,7 @@ export class UpsertForumVoteUseCase {
 		const updated = await this.forumVotesRepository.update(existing.id, value);
 		await this.applyVoteDelta(targetType, targetId, previousValue, -1);
 		await this.applyVoteDelta(targetType, targetId, value, 1);
+		await this.refreshTopicIndex(targetType, target);
 
 		return {
 			action: "updated",
@@ -137,5 +142,13 @@ export class UpsertForumVoteUseCase {
 		} else {
 			await this.forumPostsRepository.decrementDownvotes(targetId);
 		}
+	}
+
+	private async refreshTopicIndex(
+		targetType: ForumVoteTargetType,
+		target: ForumTopicEntity | ForumPostEntity,
+	): Promise<void> {
+		const topicId = "topicId" in target ? target.topicId : target.id;
+		await this.searchIndexer?.indexTopic(topicId);
 	}
 }

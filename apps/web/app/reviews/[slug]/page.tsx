@@ -1,7 +1,7 @@
 import { Star } from "lucide-react";
 import { notFound } from "next/navigation";
+import { fetchReviewBySlug, fetchReviewComments } from "@/api/reviews";
 import { MarkdownViewer } from "@/components/MarkdownViewer";
-import { fetchReviewBySlug, fetchReviewComments } from "@/lib/reviews";
 import { ReviewCommentForm } from "./review-comment-form";
 
 type ReviewPageProps = {
@@ -96,7 +96,9 @@ export default async function ReviewPage({ params }: ReviewPageProps) {
 							className="flex flex-wrap items-center gap-2 text-sm"
 							style={{ color: "rgba(255,255,255,0.7)" }}
 						>
-							<span className="font-semibold text-blue-400">{review.author}</span>
+							<span className="font-semibold text-blue-400">
+								{review.author}
+							</span>
 							<span>·</span>
 							<span>{review.date}</span>
 							<span>·</span>

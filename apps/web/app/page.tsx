@@ -1,11 +1,11 @@
 import { MessageSquare } from "lucide-react";
+import { fetchForumTopics } from "@/api/forum";
+import { fetchPublicReviews, fetchReviewBySlug } from "@/api/reviews";
 import { CtaSection } from "@/components/CtaSection";
 import { DiscussionCard } from "@/components/DiscussionCard";
 import { EditorsPick } from "@/components/EditorsPick";
 import { RecentReviewCard } from "@/components/RecentReviewCard";
 import { SectionHeader } from "@/components/SectionHeader";
-import { fetchForumTopics } from "@/lib/forum";
-import { fetchPublicReviews, fetchReviewBySlug } from "@/lib/reviews";
 
 export default async function HomePage() {
 	const reviews = await fetchPublicReviews();
@@ -37,7 +37,10 @@ export default async function HomePage() {
 		? await fetchReviewBySlug(featuredReview.slug)
 		: null;
 	const featuredPros = featuredDetail?.pros
-		? featuredDetail.pros.split("\n").map((s) => s.trim()).filter(Boolean)
+		? featuredDetail.pros
+				.split("\n")
+				.map((s) => s.trim())
+				.filter(Boolean)
 		: undefined;
 
 	return (

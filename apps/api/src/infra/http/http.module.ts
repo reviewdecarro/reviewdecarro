@@ -8,6 +8,7 @@ import { CarsHttpModule } from "./controllers/cars/cars-http.module";
 import { CommentsHttpModule } from "./controllers/comments/comments-http.module";
 import { ForumHttpModule } from "./controllers/forum/forum-http.module";
 import { ReviewsHttpModule } from "./controllers/reviews/reviews-http.module";
+import { SearchHttpModule } from "./controllers/search/search-http.module";
 import { UsersHttpModule } from "./controllers/users/users-http.module";
 import { VotesHttpModule } from "./controllers/votes/votes-http.module";
 
@@ -21,6 +22,7 @@ import { VotesHttpModule } from "./controllers/votes/votes-http.module";
 		CommentsHttpModule,
 		VotesHttpModule,
 		ForumHttpModule,
+		SearchHttpModule,
 	],
 	providers: [
 		{ provide: APP_GUARD, useClass: JwtAuthGuard },

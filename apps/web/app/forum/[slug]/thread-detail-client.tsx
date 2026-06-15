@@ -14,11 +14,11 @@ import {
 	useOptimistic,
 	useState,
 } from "react";
+import { API_BASE_URL } from "@/api/api";
 import { MarkdownEditor } from "@/components/MarkdownEditor";
 import { MarkdownViewer } from "@/components/MarkdownViewer";
 import { VoteButton } from "@/components/VoteButton";
 import { useAuthSession } from "@/hooks/use-auth-session";
-import { API_BASE_URL } from "@/lib/api";
 import type { ForumPost, ForumTopicDetail } from "@/types";
 
 type ThreadDetailClientProps = {

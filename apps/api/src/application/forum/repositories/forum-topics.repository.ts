@@ -7,7 +7,7 @@ export abstract class ForumTopicsRepositoryProps {
 		data: CreateForumTopicDto & { slug: string },
 	): Promise<ForumTopicEntity>;
 
-	abstract findAll(): Promise<ForumTopicEntity[]>;
+	abstract findAll(filters?: { query?: string }): Promise<ForumTopicEntity[]>;
 	abstract findById(id: string): Promise<ForumTopicEntity | null>;
 	abstract findBySlug(slug: string): Promise<ForumTopicEntity | null>;
 	abstract incrementPostsCount(topicId: string): Promise<void>;

@@ -114,3 +114,8 @@ export type ForumPost = Prisma.ForumPostModel
  * 
  */
 export type ForumVote = Prisma.ForumVoteModel
+/**
+ * Model SearchDocument
+ * 
+ */
+export type SearchDocument = Prisma.SearchDocumentModel

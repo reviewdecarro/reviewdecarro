@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { fetchForumTopicBySlug } from "@/lib/forum";
+import { fetchForumTopicBySlug } from "@/api/forum";
 import { ThreadDetailClient } from "./thread-detail-client";
 
 type ThreadPageProps = {

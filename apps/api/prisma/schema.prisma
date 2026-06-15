@@ -33,6 +33,11 @@ enum RatingCategory {
   RESALE_VALUE
 }
 
+enum SearchEntityType {
+  REVIEW
+  TOPIC
+}
+
 //
 // USERS
 //
@@ -46,12 +51,12 @@ model User {
   confirmedEmail Boolean  @default(false)
   createdAt      DateTime @default(now())
 
-  roles      Role[]
-  reviews    Review[]
-  comments   Comment[]
-  votes      ReviewVote[]
-  userTokens UserToken[]
-  sessions   Session[]
+  roles       Role[]
+  reviews     Review[]
+  comments    Comment[]
+  votes       ReviewVote[]
+  userTokens  UserToken[]
+  sessions    Session[]
   forumTopics ForumTopic[]
   forumPosts  ForumPost[]
   forumVotes  ForumVote[]
@@ -354,4 +359,34 @@ model ForumVote {
   @@index([targetId, targetType])
   @@index([userId])
   @@map("forum_votes")
+}
+
+model SearchDocument {
+  id            String                   @id @default(uuid())
+  entityId      String
+  entityType    SearchEntityType
+  title         String
+  content       String
+  excerpt       String?
+  authorName    String?
+  brandName     String?
+  modelName     String?
+  versionName   String?
+  year          Int?
+  slug          String
+  score         Float                    @default(0)
+  votesCount    Int                      @default(0)
+  commentsCount Int                      @default(0)
+  createdAt     DateTime
+  updatedAt     DateTime                 @updatedAt
+  searchVector  Unsupported("tsvector")? @default(dbgenerated())
+
+  @@unique([entityId, entityType])
+  @@index([entityType])
+  @@index([brandName])
+  @@index([modelName])
+  @@index([year])
+  @@index([score])
+  @@index([createdAt])
+  @@map("search_documents")
 }
