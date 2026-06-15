@@ -1,9 +1,10 @@
+import "dotenv/config";
 import { NestFactory } from "@nestjs/core";
-import { AppModule } from "../app.module";
 import { SearchIndexerService } from "../application/search/services/search-indexer.service";
+import { SearchModule } from "../infra/search/search.module";
 
 async function main() {
-	const app = await NestFactory.createApplicationContext(AppModule);
+	const app = await NestFactory.createApplicationContext(SearchModule);
 
 	try {
 		const indexer = app.get(SearchIndexerService);
