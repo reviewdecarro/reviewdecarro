@@ -1,4 +1,5 @@
 import { Expose } from "class-transformer";
+import { ReviewStatus } from "../../../../prisma/generated/enums";
 import { ReviewRatingEntity } from "./review-rating.entity";
 
 export class ReviewEntity {
@@ -40,6 +41,9 @@ export class ReviewEntity {
 
 	@Expose()
 	score: number;
+
+	@Expose()
+	status: ReviewStatus;
 
 	@Expose()
 	createdAt: Date;

@@ -2,7 +2,11 @@ import { Injectable } from "@nestjs/common";
 import { ForumTopicStatus } from "../../../../../prisma/generated/enums";
 import type { CreateForumTopicDto } from "../../../../application/forum/dtos/create-forum-topic.dto";
 import { ForumTopicEntity } from "../../../../application/forum/entities/forum-topic.entity";
-import { ForumTopicsRepositoryProps } from "../../../../application/forum/repositories/forum-topics.repository";
+import {
+	type AdminForumTopicsListParams,
+	type AdminForumTopicsListResult,
+	ForumTopicsRepositoryProps,
+} from "../../../../application/forum/repositories/forum-topics.repository";
 import { PrismaService } from "../prisma.service";
 
 const forumTopicInclude = {
@@ -52,14 +56,22 @@ export class PrismaForumTopicsRepository extends ForumTopicsRepositoryProps {
 										mode: "insensitive" as const,
 									},
 								},
-								{
-									content: {
-										contains: filters.query,
-										mode: "insensitive" as const,
-									},
-								},
-							],
-						}
+				{
+					content: {
+						contains: filters.query,
+						mode: "insensitive" as const,
+					},
+				},
+				{
+					author: {
+						username: {
+							contains: filters.query,
+							mode: "insensitive" as const,
+						},
+					},
+				},
+			],
+		}
 					: {}),
 			},
 			include: forumTopicInclude,
@@ -86,6 +98,88 @@ export class PrismaForumTopicsRepository extends ForumTopicsRepositoryProps {
 		const topic = await this.prisma.forumTopic.findUnique({
 			where: {
 				slug,
+			},
+			include: forumTopicInclude,
+		});
+
+		if (!topic) {
+			return null;
+		}
+
+		return new ForumTopicEntity(topic);
+	}
+
+	async countPublished(): Promise<number> {
+		return this.prisma.forumTopic.count({
+			where: {
+				status: ForumTopicStatus.PUBLISHED,
+				deletedAt: null,
+			},
+		});
+	}
+
+	async countByAuthorId(authorId: string): Promise<number> {
+		return this.prisma.forumTopic.count({ where: { authorId } });
+	}
+
+	async findManyForAdmin(
+		params: AdminForumTopicsListParams,
+	): Promise<AdminForumTopicsListResult> {
+		const query = params.query?.trim();
+		const where = {
+			status: ForumTopicStatus.PUBLISHED,
+			deletedAt: null,
+			...(query
+				? {
+						OR: [
+							{
+								title: {
+									contains: query,
+									mode: "insensitive" as const,
+								},
+							},
+							{
+								content: {
+									contains: query,
+									mode: "insensitive" as const,
+								},
+							},
+							{
+								author: {
+									username: {
+										contains: query,
+										mode: "insensitive" as const,
+									},
+								},
+							},
+						],
+					}
+				: {}),
+		};
+
+		const [topics, total] = await this.prisma.$transaction([
+			this.prisma.forumTopic.findMany({
+				where,
+				include: forumTopicInclude,
+				orderBy: { createdAt: "desc" },
+				skip: (params.page - 1) * params.limit,
+				take: params.limit,
+			}),
+			this.prisma.forumTopic.count({ where }),
+		]);
+
+		return {
+			topics: topics.map((topic) => new ForumTopicEntity(topic)),
+			total,
+		};
+	}
+
+	async findByIdForAdmin(id: string): Promise<ForumTopicEntity | null> {
+		const topic = await this.prisma.forumTopic.findFirst({
+			where: {
+				id,
+				status: ForumTopicStatus.PUBLISHED,
+				deletedAt: null,
 			},
 			include: forumTopicInclude,
 		});

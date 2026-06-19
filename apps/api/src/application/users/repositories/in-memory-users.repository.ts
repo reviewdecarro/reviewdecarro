@@ -1,7 +1,11 @@
 import { randomUUID } from "node:crypto";
 import type { CreateUserDto } from "../dtos/create-user.dto";
 import { UserEntity } from "../entities/user.entity";
-import { UsersRepositoryProps } from "./users.repository";
+import {
+	type AdminUsersListParams,
+	type AdminUsersListResult,
+	UsersRepositoryProps,
+} from "./users.repository";
 
 export class InMemoryUsersRepository extends UsersRepositoryProps {
 	public items: UserEntity[] = [];
@@ -32,6 +36,27 @@ export class InMemoryUsersRepository extends UsersRepositoryProps {
 
 	async findByUsername(username: string): Promise<UserEntity | null> {
 		return this.items.find((user) => user.username === username) ?? null;
+	}
+
+	async countActive(): Promise<number> {
+		return this.items.filter((user) => user.active).length;
+	}
+
+	async findManyForAdmin(
+		params: AdminUsersListParams,
+	): Promise<AdminUsersListResult> {
+		const query = params.query?.trim().toLowerCase();
+		const filtered = this.items
+			.filter(
+				(user) => !query || user.username.toLowerCase().includes(query),
+			)
+			.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+		const start = (params.page - 1) * params.limit;
+
+		return {
+			users: filtered.slice(start, start + params.limit),
+			total: filtered.length,
+		};
 	}
 
 	async confirmEmail(id: string): Promise<void> {
