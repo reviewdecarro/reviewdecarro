@@ -1,0 +1,37 @@
+.progressFill {
+	position: relative;
+	overflow: hidden;
+	transition: width 800ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.progressFill::after {
+	position: absolute;
+	inset: 0;
+	content: "";
+	background: linear-gradient(
+		90deg,
+		transparent 0%,
+		rgba(255, 255, 255, 0.18) 35%,
+		rgba(255, 255, 255, 0.72) 50%,
+		rgba(255, 255, 255, 0.18) 65%,
+		transparent 100%
+	);
+	transform: translateX(-100%);
+	animation: progress-shimmer 1.6s ease-in-out infinite;
+}
+
+@keyframes progress-shimmer {
+	to {
+		transform: translateX(100%);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.progressFill {
+		transition: none;
+	}
+
+	.progressFill::after {
+		display: none;
+	}
+}
