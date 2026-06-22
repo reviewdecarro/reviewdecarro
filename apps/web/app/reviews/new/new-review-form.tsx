@@ -1,13 +1,21 @@
 "use client";
 
-import { LoaderCircle, Plus, Sparkles, Star } from "lucide-react";
+import {
+	ChevronLeft,
+	ChevronRight,
+	LoaderCircle,
+	Plus,
+	Sparkles,
+	Star,
+} from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { type FormEvent, useEffect, useMemo, useState } from "react";
+import { type FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import Select, { type SingleValue, type StylesConfig } from "react-select";
+import { API_BASE_URL } from "@/api/api";
 import { MarkdownEditor } from "@/components/MarkdownEditor";
 import { useAuthSession } from "@/hooks/use-auth-session";
-import { API_BASE_URL } from "@/api/api";
+import styles from "./new-review-form.module.css";
 
 type RatingCategory =
 	| "CONSUMPTION"
@@ -97,6 +105,26 @@ type ApiResponse<T> = {
 };
 
 const MAX_MARKDOWN_LENGTH = 20_000;
+
+const formSteps = [
+	{
+		title: "Veículo",
+		description: "Identifique o carro que você está avaliando.",
+	},
+	{
+		title: "Experiência",
+		description:
+			"Conte como foi sua experiência e por quanto tempo usou o carro.",
+	},
+	{
+		title: "Prós e contras",
+		description: "Destaque os principais pontos positivos e negativos.",
+	},
+	{
+		title: "Avaliações",
+		description: "Avalie cada categoria antes de publicar sua review.",
+	},
+] as const;
 
 function parseMileage(value: string): number | undefined {
 	const normalized = value
@@ -201,6 +229,8 @@ export function NewReviewForm() {
 	const router = useRouter();
 	const pathname = usePathname();
 	const { authUser, isCheckingSession, isLoggedIn } = useAuthSession();
+	const [currentStep, setCurrentStep] = useState(0);
+	const stepHeadingRef = useRef<HTMLHeadingElement>(null);
 	const [brands, setBrands] = useState<BrandOption[]>([]);
 	const [models, setModels] = useState<ModelOption[]>([]);
 	const [years, setYears] = useState<VersionYearOption[]>([]);
@@ -444,11 +474,16 @@ export function NewReviewForm() {
 		return total > 0 ? Number((total / payload.ratings.length).toFixed(1)) : 0;
 	}, [payload.ratings]);
 
+	useEffect(() => {
+		stepHeadingRef.current?.focus();
+	}, []);
+
 	function updateField<K extends keyof CreateReviewPayload>(
 		field: K,
 		value: CreateReviewPayload[K],
 	) {
 		setPayload((current) => ({ ...current, [field]: value }));
+		setState({ status: "idle", message: "" });
 	}
 
 	function updateRating(category: RatingCategory, value: number) {
@@ -467,22 +502,68 @@ export function NewReviewForm() {
 		);
 	}
 
-	async function handleSubmit(event: FormEvent<HTMLFormElement>) {
-		event.preventDefault();
-
-		if (!payload.carVersionYearId) {
+	function validateStep(step: number) {
+		if (step === 0 && !payload.carVersionYearId) {
 			setState({
 				status: "error",
 				message: "Selecione marca, modelo, ano e versão para continuar.",
 			});
-			return;
+			return false;
 		}
 
-		if (!payload.ratings.every((rating) => rating.value > 0)) {
+		if (step === 1 && payload.title.trim().length < 3) {
+			setState({
+				status: "error",
+				message: "Informe um título com pelo menos 3 caracteres.",
+			});
+			return false;
+		}
+
+		if (step === 1 && payload.content.trim().length < 10) {
+			setState({
+				status: "error",
+				message: "Descreva sua experiência com pelo menos 10 caracteres.",
+			});
+			return false;
+		}
+
+		if (
+			step === formSteps.length - 1 &&
+			!payload.ratings.every((rating) => rating.value > 0)
+		) {
 			setState({
 				status: "error",
 				message: "Avalie todas as categorias para publicar a review.",
 			});
+			return false;
+		}
+
+		setState({ status: "idle", message: "" });
+		return true;
+	}
+
+	function goToNextStep() {
+		if (!validateStep(currentStep)) {
+			return;
+		}
+
+		setCurrentStep((step) => Math.min(step + 1, formSteps.length - 1));
+	}
+
+	function goToPreviousStep() {
+		setState({ status: "idle", message: "" });
+		setCurrentStep((step) => Math.max(step - 1, 0));
+	}
+
+	async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+		event.preventDefault();
+
+		if (currentStep < formSteps.length - 1) {
+			goToNextStep();
+			return;
+		}
+
+		if (!validateStep(currentStep)) {
 			return;
 		}
 
@@ -530,6 +611,7 @@ export function NewReviewForm() {
 	}
 
 	function resetForm() {
+		setCurrentStep(0);
 		setSelectedBrandSlug("");
 		setSelectedModelSlug("");
 		setSelectedYear("");
@@ -650,88 +732,142 @@ export function NewReviewForm() {
 			}}
 		>
 			<div className="grid gap-4">
-				<div className="grid gap-2">
-					<label
-						htmlFor="brand"
-						className="text-[13px] font-medium"
-						style={{ color: "var(--text-muted)" }}
-					>
-						Marca
-					</label>
-					<Select
-						inputId="brand"
-						instanceId="brand"
-						isClearable
-						isLoading={isLoadingBrands}
-						placeholder="Digite ou selecione uma marca"
-						options={brandOptions}
-						value={
-							brandOptions.find(
-								(option) => option.value === selectedBrandSlug,
-							) ?? null
-						}
-						onChange={(option: SingleValue<SelectOption>) => {
-							const slug = option?.value ?? "";
+				<div
+					className="grid gap-4 border-b pb-6"
+					style={{ borderColor: "var(--border)" }}
+				>
+					<div className="flex items-center justify-between gap-4">
+						<p
+							className="text-[13px] font-semibold"
+							style={{ color: "var(--accent)" }}
+						>
+							Etapa {currentStep + 1} de {formSteps.length}
+						</p>
+						<p className="text-[13px]" style={{ color: "var(--text-muted)" }}>
+							{Math.round(((currentStep + 1) / formSteps.length) * 100)}%
+						</p>
+					</div>
 
-							setSelectedBrandSlug(slug);
-							setSelectedModelSlug("");
-							setSelectedYear("");
-							setSelectedVersionId("");
-							setModels([]);
-							setYears([]);
-							setVersions([]);
-							setPayload((current) => ({
-								...current,
-								carVersionYearId: "",
-							}));
-							setState({ status: "idle", message: "" });
-						}}
-						styles={selectStyles}
-					/>
+					<div
+						className="h-2 overflow-hidden rounded-full"
+						style={{ background: "var(--surface-2)" }}
+						role="progressbar"
+						aria-label="Progresso do formulário"
+						aria-valuemin={1}
+						aria-valuemax={formSteps.length}
+						aria-valuenow={currentStep + 1}
+						aria-valuetext={`Etapa ${currentStep + 1} de ${formSteps.length}`}
+					>
+						<div
+							className={`${styles.progressFill} h-full rounded-full`}
+							style={{
+								background: "var(--accent)",
+								width: `${((currentStep + 1) / formSteps.length) * 100}%`,
+							}}
+						/>
+					</div>
+
+					<div>
+						<h2
+							ref={stepHeadingRef}
+							tabIndex={-1}
+							className="text-[18px] font-semibold outline-none"
+							style={{ color: "var(--text)" }}
+						>
+							{formSteps[currentStep].title}
+						</h2>
+						<p
+							className="mt-1 text-[13px]"
+							style={{ color: "var(--text-muted)" }}
+						>
+							{formSteps[currentStep].description}
+						</p>
+					</div>
 				</div>
 
-				<div className="grid gap-2">
-					<label
-						htmlFor="model"
-						className="text-[13px] font-medium"
-						style={{ color: "var(--text-muted)" }}
-					>
-						Modelo
-					</label>
-					<Select
-						inputId="model"
-						instanceId="model"
-						isClearable
-						isDisabled={!selectedBrandSlug || isLoadingModels}
-						isLoading={isLoadingModels}
-						placeholder={
-							!selectedBrandSlug
-								? "Selecione uma marca primeiro"
-								: "Digite ou selecione um modelo"
-						}
-						options={modelOptions}
-						value={
-							modelOptions.find(
-								(option) => option.value === selectedModelSlug,
-							) ?? null
-						}
-						onChange={(option: SingleValue<SelectOption>) => {
-							const slug = option?.value ?? "";
+				{currentStep === 0 && (
+					<>
+						<div className="grid gap-2">
+							<label
+								htmlFor="brand"
+								className="text-[13px] font-medium"
+								style={{ color: "var(--text-muted)" }}
+							>
+								Marca
+							</label>
+							<Select
+								inputId="brand"
+								instanceId="brand"
+								isClearable
+								isLoading={isLoadingBrands}
+								placeholder="Digite ou selecione uma marca"
+								options={brandOptions}
+								value={
+									brandOptions.find(
+										(option) => option.value === selectedBrandSlug,
+									) ?? null
+								}
+								onChange={(option: SingleValue<SelectOption>) => {
+									const slug = option?.value ?? "";
 
-							setSelectedModelSlug(slug);
-							setSelectedYear("");
-							setSelectedVersionId("");
-							setYears([]);
-							setVersions([]);
-							setPayload((current) => ({
-								...current,
-								carVersionYearId: "",
-							}));
-							setState({ status: "idle", message: "" });
-						}}
-						styles={selectStyles}
-					/>
-					{/* {selectedModel && (
+									setSelectedBrandSlug(slug);
+									setSelectedModelSlug("");
+									setSelectedYear("");
+									setSelectedVersionId("");
+									setModels([]);
+									setYears([]);
+									setVersions([]);
+									setPayload((current) => ({
+										...current,
+										carVersionYearId: "",
+									}));
+									setState({ status: "idle", message: "" });
+								}}
+								styles={selectStyles}
+							/>
+						</div>
+						<div className="grid gap-2">
+							<label
+								htmlFor="model"
+								className="text-[13px] font-medium"
+								style={{ color: "var(--text-muted)" }}
+							>
+								Modelo
+							</label>
+							<Select
+								inputId="model"
+								instanceId="model"
+								isClearable
+								isDisabled={!selectedBrandSlug || isLoadingModels}
+								isLoading={isLoadingModels}
+								placeholder={
+									!selectedBrandSlug
+										? "Selecione uma marca primeiro"
+										: "Digite ou selecione um modelo"
+								}
+								options={modelOptions}
+								value={
+									modelOptions.find(
+										(option) => option.value === selectedModelSlug,
+									) ?? null
+								}
+								onChange={(option: SingleValue<SelectOption>) => {
+									const slug = option?.value ?? "";
+
+									setSelectedModelSlug(slug);
+									setSelectedYear("");
+									setSelectedVersionId("");
+									setYears([]);
+									setVersions([]);
+									setPayload((current) => ({
+										...current,
+										carVersionYearId: "",
+									}));
+									setState({ status: "idle", message: "" });
+								}}
+								styles={selectStyles}
+							/>
+							{/* {selectedModel && (
 						<div
 							className="rounded-lg border px-3 py-2 text-[13px]"
 							style={{
@@ -743,83 +879,82 @@ export function NewReviewForm() {
 							Modelo selecionado: {selectedModel.name}
 						</div>
 					)} */}
-				</div>
+						</div>
 
-				<div className="grid gap-2">
-					<label
-						htmlFor="year"
-						className="text-[13px] font-medium"
-						style={{ color: "var(--text-muted)" }}
-					>
-						Ano
-					</label>
-					<Select
-						inputId="year"
-						instanceId="year"
-						isClearable
-						isDisabled={!selectedModelSlug || isLoadingYears}
-						isLoading={isLoadingYears}
-						placeholder={
-							!selectedModelSlug
-								? "Selecione um modelo primeiro"
-								: "Digite ou selecione um ano"
-						}
-						options={yearSelectOptions}
-						value={
-							yearSelectOptions.find(
-								(option) => option.value === selectedYear,
-							) ?? null
-						}
-						onChange={(option: SingleValue<SelectOption>) => {
-							setSelectedYear(option?.value ?? "");
-							setSelectedVersionId("");
-							setVersions([]);
-							setState({ status: "idle", message: "" });
-						}}
-						styles={selectStyles}
-					/>
-				</div>
+						<div className="grid gap-2">
+							<label
+								htmlFor="year"
+								className="text-[13px] font-medium"
+								style={{ color: "var(--text-muted)" }}
+							>
+								Ano
+							</label>
+							<Select
+								inputId="year"
+								instanceId="year"
+								isClearable
+								isDisabled={!selectedModelSlug || isLoadingYears}
+								isLoading={isLoadingYears}
+								placeholder={
+									!selectedModelSlug
+										? "Selecione um modelo primeiro"
+										: "Digite ou selecione um ano"
+								}
+								options={yearSelectOptions}
+								value={
+									yearSelectOptions.find(
+										(option) => option.value === selectedYear,
+									) ?? null
+								}
+								onChange={(option: SingleValue<SelectOption>) => {
+									setSelectedYear(option?.value ?? "");
+									setSelectedVersionId("");
+									setVersions([]);
+									setState({ status: "idle", message: "" });
+								}}
+								styles={selectStyles}
+							/>
+						</div>
 
-				<div className="grid gap-2">
-					<label
-						htmlFor="version"
-						className="text-[13px] font-medium"
-						style={{ color: "var(--text-muted)" }}
-					>
-						Versão
-					</label>
-					<Select
-						inputId="version"
-						instanceId="version"
-						isClearable
-						isDisabled={!selectedYear || isLoadingVersions}
-						isLoading={isLoadingVersions}
-						placeholder={
-							!selectedYear
-								? "Selecione um ano primeiro"
-								: "Digite ou selecione uma versão"
-						}
-						options={versionSelectOptions}
-						value={
-							versionSelectOptions.find(
-								(option) => option.value === selectedVersionId,
-							) ?? null
-						}
-						onChange={(option: SingleValue<VersionSelectOption>) => {
-							const versionYearId = option?.value ?? "";
-							console.log(versionYearId);
-							setSelectedVersionId(versionYearId);
-							setPayload((current) => ({
-								...current,
-								carVersionYearId: versionYearId,
-							}));
-							setState({ status: "idle", message: "" });
-						}}
-						styles={selectStyles}
-					/>
-				</div>
+						<div className="grid gap-2">
+							<label
+								htmlFor="version"
+								className="text-[13px] font-medium"
+								style={{ color: "var(--text-muted)" }}
+							>
+								Versão
+							</label>
+							<Select
+								inputId="version"
+								instanceId="version"
+								isClearable
+								isDisabled={!selectedYear || isLoadingVersions}
+								isLoading={isLoadingVersions}
+								placeholder={
+									!selectedYear
+										? "Selecione um ano primeiro"
+										: "Digite ou selecione uma versão"
+								}
+								options={versionSelectOptions}
+								value={
+									versionSelectOptions.find(
+										(option) => option.value === selectedVersionId,
+									) ?? null
+								}
+								onChange={(option: SingleValue<VersionSelectOption>) => {
+									const versionYearId = option?.value ?? "";
+									setSelectedVersionId(versionYearId);
+									setPayload((current) => ({
+										...current,
+										carVersionYearId: versionYearId,
+									}));
+									setState({ status: "idle", message: "" });
+								}}
+								styles={selectStyles}
+							/>
+						</div>
 
-				{/* {payload.carVersionYearId && (
+						{/* {payload.carVersionYearId && (
 					<div
 						className="rounded-xl border px-3 py-2 text-[13px]"
 						style={{
@@ -831,215 +966,194 @@ export function NewReviewForm() {
 						Versão selecionada
 					</div>
 				)} */}
+					</>
+				)}
 
-				<div className="grid gap-2">
-					<label
-						htmlFor="title"
-						className="text-[13px] font-medium"
-						style={{ color: "var(--text-muted)" }}
-					>
-						Título
-					</label>
-					<input
-						id="title"
-						value={payload.title}
-						onChange={(event) => updateField("title", event.target.value)}
-						className="rounded-lg border px-3 py-2 text-[14px] outline-none transition-colors duration-150"
-						style={{
-							background: "var(--bg)",
-							borderColor: "var(--border)",
-							color: "var(--text)",
-						}}
-						onFocus={(e) => {
-							e.target.style.borderColor = "var(--accent)";
-							e.target.style.background = "#ffffff";
-						}}
-						onBlur={(e) => {
-							e.target.style.borderColor = "var(--border)";
-							e.target.style.background = "var(--bg)";
-						}}
-						required
-						minLength={3}
-					/>
-				</div>
-
-				<div className="grid gap-2">
-					<label
-						className="text-[13px] font-medium"
-						style={{ color: "var(--text-muted)" }}
-						htmlFor="content"
-					>
-						Conteúdo
-					</label>
-					<MarkdownEditor
-						value={payload.content}
-						onChange={(value) =>
-							updateField("content", value.slice(0, MAX_MARKDOWN_LENGTH))
-						}
-						placeholder="Descreva sua experiência com o carro em markdown..."
-						maxLength={MAX_MARKDOWN_LENGTH}
-						height={520}
-					/>
-					<p className="text-[12px]" style={{ color: "var(--text-light)" }}>
-						{payload.content.length}/{MAX_MARKDOWN_LENGTH} caracteres
-					</p>
-				</div>
-
-				<div
-					className="grid gap-4 rounded-2xl border p-4"
-					style={{
-						background: "var(--bg)",
-						borderColor: "var(--border)",
-					}}
-				>
-					<div className="flex flex-wrap items-start justify-between gap-3">
-						<div>
-							<p
+				{currentStep === 1 && (
+					<>
+						<div className="grid gap-2">
+							<label
+								htmlFor="title"
 								className="text-[13px] font-medium"
 								style={{ color: "var(--text-muted)" }}
 							>
-								Avaliação por categoria
-							</p>
-							<p
-								className="mt-1 text-[13px]"
-								style={{ color: "var(--text-muted)" }}
-							>
-								{payload.ratings.filter((rating) => rating.value > 0).length}/
-								{ratingOptions.length} categorias avaliadas
-							</p>
+								Título
+							</label>
+							<input
+								id="title"
+								value={payload.title}
+								onChange={(event) => updateField("title", event.target.value)}
+								className="rounded-lg border px-3 py-2 text-[14px] outline-none transition-colors duration-150"
+								style={{
+									background: "var(--bg)",
+									borderColor: "var(--border)",
+									color: "var(--text)",
+								}}
+								onFocus={(e) => {
+									e.target.style.borderColor = "var(--accent)";
+									e.target.style.background = "#ffffff";
+								}}
+								onBlur={(e) => {
+									e.target.style.borderColor = "var(--border)";
+									e.target.style.background = "var(--bg)";
+								}}
+								required
+								minLength={3}
+							/>
 						</div>
 
-						<div className="flex items-center gap-1">
-							{Array.from({ length: 5 }).map((_, index) => {
-								const active = index + 1 <= Math.round(overallScore);
+						<div className="grid gap-2">
+							<label
+								className="text-[13px] font-medium"
+								style={{ color: "var(--text-muted)" }}
+								htmlFor="content"
+							>
+								Conteúdo
+							</label>
+							<MarkdownEditor
+								value={payload.content}
+								onChange={(value) =>
+									updateField("content", value.slice(0, MAX_MARKDOWN_LENGTH))
+								}
+								placeholder="Descreva sua experiência com o carro em markdown..."
+								maxLength={MAX_MARKDOWN_LENGTH}
+								height={520}
+							/>
+							<p className="text-[12px]" style={{ color: "var(--text-light)" }}>
+								{payload.content.length}/{MAX_MARKDOWN_LENGTH} caracteres
+							</p>
+						</div>
+					</>
+				)}
+
+				{currentStep === 3 && (
+					<div
+						className="grid gap-4 rounded-2xl border p-4"
+						style={{
+							background: "var(--bg)",
+							borderColor: "var(--border)",
+						}}
+					>
+						<div className="flex flex-wrap items-start justify-between gap-3">
+							<div>
+								<p
+									className="text-[13px] font-medium"
+									style={{ color: "var(--text-muted)" }}
+								>
+									Avaliação por categoria
+								</p>
+								<p
+									className="mt-1 text-[13px]"
+									style={{ color: "var(--text-muted)" }}
+								>
+									{payload.ratings.filter((rating) => rating.value > 0).length}/
+									{ratingOptions.length} categorias avaliadas
+								</p>
+							</div>
+
+							<div className="flex items-center gap-1">
+								{Array.from({ length: 5 }).map((_, index) => {
+									const active = index + 1 <= Math.round(overallScore);
+
+									return (
+										<Star
+											key={index}
+											size={16}
+											strokeWidth={1.8}
+											fill={active ? "currentColor" : "none"}
+											color={active ? "var(--accent)" : "var(--text-muted)"}
+										/>
+									);
+								})}
+								<span
+									className="ml-1 text-[13px] font-semibold"
+									style={{ color: "var(--text)" }}
+								>
+									{overallScore > 0 ? overallScore.toFixed(1) : "0.0"}
+								</span>
+							</div>
+						</div>
+
+						<div className="grid gap-3">
+							{ratingOptions.map(({ category, label }) => {
+								const value = getRatingValue(category);
 
 								return (
-									<Star
-										key={index}
-										size={16}
-										strokeWidth={1.8}
-										fill={active ? "currentColor" : "none"}
-										color={active ? "var(--accent)" : "var(--text-muted)"}
-									/>
-								);
-							})}
-							<span
-								className="ml-1 text-[13px] font-semibold"
-								style={{ color: "var(--text)" }}
-							>
-								{overallScore > 0 ? overallScore.toFixed(1) : "0.0"}
-							</span>
-						</div>
-					</div>
-
-					<div className="grid gap-3">
-						{ratingOptions.map(({ category, label }) => {
-							const value = getRatingValue(category);
-
-							return (
-								<div
-									key={category}
-									className="flex flex-col gap-2 rounded-xl border px-3 py-3 sm:flex-row sm:items-center sm:justify-between"
-									style={{
-										background: "var(--surface)",
-										borderColor: "var(--border)",
-									}}
-								>
-									<div>
-										<p
-											className="text-[14px] font-semibold"
-											style={{ color: "var(--text)" }}
-										>
-											{label}
-										</p>
-										{/* <p
+									<div
+										key={category}
+										className="flex flex-col gap-2 rounded-xl border px-3 py-3 sm:flex-row sm:items-center sm:justify-between"
+										style={{
+											background: "var(--surface)",
+											borderColor: "var(--border)",
+										}}
+									>
+										<div>
+											<p
+												className="text-[14px] font-semibold"
+												style={{ color: "var(--text)" }}
+											>
+												{label}
+											</p>
+											{/* <p
 											className="text-[12px]"
 											style={{ color: "var(--text-muted)" }}
 										>
 											Selecione de 1 a 5 estrelas
 										</p> */}
-									</div>
+										</div>
 
-									<div className="flex items-center gap-1">
-										{Array.from({ length: 5 }).map((_, index) => {
-											const starValue = index + 1;
-											const active = starValue <= value;
+										<div className="flex items-center gap-1">
+											{Array.from({ length: 5 }).map((_, index) => {
+												const starValue = index + 1;
+												const active = starValue <= value;
 
-											return (
-												<button
-													key={starValue}
-													type="button"
-													onClick={() => updateRating(category, starValue)}
-													className="rounded-md p-1 transition-transform duration-150 hover:scale-105"
-													aria-label={`${label}: ${starValue} estrela${starValue > 1 ? "s" : ""}`}
-													title={`${starValue} estrela${starValue > 1 ? "s" : ""}`}
-												>
-													<Star
-														size={18}
-														strokeWidth={1.8}
-														fill={active ? "currentColor" : "none"}
-														color={active ? "var(--accent)" : "var(--border)"}
-													/>
-												</button>
-											);
-										})}
+												return (
+													<button
+														key={starValue}
+														type="button"
+														onClick={() => updateRating(category, starValue)}
+														className="rounded-md p-1 transition-transform duration-150 hover:scale-105"
+														aria-label={`${label}: ${starValue} estrela${starValue > 1 ? "s" : ""}`}
+														title={`${starValue} estrela${starValue > 1 ? "s" : ""}`}
+													>
+														<Star
+															size={18}
+															strokeWidth={1.8}
+															fill={active ? "currentColor" : "none"}
+															color={active ? "var(--accent)" : "var(--border)"}
+														/>
+													</button>
+												);
+											})}
+										</div>
 									</div>
-								</div>
-							);
-						})}
+								);
+							})}
+						</div>
 					</div>
-				</div>
+				)}
 
-				<div className="grid gap-2">
-					<label
-						htmlFor="ownershipTimeMonths"
-						className="text-[13px] font-medium"
-						style={{ color: "var(--text-muted)" }}
-					>
-						Meses de uso
-					</label>
-					<input
-						id="ownershipTimeMonths"
-						type="number"
-						min="0"
-						value={payload.ownershipTimeMonths ?? ""}
-						onChange={(event) =>
-							updateField(
-								"ownershipTimeMonths",
-								event.target.value ? Number(event.target.value) : undefined,
-							)
-						}
-						className="rounded-lg border px-3 py-2 text-[14px] outline-none transition-colors duration-150"
-						style={{
-							background: "var(--bg)",
-							borderColor: "var(--border)",
-							color: "var(--text)",
-						}}
-						onFocus={(e) => {
-							e.target.style.borderColor = "var(--accent)";
-							e.target.style.background = "#ffffff";
-						}}
-						onBlur={(e) => {
-							e.target.style.borderColor = "var(--border)";
-							e.target.style.background = "var(--bg)";
-						}}
-					/>
-				</div>
-
-				<div className="grid gap-4">
+				{currentStep === 1 && (
 					<div className="grid gap-2">
 						<label
-							htmlFor="pros"
+							htmlFor="ownershipTimeMonths"
 							className="text-[13px] font-medium"
 							style={{ color: "var(--text-muted)" }}
 						>
-							Prós
+							Meses de uso
 						</label>
 						<input
-							id="pros"
-							value={payload.pros ?? ""}
-							onChange={(event) => updateField("pros", event.target.value)}
-							className="min-h-12 rounded-lg border px-3 py-3 text-[14px] outline-none transition-colors duration-150"
+							id="ownershipTimeMonths"
+							type="number"
+							min="0"
+							value={payload.ownershipTimeMonths ?? ""}
+							onChange={(event) =>
+								updateField(
+									"ownershipTimeMonths",
+									event.target.value ? Number(event.target.value) : undefined,
+								)
+							}
+							className="rounded-lg border px-3 py-2 text-[14px] outline-none transition-colors duration-150"
 							style={{
 								background: "var(--bg)",
 								borderColor: "var(--border)",
@@ -1055,36 +1169,9 @@ export function NewReviewForm() {
 							}}
 						/>
 					</div>
+				)}
 
-					<div className="grid gap-2">
-						<label
-							htmlFor="cons"
-							className="text-[13px] font-medium"
-							style={{ color: "var(--text-muted)" }}
-						>
-							Contras
-						</label>
-						<input
-							id="cons"
-							value={payload.cons ?? ""}
-							onChange={(event) => updateField("cons", event.target.value)}
-							className="min-h-12 rounded-lg border px-3 py-3 text-[14px] outline-none transition-colors duration-150"
-							style={{
-								background: "var(--bg)",
-								borderColor: "var(--border)",
-								color: "var(--text)",
-							}}
-							onFocus={(e) => {
-								e.target.style.borderColor = "var(--accent)";
-								e.target.style.background = "#ffffff";
-							}}
-							onBlur={(e) => {
-								e.target.style.borderColor = "var(--border)";
-								e.target.style.background = "var(--bg)";
-							}}
-						/>
-					</div>
-
+				{currentStep === 1 && (
 					<div className="grid gap-2">
 						<label
 							htmlFor="kmDriven"
@@ -1116,7 +1203,69 @@ export function NewReviewForm() {
 							}}
 						/>
 					</div>
-				</div>
+				)}
+
+				{currentStep === 2 && (
+					<div className="grid gap-4">
+						<div className="grid gap-2">
+							<label
+								htmlFor="pros"
+								className="text-[13px] font-medium"
+								style={{ color: "var(--text-muted)" }}
+							>
+								Prós
+							</label>
+							<input
+								id="pros"
+								value={payload.pros ?? ""}
+								onChange={(event) => updateField("pros", event.target.value)}
+								className="min-h-12 rounded-lg border px-3 py-3 text-[14px] outline-none transition-colors duration-150"
+								style={{
+									background: "var(--bg)",
+									borderColor: "var(--border)",
+									color: "var(--text)",
+								}}
+								onFocus={(e) => {
+									e.target.style.borderColor = "var(--accent)";
+									e.target.style.background = "#ffffff";
+								}}
+								onBlur={(e) => {
+									e.target.style.borderColor = "var(--border)";
+									e.target.style.background = "var(--bg)";
+								}}
+							/>
+						</div>
+
+						<div className="grid gap-2">
+							<label
+								htmlFor="cons"
+								className="text-[13px] font-medium"
+								style={{ color: "var(--text-muted)" }}
+							>
+								Contras
+							</label>
+							<input
+								id="cons"
+								value={payload.cons ?? ""}
+								onChange={(event) => updateField("cons", event.target.value)}
+								className="min-h-12 rounded-lg border px-3 py-3 text-[14px] outline-none transition-colors duration-150"
+								style={{
+									background: "var(--bg)",
+									borderColor: "var(--border)",
+									color: "var(--text)",
+								}}
+								onFocus={(e) => {
+									e.target.style.borderColor = "var(--accent)";
+									e.target.style.background = "#ffffff";
+								}}
+								onBlur={(e) => {
+									e.target.style.borderColor = "var(--border)";
+									e.target.style.background = "var(--bg)";
+								}}
+							/>
+						</div>
+					</div>
+				)}
 
 				{state.status === "error" && (
 					<p
@@ -1132,9 +1281,28 @@ export function NewReviewForm() {
 				)}
 
 				<div className="flex flex-wrap gap-3 pt-2">
+					{currentStep > 0 && (
+						<button
+							type="button"
+							onClick={goToPreviousStep}
+							className="inline-flex items-center gap-2 rounded-lg border px-4 py-2 text-[14px] font-semibold"
+							style={{
+								background: "var(--surface-2)",
+								borderColor: "var(--border)",
+								color: "var(--text-muted)",
+							}}
+						>
+							<ChevronLeft size={16} strokeWidth={2} />
+							Voltar
+						</button>
+					)}
+
 					<button
 						type="submit"
-						disabled={!canSubmit || state.status === "submitting"}
+						disabled={
+							state.status === "submitting" ||
+							(currentStep === formSteps.length - 1 && !canSubmit)
+						}
 						className="inline-flex items-center gap-2 rounded-lg px-4 py-2 text-[14px] font-semibold text-white disabled:cursor-not-allowed disabled:opacity-60"
 						style={{ background: "var(--accent)" }}
 					>
@@ -1144,10 +1312,14 @@ export function NewReviewForm() {
 								className="animate-spin"
 								strokeWidth={2}
 							/>
-						) : (
+						) : currentStep === formSteps.length - 1 ? (
 							<Plus size={16} strokeWidth={2} />
+						) : (
+							<ChevronRight size={16} strokeWidth={2} />
 						)}
-						Publicar review
+						{currentStep === formSteps.length - 1
+							? "Publicar review"
+							: "Continuar"}
 					</button>
 
 					<Link
