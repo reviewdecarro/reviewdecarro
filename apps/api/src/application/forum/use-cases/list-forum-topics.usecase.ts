@@ -7,11 +7,18 @@ import { ForumTopicsRepositoryProps } from "../repositories/forum-topics.reposit
 export class ListForumTopicsUseCase {
 	constructor(private forumTopicsRepository: ForumTopicsRepositoryProps) {}
 
-	async execute(filters?: { query?: string }) {
-		const topics = await this.forumTopicsRepository.findAll(filters);
+	async execute(filters?: { query?: string; page?: number; limit?: number }) {
+		const { topics, total } = await this.forumTopicsRepository.findAll(filters);
 
-		return topics.map((topic) =>
+		const items = topics.map((topic) =>
 			ForumTopicMapper.toResponseDto(new ForumTopicEntity(topic)),
 		);
+
+		const page = filters?.page ?? 1;
+		const limit = filters?.limit ?? total;
+		const totalPages =
+			filters?.page && filters?.limit ? Math.ceil(total / filters.limit) : 1;
+
+		return { items, meta: { page, limit, total, totalPages } };
 	}
 }

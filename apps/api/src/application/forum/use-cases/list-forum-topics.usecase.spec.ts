@@ -60,9 +60,10 @@ describe("ListForumTopicsUseCase", () => {
 
 		const result = await sut.execute();
 
-		expect(result).toHaveLength(2);
-		expect(result[0]).toHaveProperty("slug", "terceiro");
-		expect(result[1]).toHaveProperty("slug", "primeiro");
+		expect(result.items).toHaveLength(2);
+		expect(result.items[0]).toHaveProperty("slug", "terceiro");
+		expect(result.items[1]).toHaveProperty("slug", "primeiro");
+		expect(result.meta.total).toBe(2);
 	});
 
 	it("should filter topics by title or content case-insensitively", async () => {
@@ -97,12 +98,43 @@ describe("ListForumTopicsUseCase", () => {
 			}),
 		);
 
-		await expect(sut.execute({ query: "MANUTENÇÃO" })).resolves.toEqual([
+		expect((await sut.execute({ query: "MANUTENÇÃO" })).items).toEqual([
 			expect.objectContaining({ id: "topic-title" }),
 		]);
-		await expect(sut.execute({ query: "híbridos" })).resolves.toEqual([
+		expect((await sut.execute({ query: "híbridos" })).items).toEqual([
 			expect.objectContaining({ id: "topic-content" }),
 		]);
-		await expect(sut.execute({ query: "inexistente" })).resolves.toEqual([]);
+		expect((await sut.execute({ query: "inexistente" })).items).toEqual([]);
+	});
+
+	it("should paginate topics and report meta", async () => {
+		for (let i = 0; i < 5; i++) {
+			topicsRepository.items.push(
+				new ForumTopicEntity({
+					id: `topic-${i}`,
+					authorId: "user-1",
+					title: `Topico ${i}`,
+					slug: `topico-${i}`,
+					content: "Conteúdo",
+					status: "PUBLISHED" as never,
+					postsCount: 0,
+					upvotes: 0,
+					downvotes: 0,
+					createdAt: new Date(2024, 0, i + 1),
+					updatedAt: new Date(2024, 0, i + 1),
+					deletedAt: null,
+				}),
+			);
+		}
+
+		const result = await sut.execute({ page: 1, limit: 2 });
+
+		expect(result.items).toHaveLength(2);
+		expect(result.meta).toEqual({
+			page: 1,
+			limit: 2,
+			total: 5,
+			totalPages: 3,
+		});
 	});
 });

@@ -69,11 +69,24 @@ export class ForumController {
 	@IsPublic()
 	@ApiOperation({ description: "Listar tópicos do fórum" })
 	@ApiQuery({ name: "q", required: false })
+	@ApiQuery({ name: "page", required: false })
+	@ApiQuery({ name: "limit", required: false })
 	@ApiOkResponse({ description: "Lista de tópicos" })
-	async listTopics(@Query("q") query: string, @Res() res: Response) {
-		const topics = await this.listForumTopicsUseCase.execute({ query });
+	async listTopics(
+		@Query("q") query: string,
+		@Query("page") pageParam: string,
+		@Query("limit") limitParam: string,
+		@Res() res: Response,
+	) {
+		const page = Number.parseInt(pageParam, 10);
+		const limit = Number.parseInt(limitParam, 10);
+		const { items, meta } = await this.listForumTopicsUseCase.execute({
+			query,
+			page: Number.isInteger(page) && page > 0 ? page : undefined,
+			limit: Number.isInteger(limit) && limit > 0 ? limit : undefined,
+		});
 
-		return res.status(HttpStatus.OK).json({ topics });
+		return res.status(HttpStatus.OK).json({ topics: items, meta });
 	}
 
 	@Get("topics/:slug")
