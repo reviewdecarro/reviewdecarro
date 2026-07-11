@@ -32,10 +32,14 @@ export class InMemoryForumTopicsRepository extends ForumTopicsRepositoryProps {
 		return topic;
 	}
 
-	async findAll(filters?: { query?: string }): Promise<ForumTopicEntity[]> {
+	async findAll(filters?: {
+		query?: string;
+		page?: number;
+		limit?: number;
+	}): Promise<{ topics: ForumTopicEntity[]; total: number }> {
 		const query = filters?.query?.toLowerCase();
 
-		return this.items
+		const filtered = this.items
 			.filter((topic) => topic.status === ForumTopicStatus.PUBLISHED)
 			.filter(
 				(topic) =>
@@ -44,6 +48,15 @@ export class InMemoryForumTopicsRepository extends ForumTopicsRepositoryProps {
 					topic.content.toLowerCase().includes(query),
 			)
 			.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+
+		const total = filtered.length;
+
+		if (filters?.page && filters?.limit) {
+			const start = (filters.page - 1) * filters.limit;
+			return { topics: filtered.slice(start, start + filters.limit), total };
+		}
+
+		return { topics: filtered, total };
 	}
 
 	async findById(id: string): Promise<ForumTopicEntity | null> {

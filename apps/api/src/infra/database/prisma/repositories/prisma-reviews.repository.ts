@@ -165,6 +165,51 @@ export class PrismaReviewsRepository implements ReviewsRepositoryProps {
 		);
 	}
 
+	async findFeatured(): Promise<ReviewEntity | null> {
+		const review = await this.prisma.review.findFirst({
+			include: reviewInclude,
+			orderBy: [{ score: "desc" }, { createdAt: "desc" }],
+		});
+
+		if (!review) {
+			return null;
+		}
+
+		return new ReviewEntity({
+			...review,
+			commentsCount: review._count.comments,
+		});
+	}
+
+	async findPaginated(params: {
+		page: number;
+		limit: number;
+		excludeId?: string;
+	}): Promise<{ items: ReviewEntity[]; total: number }> {
+		const where = params.excludeId ? { id: { not: params.excludeId } } : {};
+
+		const [reviews, total] = await Promise.all([
+			this.prisma.review.findMany({
+				where,
+				include: reviewInclude,
+				orderBy: { createdAt: "desc" },
+				skip: (params.page - 1) * params.limit,
+				take: params.limit,
+			}),
+			this.prisma.review.count({ where }),
+		]);
+
+		const items = reviews.map(
+			(review) =>
+				new ReviewEntity({
+					...review,
+					commentsCount: review._count.comments,
+				}),
+		);
+
+		return { items, total };
+	}
+
 	async update(id: string, data: UpdateReviewDto): Promise<ReviewEntity> {
 		const updateData: Record<string, unknown> = {};
 

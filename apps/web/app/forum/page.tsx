@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import { fetchForumTopics } from "@/api/forum";
+import { fetchForumTopicsPage } from "@/api/forum";
 import { fetchTopicSearch, type SearchSort } from "@/api/search";
 import { HeroCommunity } from "@/components/HeroCommunity";
 import { ForumSearchInput } from "./ForumSearchInput";
@@ -27,7 +27,8 @@ export default async function ForumRoutePage({
 	const searchResult = query
 		? await fetchTopicSearch({ q: query, sort, page })
 		: null;
-	const threads = searchResult?.items ?? (await fetchForumTopics());
+	const listing = query ? null : await fetchForumTopicsPage({ page, limit: 30 });
+	const threads = searchResult?.items ?? listing?.items ?? [];
 
 	return (
 		<>
@@ -50,10 +51,10 @@ export default async function ForumRoutePage({
 				<ForumPage
 					data={{ threads }}
 					query={query}
-					total={searchResult?.meta.total}
+					total={searchResult?.meta.total ?? listing?.meta.total}
 					sort={sort}
-					page={searchResult?.meta.page}
-					totalPages={searchResult?.meta.totalPages}
+					page={searchResult?.meta.page ?? listing?.meta.page}
+					totalPages={searchResult?.meta.totalPages ?? listing?.meta.totalPages}
 				/>
 			</main>
 		</>

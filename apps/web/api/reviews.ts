@@ -1,4 +1,5 @@
 import { API_BASE_URL } from "@/api/api";
+import type { PaginationMeta } from "@/api/forum";
 import type { PublicReview, ReviewComment } from "@/types";
 
 type ApiReview = {
@@ -44,6 +45,12 @@ type ApiReview = {
 
 type ReviewsResponse = {
 	reviews?: ApiReview[];
+};
+
+type PublicReviewsPageResponse = {
+	featured?: ApiReview | null;
+	reviews?: ApiReview[];
+	meta?: PaginationMeta;
 };
 
 type ReviewResponse = {
@@ -208,6 +215,43 @@ export async function fetchPublicReviews(
 			.map(toPublicReview);
 	} catch {
 		return [];
+	}
+}
+
+export async function fetchPublicReviewsPage(params: {
+	page: number;
+	limit?: number;
+}): Promise<{
+	featured: PublicReview | null;
+	items: PublicReview[];
+	meta: PaginationMeta;
+}> {
+	const limit = params.limit ?? 12;
+	const emptyMeta: PaginationMeta = { page: 1, limit, total: 0, totalPages: 0 };
+
+	try {
+		const searchParams = new URLSearchParams({
+			page: String(params.page),
+			limit: String(limit),
+		});
+		const response = await fetch(
+			`${API_BASE_URL}/reviews/public?${searchParams.toString()}`,
+			{ cache: "no-store" },
+		);
+
+		if (!response.ok) {
+			return { featured: null, items: [], meta: emptyMeta };
+		}
+
+		const data = (await response.json()) as PublicReviewsPageResponse;
+
+		return {
+			featured: data.featured ? toPublicReview(data.featured) : null,
+			items: (data.reviews ?? []).map(toPublicReview),
+			meta: data.meta ?? emptyMeta,
+		};
+	} catch {
+		return { featured: null, items: [], meta: emptyMeta };
 	}
 }
 

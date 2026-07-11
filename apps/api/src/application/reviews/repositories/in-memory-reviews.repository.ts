@@ -96,6 +96,32 @@ export class InMemoryReviewsRepository extends ReviewsRepositoryProps {
 		return result.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
 	}
 
+	async findFeatured(): Promise<ReviewEntity | null> {
+		const sorted = [...this.items].sort((a, b) => {
+			if (b.score !== a.score) {
+				return b.score - a.score;
+			}
+			return b.createdAt.getTime() - a.createdAt.getTime();
+		});
+
+		return sorted[0] ?? null;
+	}
+
+	async findPaginated(params: {
+		page: number;
+		limit: number;
+		excludeId?: string;
+	}): Promise<{ items: ReviewEntity[]; total: number }> {
+		const filtered = this.items
+			.filter((review) => review.id !== params.excludeId)
+			.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+
+		const total = filtered.length;
+		const start = (params.page - 1) * params.limit;
+
+		return { items: filtered.slice(start, start + params.limit), total };
+	}
+
 	async update(id: string, data: UpdateReviewDto): Promise<ReviewEntity> {
 		const current = this.items.find((r) => r.id === id);
 

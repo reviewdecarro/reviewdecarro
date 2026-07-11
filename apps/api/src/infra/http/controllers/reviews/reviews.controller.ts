@@ -29,6 +29,7 @@ import { CreateReviewUseCase } from "src/application/reviews/use-cases/create-re
 import { DeleteReviewUseCase } from "src/application/reviews/use-cases/delete-review.usecase";
 import { GetReviewUseCase } from "src/application/reviews/use-cases/get-review.usecase";
 import { GetReviewBySlugUseCase } from "src/application/reviews/use-cases/get-review-by-slug.usecase";
+import { ListPublicReviewsUseCase } from "src/application/reviews/use-cases/list-public-reviews.usecase";
 import { ListReviewsUseCase } from "src/application/reviews/use-cases/list-reviews.usecase";
 import { UpdateReviewUseCase } from "src/application/reviews/use-cases/update-review.usecase";
 import { UserEntity } from "src/application/users/entities/user.entity";
@@ -43,6 +44,7 @@ export class ReviewsController {
 		private getReviewService: GetReviewUseCase,
 		private getReviewBySlugService: GetReviewBySlugUseCase,
 		private listReviewsService: ListReviewsUseCase,
+		private listPublicReviewsService: ListPublicReviewsUseCase,
 		private updateReviewService: UpdateReviewUseCase,
 		private deleteReviewService: DeleteReviewUseCase,
 	) {}
@@ -85,6 +87,27 @@ export class ReviewsController {
 		});
 
 		return res.status(HttpStatus.OK).json({ reviews });
+	}
+
+	@Get("public")
+	@IsPublic()
+	@ApiOperation({ description: "Listar reviews públicas paginadas" })
+	@ApiQuery({ name: "page", required: false })
+	@ApiQuery({ name: "limit", required: false })
+	@ApiOkResponse({ description: "Lista paginada de reviews com destaque" })
+	async listPublic(
+		@Query("page") pageParam: string,
+		@Query("limit") limitParam: string,
+		@Res() res: Response,
+	) {
+		const page = Number.parseInt(pageParam, 10);
+		const limit = Number.parseInt(limitParam, 10);
+		const { featured, items, meta } = await this.listPublicReviewsService.execute({
+			page: Number.isInteger(page) && page > 0 ? page : undefined,
+			limit: Number.isInteger(limit) && limit > 0 ? limit : undefined,
+		});
+
+		return res.status(HttpStatus.OK).json({ featured, reviews: items, meta });
 	}
 
 	@Get("slug/:slug")
