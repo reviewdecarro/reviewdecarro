@@ -1,5 +1,6 @@
 import { ForumThreadRow } from "@/components/ForumThreadRow";
 import { SearchResultsControls } from "@/components/SearchResultsControls";
+import { PaginationControls } from "@/components/PaginationControls";
 import type { SearchSort } from "@/api/search";
 import type { ForumTopicSummary } from "@/types";
 
@@ -39,7 +40,11 @@ export function ForumPage({ data, query, total, sort, page, totalPages }: ForumP
 							page={page ?? 1}
 							totalPages={totalPages ?? 0}
 						/>
-					) : null}
+					) : (
+						<div className="mb-6 flex justify-end">
+							<PaginationControls page={page ?? 1} totalPages={totalPages ?? 0} />
+						</div>
+					)}
 
 					<div
 						className="rounded-xl overflow-hidden border"

@@ -39,6 +39,18 @@ type ForumTopicsResponse = {
 	topics?: ApiForumTopic[];
 };
 
+export type PaginationMeta = {
+	page: number;
+	limit: number;
+	total: number;
+	totalPages: number;
+};
+
+type ForumTopicsPageResponse = {
+	topics?: ApiForumTopic[];
+	meta?: PaginationMeta;
+};
+
 type ForumTopicResponse = {
 	topic?: ApiForumTopic;
 };
@@ -159,6 +171,38 @@ export async function fetchForumTopics(
 		return (data.topics ?? []).map(toForumTopicSummary);
 	} catch {
 		return [];
+	}
+}
+
+export async function fetchForumTopicsPage(params: {
+	page: number;
+	limit?: number;
+}): Promise<{ items: ForumTopicSummary[]; meta: PaginationMeta }> {
+	const limit = params.limit ?? 30;
+	const emptyMeta: PaginationMeta = { page: 1, limit, total: 0, totalPages: 0 };
+
+	try {
+		const searchParams = new URLSearchParams({
+			page: String(params.page),
+			limit: String(limit),
+		});
+		const response = await fetch(
+			`${API_BASE_URL}/forum/topics?${searchParams.toString()}`,
+			{ cache: "no-store" },
+		);
+
+		if (!response.ok) {
+			return { items: [], meta: emptyMeta };
+		}
+
+		const data = (await response.json()) as ForumTopicsPageResponse;
+
+		return {
+			items: (data.topics ?? []).map(toForumTopicSummary),
+			meta: data.meta ?? emptyMeta,
+		};
+	} catch {
+		return { items: [], meta: emptyMeta };
 	}
 }
 
