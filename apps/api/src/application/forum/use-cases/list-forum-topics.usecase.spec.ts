@@ -63,7 +63,7 @@ describe("ListForumTopicsUseCase", () => {
 		expect(result.items).toHaveLength(2);
 		expect(result.items[0]).toHaveProperty("slug", "terceiro");
 		expect(result.items[1]).toHaveProperty("slug", "primeiro");
-		expect(result.meta.total).toBe(2);
+		expect(result.meta).toEqual({ page: 1, limit: 2, total: 2, totalPages: 1 });
 	});
 
 	it("should filter topics by title or content case-insensitively", async () => {
