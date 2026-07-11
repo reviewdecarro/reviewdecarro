@@ -1,7 +1,8 @@
 import { Suspense } from "react";
-import { fetchPublicReviews } from "@/api/reviews";
+import { fetchPublicReviewsPage } from "@/api/reviews";
 import { fetchReviewSearch, type SearchSort } from "@/api/search";
 import { HeroCommunity } from "@/components/HeroCommunity";
+import { PaginationControls } from "@/components/PaginationControls";
 import { SearchResultsControls } from "@/components/SearchResultsControls";
 import { FeaturedReviewBanner } from "./FeaturedReviewBanner";
 import { ReviewsFilter } from "./ReviewsFilter";
@@ -28,15 +29,13 @@ export default async function ReviewsPage({ searchParams }: ReviewsPageProps) {
 	const searchResult = isSearching
 		? await fetchReviewSearch({ q: query, sort, page })
 		: null;
-	const reviews = searchResult?.items ?? (await fetchPublicReviews());
-	const total = searchResult?.meta.total ?? reviews.length;
-	const featured = isSearching
-		? undefined
-		: [...reviews].sort((a, b) => b.score - a.score)[0];
-	const listedReviews = isSearching
-		? reviews
-		: reviews.filter((review) => review.id !== featured?.id);
-	const items = listedReviews.map((review) => ({ review }));
+	const listing = isSearching
+		? null
+		: await fetchPublicReviewsPage({ page, limit: 12 });
+	const reviews = searchResult?.items ?? listing?.items ?? [];
+	const total = searchResult?.meta.total ?? listing?.meta.total ?? 0;
+	const featured = isSearching ? undefined : (listing?.featured ?? undefined);
+	const items = reviews.map((review) => ({ review }));
 	const reviewsLabel = total === 1 ? "avaliação encontrada" : "avaliações encontradas";
 
 	return (
@@ -96,6 +95,15 @@ export default async function ReviewsPage({ searchParams }: ReviewsPageProps) {
 									? `Nenhuma avaliação encontrada para “${query}”.`
 									: "Ainda não há avaliações publicadas."}
 							</p>
+						</div>
+					) : null}
+
+					{!isSearching && listing && listing.meta.totalPages > 1 ? (
+						<div className="mt-8 flex justify-end">
+							<PaginationControls
+								page={listing.meta.page}
+								totalPages={listing.meta.totalPages}
+							/>
 						</div>
 					) : null}
 				</div>
