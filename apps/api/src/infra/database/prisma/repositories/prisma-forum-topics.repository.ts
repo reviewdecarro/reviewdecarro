@@ -38,35 +38,53 @@ export class PrismaForumTopicsRepository extends ForumTopicsRepositoryProps {
 		return new ForumTopicEntity(topic);
 	}
 
-	async findAll(filters?: { query?: string }): Promise<ForumTopicEntity[]> {
-		const topics = await this.prisma.forumTopic.findMany({
-			where: {
-				status: ForumTopicStatus.PUBLISHED,
-				deletedAt: null,
-				...(filters?.query
-					? {
-							OR: [
-								{
-									title: {
-										contains: filters.query,
-										mode: "insensitive" as const,
-									},
+	async findAll(filters?: {
+		query?: string;
+		page?: number;
+		limit?: number;
+	}): Promise<{ topics: ForumTopicEntity[]; total: number }> {
+		const where = {
+			status: ForumTopicStatus.PUBLISHED,
+			deletedAt: null,
+			...(filters?.query
+				? {
+						OR: [
+							{
+								title: {
+									contains: filters.query,
+									mode: "insensitive" as const,
 								},
-								{
-									content: {
-										contains: filters.query,
-										mode: "insensitive" as const,
-									},
+							},
+							{
+								content: {
+									contains: filters.query,
+									mode: "insensitive" as const,
 								},
-							],
-						}
-					: {}),
-			},
-			include: forumTopicInclude,
-			orderBy: { createdAt: "desc" },
-		});
+							},
+						],
+					}
+				: {}),
+		};
 
-		return topics.map((topic) => new ForumTopicEntity(topic));
+		const paginate: { skip?: number; take?: number } =
+			filters?.page && filters?.limit
+				? {
+						skip: (filters.page - 1) * filters.limit,
+						take: filters.limit,
+					}
+				: {};
+
+		const [topics, total] = await Promise.all([
+			this.prisma.forumTopic.findMany({
+				where,
+				include: forumTopicInclude,
+				orderBy: { createdAt: "desc" },
+				...paginate,
+			}),
+			this.prisma.forumTopic.count({ where }),
+		]);
+
+		return { topics: topics.map((topic) => new ForumTopicEntity(topic)), total };
 	}
 
 	async findById(id: string): Promise<ForumTopicEntity | null> {
