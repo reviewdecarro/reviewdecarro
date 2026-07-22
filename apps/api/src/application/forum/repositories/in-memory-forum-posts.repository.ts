@@ -45,6 +45,21 @@ export class InMemoryForumPostsRepository extends ForumPostsRepositoryProps {
 			.sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
 	}
 
+	async findRecentByTopicId(
+		topicId: string,
+		limit: number,
+	): Promise<ForumPostEntity[]> {
+		return this.items
+			.filter(
+				(post) =>
+					post.topicId === topicId &&
+					post.status === ForumPostStatus.PUBLISHED &&
+					post.deletedAt === null,
+			)
+			.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
+			.slice(0, limit);
+	}
+
 	async incrementUpvotes(postId: string): Promise<void> {
 		const post = this.items.find((item) => item.id === postId);
 

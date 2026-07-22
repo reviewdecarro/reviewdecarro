@@ -10,6 +10,10 @@ export abstract class ForumPostsRepositoryProps {
 
 	abstract findById(id: string): Promise<ForumPostEntity | null>;
 	abstract findByTopicId(topicId: string): Promise<ForumPostEntity[]>;
+	abstract findRecentByTopicId(
+		topicId: string,
+		limit: number,
+	): Promise<ForumPostEntity[]>;
 	abstract incrementUpvotes(postId: string): Promise<void>;
 	abstract decrementUpvotes(postId: string): Promise<void>;
 	abstract incrementDownvotes(postId: string): Promise<void>;

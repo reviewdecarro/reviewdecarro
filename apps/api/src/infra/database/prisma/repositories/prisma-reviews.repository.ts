@@ -1,10 +1,15 @@
 import { Injectable } from "@nestjs/common";
+import { ReviewStatus } from "../../../../../prisma/generated/enums";
 import {
 	CreateReviewDto,
 	UpdateReviewDto,
 } from "../../../../application/reviews/dtos/create-review.dto";
 import { ReviewEntity } from "../../../../application/reviews/entities/review.entity";
-import { ReviewsRepositoryProps } from "../../../../application/reviews/repositories/reviews.repository";
+import {
+	type AdminReviewsListParams,
+	type AdminReviewsListResult,
+	ReviewsRepositoryProps,
+} from "../../../../application/reviews/repositories/reviews.repository";
 import { PrismaService } from "../prisma.service";
 
 const reviewInclude = {
@@ -58,6 +63,7 @@ export class PrismaReviewsRepository implements ReviewsRepositoryProps {
 				ownershipTimeMonths: data.ownershipTimeMonths ?? null,
 				kmDriven: data.kmDriven ?? null,
 				score: data.score,
+				status: ReviewStatus.PUBLISHED,
 				ratings: data.ratings
 					? {
 							create: data.ratings.map((r) => ({
@@ -163,6 +169,100 @@ export class PrismaReviewsRepository implements ReviewsRepositoryProps {
 					commentsCount: review._count.comments,
 				}),
 		);
+	}
+
+	async countPublished(): Promise<number> {
+		return this.prisma.review.count({
+			where: { status: ReviewStatus.PUBLISHED },
+		});
+	}
+
+	async countByUserId(userId: string): Promise<number> {
+		return this.prisma.review.count({ where: { userId } });
+	}
+
+	async findManyForAdmin(
+		params: AdminReviewsListParams,
+	): Promise<AdminReviewsListResult> {
+		const query = params.query?.trim();
+		const year = query && /^\d+$/.test(query) ? Number(query) : undefined;
+		const where = query
+			? {
+					OR: [
+						{ title: { contains: query, mode: "insensitive" as const } },
+						{ content: { contains: query, mode: "insensitive" as const } },
+						{
+							user: {
+								username: { contains: query, mode: "insensitive" as const },
+							},
+						},
+						{
+							carVersionYear: {
+								year,
+							},
+						},
+						{
+							carVersionYear: {
+								carVersion: {
+									versionName: {
+										contains: query,
+										mode: "insensitive" as const,
+									},
+								},
+							},
+						},
+						{
+							carVersionYear: {
+								carVersion: {
+									model: {
+										name: { contains: query, mode: "insensitive" as const },
+									},
+								},
+							},
+						},
+						{
+							carVersionYear: {
+								carVersion: {
+									model: {
+										brand: {
+											name: {
+												contains: query,
+												mode: "insensitive" as const,
+											},
+										},
+									},
+								},
+							},
+						},
+					],
+				}
+			: {};
+
+		const [reviews, total] = await this.prisma.$transaction([
+			this.prisma.review.findMany({
+				where,
+				include: reviewInclude,
+				orderBy: { createdAt: "desc" },
+				skip: (params.page - 1) * params.limit,
+				take: params.limit,
+			}),
+			this.prisma.review.count({ where }),
+		]);
+
+		return {
+			reviews: reviews.map(
+				(review) =>
+					new ReviewEntity({
+						...review,
+						commentsCount: review._count.comments,
+					}),
+			),
+			total,
+		};
+	}
+
+	async findByIdForAdmin(id: string): Promise<ReviewEntity | null> {
+		return this.findById(id);
 	}
 
 	async update(id: string, data: UpdateReviewDto): Promise<ReviewEntity> {

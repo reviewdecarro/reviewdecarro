@@ -34,6 +34,9 @@ export function Footer() {
           <Link href="/reviews" className="hover:opacity-80 transition-opacity">
             Avaliações
           </Link>
+          <Link href="/termos" className="hover:opacity-80 transition-opacity">
+            Termos de Uso
+          </Link>
           {!isLoggedIn && (
             <Link href="/login" className="hover:opacity-80 transition-opacity">
               Entrar

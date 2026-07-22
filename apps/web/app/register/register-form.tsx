@@ -328,9 +328,13 @@ export function RegisterForm() {
               style={{ color: "var(--text-muted)" }}
             >
               Li e estou de acordo com os{" "}
-              <span className="font-semibold" style={{ color: "var(--text)" }}>
+              <Link
+                href="/termos"
+                className="font-semibold hover:opacity-80 transition-opacity"
+                style={{ color: "var(--accent)" }}
+              >
                 Termos de uso
-              </span>
+              </Link>
               .
             </label>
           </div>

@@ -66,6 +66,24 @@ export class PrismaForumPostsRepository extends ForumPostsRepositoryProps {
 		return posts.map((post) => new ForumPostEntity(post));
 	}
 
+	async findRecentByTopicId(
+		topicId: string,
+		limit: number,
+	): Promise<ForumPostEntity[]> {
+		const posts = await this.prisma.forumPost.findMany({
+			where: {
+				topicId,
+				status: ForumPostStatus.PUBLISHED,
+				deletedAt: null,
+			},
+			include: forumPostInclude,
+			orderBy: { createdAt: "desc" },
+			take: limit,
+		});
+
+		return posts.map((post) => new ForumPostEntity(post));
+	}
+
 	async incrementUpvotes(postId: string): Promise<void> {
 		await this.prisma.forumPost.update({
 			where: { id: postId },
