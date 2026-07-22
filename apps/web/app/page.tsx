@@ -1,4 +1,5 @@
 import { MessageSquare } from "lucide-react";
+import Image from "next/image";
 import { fetchForumTopics } from "@/api/forum";
 import { fetchPublicReviews, fetchReviewBySlug } from "@/api/reviews";
 import { CtaSection } from "@/components/CtaSection";
@@ -45,6 +46,16 @@ export default async function HomePage() {
 
 	return (
 		<main className="flex-1" style={{ background: "var(--bg)" }}>
+			<div className="w-full">
+				<Image
+					src="/banner_homepage.png"
+					alt="Banner PapoAuto"
+					width={3168}
+					height={1344}
+					style={{ width: "100%", height: "auto" }}
+					priority
+				/>
+			</div>
 			<div className="container mx-auto px-6 py-12 md:py-16 flex flex-col gap-14">
 				{featuredReview && (
 					<section>
