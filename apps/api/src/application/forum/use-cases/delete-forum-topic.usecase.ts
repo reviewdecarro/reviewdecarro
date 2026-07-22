@@ -19,7 +19,8 @@ export class DeleteForumTopicUseCase {
 		}
 
 		const isAuthor = topic.authorId === user.id;
-		const isAdmin = user.roles?.some((role) => role.name === "ADMIN") ?? false;
+		const isAdmin =
+			user.roles?.some((role) => role.name.toLowerCase() === "admin") ?? false;
 
 		if (!isAuthor && !isAdmin) {
 			throw new BadRequestError("Not allowed");

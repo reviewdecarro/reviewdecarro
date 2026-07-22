@@ -2,7 +2,11 @@ import { randomUUID } from "node:crypto";
 import { ForumTopicStatus } from "../../../../prisma/generated/enums";
 import type { CreateForumTopicDto } from "../dtos/create-forum-topic.dto";
 import { ForumTopicEntity } from "../entities/forum-topic.entity";
-import { ForumTopicsRepositoryProps } from "./forum-topics.repository";
+import {
+	type AdminForumTopicsListParams,
+	type AdminForumTopicsListResult,
+	ForumTopicsRepositoryProps,
+} from "./forum-topics.repository";
 
 export class InMemoryForumTopicsRepository extends ForumTopicsRepositoryProps {
 	public items: ForumTopicEntity[] = [];
@@ -52,6 +56,57 @@ export class InMemoryForumTopicsRepository extends ForumTopicsRepositoryProps {
 
 	async findBySlug(slug: string): Promise<ForumTopicEntity | null> {
 		return this.items.find((topic) => topic.slug === slug) ?? null;
+	}
+
+	async countPublished(): Promise<number> {
+		return this.items.filter(
+			(topic) =>
+				topic.status === ForumTopicStatus.PUBLISHED && topic.deletedAt === null,
+		).length;
+	}
+
+	async countByAuthorId(authorId: string): Promise<number> {
+		return this.items.filter((topic) => topic.authorId === authorId).length;
+	}
+
+	async findManyForAdmin(
+		params: AdminForumTopicsListParams,
+	): Promise<AdminForumTopicsListResult> {
+		const query = params.query?.trim().toLowerCase();
+		const filtered = this.items
+			.filter(
+				(topic) =>
+					topic.status === ForumTopicStatus.PUBLISHED && topic.deletedAt === null,
+			)
+			.filter((topic) => {
+				if (!query) return true;
+
+				const haystack = [
+					topic.title,
+					topic.content,
+					topic.author?.username,
+				]
+					.filter(Boolean)
+					.join(" ")
+					.toLowerCase();
+
+				return haystack.includes(query);
+			})
+			.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+		const start = (params.page - 1) * params.limit;
+
+		return {
+			topics: filtered.slice(start, start + params.limit),
+			total: filtered.length,
+		};
+	}
+
+	async findByIdForAdmin(id: string): Promise<ForumTopicEntity | null> {
+		const topic = await this.findById(id);
+
+		if (!topic || topic.deletedAt) return null;
+
+		return topic;
 	}
 
 	async incrementPostsCount(topicId: string): Promise<void> {

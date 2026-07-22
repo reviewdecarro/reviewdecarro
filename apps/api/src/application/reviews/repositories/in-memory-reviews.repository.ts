@@ -1,11 +1,16 @@
 import { randomUUID } from "node:crypto";
+import { ReviewStatus } from "../../../../prisma/generated/enums";
 import type {
 	CreateReviewDto,
 	UpdateReviewDto,
 } from "../dtos/create-review.dto";
 import { ReviewEntity } from "../entities/review.entity";
 import { ReviewRatingEntity } from "../entities/review-rating.entity";
-import { ReviewsRepositoryProps } from "./reviews.repository";
+import {
+	type AdminReviewsListParams,
+	type AdminReviewsListResult,
+	ReviewsRepositoryProps,
+} from "./reviews.repository";
 
 export class InMemoryReviewsRepository extends ReviewsRepositoryProps {
 	public items: ReviewEntity[] = [];
@@ -32,6 +37,7 @@ export class InMemoryReviewsRepository extends ReviewsRepositoryProps {
 			ownershipTimeMonths: data.ownershipTimeMonths ?? null,
 			kmDriven: data.kmDriven ?? null,
 			score: data.score,
+			status: ReviewStatus.PUBLISHED,
 			createdAt: now,
 			updatedAt: now,
 			ratings: data.ratings?.map(
@@ -94,6 +100,51 @@ export class InMemoryReviewsRepository extends ReviewsRepositoryProps {
 		}
 
 		return result.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+	}
+
+	async countPublished(): Promise<number> {
+		return this.items.filter((review) => review.status === ReviewStatus.PUBLISHED)
+			.length;
+	}
+
+	async countByUserId(userId: string): Promise<number> {
+		return this.items.filter((review) => review.userId === userId).length;
+	}
+
+	async findManyForAdmin(
+		params: AdminReviewsListParams,
+	): Promise<AdminReviewsListResult> {
+		const query = params.query?.trim().toLowerCase();
+		const filtered = this.items
+			.filter((review) => {
+				if (!query) return true;
+
+				const haystack = [
+					review.title,
+					review.content,
+					review.user?.username,
+					review.carVersionYear?.year?.toString(),
+					review.carVersionYear?.carVersion?.versionName,
+					review.carVersionYear?.carVersion?.model?.name,
+					review.carVersionYear?.carVersion?.model?.brand?.name,
+				]
+					.filter(Boolean)
+					.join(" ")
+					.toLowerCase();
+
+				return haystack.includes(query);
+			})
+			.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+		const start = (params.page - 1) * params.limit;
+
+		return {
+			reviews: filtered.slice(start, start + params.limit),
+			total: filtered.length,
+		};
+	}
+
+	async findByIdForAdmin(id: string): Promise<ReviewEntity | null> {
+		return this.findById(id);
 	}
 
 	async update(id: string, data: UpdateReviewDto): Promise<ReviewEntity> {
